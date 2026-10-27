@@ -1,0 +1,21 @@
+{
+  "name": "svg-test",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "游戏设计稿 SVG 工作台：目录页 + 查看器 + 标注规范校验",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.server.json && tsc -p tsconfig.client.json",
+    "dev": "npm run build && node dist/server/index.js",
+    "start": "node dist/server/index.js",
+    "check": "npm run build && node dist/tooling/lint.js",
+    "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.client.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

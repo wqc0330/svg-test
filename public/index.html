@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>设计稿目录 · SVG 工作台</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles/app.css" />
+  </head>
+  <body data-page="catalog">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div class="brand-text">
+          <h1>设计稿目录</h1>
+          <p class="brand-sub">SVG Design Workbench</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <input id="search" class="search" type="search" placeholder="搜索名称 / 分类 / 标签 / 路径" autocomplete="off" spellcheck="false" />
+        <span class="stat" id="stat">读取中…</span>
+      </div>
+    </header>
+
+    <main id="app" class="page">
+      <p class="loading">正在读取 public/designs 与 public/assets…</p>
+    </main>
+
+    <script type="module" src="/js/client/catalog.js"></script>
+  </body>
+</html>

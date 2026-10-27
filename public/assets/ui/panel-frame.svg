@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 480" width="320" height="480">
+  <title>纵向面板外框</title>
+  <desc>320×480 可复用面板素材：深色底 + 双层描边 + 顶部流光条 + 四角装饰，中部留空供叠字。</desc>
+  <defs>
+    <linearGradient id="pf-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16203a" />
+      <stop offset="1" stop-color="#0b1120" />
+    </linearGradient>
+    <linearGradient id="pf-accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#63d2ff" stop-opacity="0" />
+      <stop offset="0.5" stop-color="#63d2ff" />
+      <stop offset="1" stop-color="#63d2ff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="318" height="478" rx="18" fill="url(#pf-fill)" stroke="#2c3d63" stroke-width="2" />
+  <rect x="10" y="10" width="300" height="460" rx="12" fill="none" stroke="#22304f" stroke-width="1" />
+  <rect x="26" y="26" width="268" height="3" fill="url(#pf-accent)" />
+  <path d="M18 40 L18 18 L40 18" fill="none" stroke="#63d2ff" stroke-width="2" opacity="0.65" />
+  <path d="M302 40 L302 18 L280 18" fill="none" stroke="#63d2ff" stroke-width="2" opacity="0.65" />
+  <path d="M18 440 L18 462 L40 462" fill="none" stroke="#63d2ff" stroke-width="2" opacity="0.65" />
+  <path d="M302 440 L302 462 L280 462" fill="none" stroke="#63d2ff" stroke-width="2" opacity="0.65" />
+</svg>

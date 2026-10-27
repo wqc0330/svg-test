@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" data-category="hud" data-tags="模板,示例" data-version="0.1.0">
+  <!--
+    设计稿模板
+    ------------------------------------------------------------------
+    1. 文件名以下划线开头（_template.svg），不进目录、不参与校验。
+       复制成 designs/<项目>/<分类>/<名字>.svg 后，把 data-category 改成目标分类。
+    2. 根 <svg> 必须有 viewBox；分辨率写进 width/height，方便按 1:1 出图。
+    3. <title> = 目录卡片标题；<desc> = 一句话说明，都会显示在查看器里。
+    4. 根级图层 <g> 必须带 data-role，顺序即 z 轴：背景 → 内容 → HUD → 遮罩。
+    5. SVG 没有 button/panel/bar 这些标签，一律用 data-role + aria-label 补语义。
+  -->
+  <title>设计稿模板</title>
+  <desc>带完整语义标注的空白骨架：背景层、内容层、HUD 层、遮罩层，删掉不要的部分即可开工。</desc>
+
+  <style>
+    /* 字体族在稿内统一声明，避免不同机器渲染漂移；文字样式用 class 收敛。 */
+    svg text {
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      fill: #e9eefb;
+    }
+    .tpl-title {
+      font-size: 46px;
+      font-weight: 600;
+      letter-spacing: 3px;
+    }
+    .tpl-caption {
+      font-size: 20px;
+      letter-spacing: 1px;
+      fill: #92a0bd;
+    }
+    .tpl-key {
+      font-size: 22px;
+      font-weight: 600;
+    }
+  </style>
+
+  <defs>
+    <linearGradient id="tpl-scene" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101830" />
+      <stop offset="1" stop-color="#070a14" />
+    </linearGradient>
+    <!-- 可复用图标放 <symbol>，用 <use> 引用；不要在稿里复制粘贴同一份图形。 -->
+    <symbol id="tpl-icon-sword" viewBox="0 0 48 48">
+      <path d="M24 4 L30 26 L24 34 L18 26 Z" fill="#cfd8ef" />
+      <rect x="22" y="32" width="4" height="12" rx="2" fill="#8b96ad" />
+    </symbol>
+  </defs>
+
+  <!-- 一、背景层：只放场景/氛围，不放可交互元素 -->
+  <g data-role="background" aria-label="背景层">
+    <rect width="1920" height="1080" fill="url(#tpl-scene)" />
+    <text x="120" y="520" class="tpl-title">标题占位</text>
+    <text x="120" y="566" class="tpl-caption">副标题占位 · 一句话说明这张稿要表达什么</text>
+  </g>
+
+  <!-- 二、内容层：面板、卡片、按钮等实体 -->
+  <g data-role="layer" aria-label="内容层">
+    <g data-role="panel" aria-label="信息面板" transform="translate(120 640)">
+      <rect width="420" height="260" rx="16" fill="#111a2e" stroke="#2a3a5e" />
+      <text x="28" y="56" class="tpl-key">面板标题</text>
+      <text x="28" y="96" class="tpl-caption">面板正文</text>
+    </g>
+
+    <!-- 按钮：SVG 没有 <button>，用 <g> + role/aria-label 表达语义，data-action 给程序读 -->
+    <g data-role="button" data-action="confirm" data-state="default" role="button" tabindex="0" aria-label="确认">
+      <rect x="620" y="700" width="240" height="80" rx="12" fill="#1b3a6b" stroke="#3f6fb5" />
+      <text x="740" y="750" class="tpl-key" text-anchor="middle">确认</text>
+    </g>
+  </g>
+
+  <!-- 三、HUD 层：常驻覆盖层 -->
+  <g data-role="hud" aria-label="HUD 层">
+    <!-- 数值条：用 data-value / data-max 记录真实数值，程序可回填 -->
+    <g data-role="bar" data-value="0.72" data-max="1" aria-label="生命值 72%">
+      <rect x="120" y="940" width="360" height="18" rx="9" fill="#1a2237" />
+      <rect x="120" y="940" width="259.2" height="18" rx="9" fill="#e0574f" />
+    </g>
+
+    <!-- 技能槽：一槽一个 <g>，内部数字即热键 -->
+    <g data-role="slot" data-slot="1" data-action="skill-1" data-state="ready" role="button" tabindex="0" aria-label="技能 1">
+      <rect x="820" y="960" width="72" height="72" rx="10" fill="#141d33" stroke="#31456e" />
+      <use href="#tpl-icon-sword" x="832" y="972" width="48" height="48" />
+      <text x="856" y="1016" class="tpl-caption" text-anchor="middle">Q</text>
+    </g>
+  </g>
+
+  <!-- 四、遮罩层：弹窗暗化、过场压黑等 -->
+  <g data-role="overlay" aria-label="遮罩层" opacity="0" />
+</svg>
