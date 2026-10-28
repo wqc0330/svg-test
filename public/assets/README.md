@@ -4,9 +4,10 @@
 
 ## 约定
 
-- 按用途分子目录：`ui/`、`icons/`、`textures/`、`audio/`、`fonts/`。
+- 按用途分子目录：`ui/`、`icons/`、`textures/`、`audio/`、`fonts/`、`backgrounds/`、`characters/`、`items/`、`decorations/`、`titles/`。
 - 文件名小写 + 连字符：`panel-frame.svg`、`icon-sword.svg`。
 - 能矢量的不要用位图；设计稿里引用现有素材，不要在稿内复制粘贴同一份图形。
+- 美术字标题（字面本身即图形、无法用 `<text>` 还原字形）才允许存位图，放 `titles/`。
 - 设计稿内用相对路径引用，`designs/screens/x.svg` → `../../assets/ui/panel-frame.svg`。
 
 ## 命名示例
@@ -14,6 +15,13 @@
 ```
 assets/
   ui/panel-frame.svg      面板外框
+  ui/menu-button-frame.svg 主菜单按钮空框（435×138，文字由稿内 <text> 叠加）
+  ui/button-mug.png       按钮底板（像素风，图标已烧进图里）
+  backgrounds/xxx.png     场景原画（整幅，供 <image> 铺底）
+  characters/xxx.png      角色立绘（带透明通道，脚点在底部）
+  items/xxx.png           卡面武器图（只裁窗口区，卡框由 SVG 画）
+  decorations/xxx.png     场景道具（火把、栅栏等可单独挪动的摆件）
+  titles/logo-ashfall.png 标题美术字（字即图形，不能改字）
   icons/icon-sword.svg    图标
   textures/stone-tile.png 贴图
   audio/ui-click.mp3      音效

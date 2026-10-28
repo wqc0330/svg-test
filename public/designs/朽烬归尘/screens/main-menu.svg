@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" width="2048" height="1152"
+     data-category="screens" data-tags="主菜单,启动页,城堡,双骑士,2048x1152" data-version="0.1.0">
+  <title>主菜单</title>
+  <desc>余烬纪的启动页：夜雨后的城门、紫羽与金羽两名守灰者分列左右，标题居中，四枚锻铁悬赏牌纵向排列；右上为音频工具，左下为版本与幕次。</desc>
+
+  <style>
+    svg text {
+      font-family: "PingFang SC", "Songti SC", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    /* 按钮字：米色石面 + 深红描边，双层叠出厚度 */
+    .mm-btn {
+      font-size: 50px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      fill: #e8d8ba;
+      paint-order: stroke;
+      stroke: #2b110f;
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+    .mm-btn-shadow {
+      font-size: 50px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      fill: #3a1110;
+    }
+
+    /* 焦点环：只有键盘 Tab 才亮金框，鼠标点击不出现浏览器默认黑框 */
+    .mm-focus { opacity: 0; }
+    [data-role="button"]:focus { outline: none; }
+    [data-role="button"]:focus-visible { outline: none; }
+    [data-role="button"]:focus-visible > * > .mm-focus { opacity: 1; }
+
+    .mm-meta {
+      font-size: 17px;
+      letter-spacing: 2px;
+      fill: #b3a58e;
+      paint-order: stroke;
+      stroke: #0a0806;
+      stroke-width: 3.5px;
+      stroke-linejoin: round;
+    }
+    .mm-icon { fill: none; stroke: #e2cda6; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+  </style>
+
+  <defs>
+    <radialGradient id="mm-torchglow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffcf72" stop-opacity="0.55" />
+      <stop offset="0.45" stop-color="#e0701f" stop-opacity="0.22" />
+      <stop offset="1" stop-color="#e0701f" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="mm-vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#05060a" stop-opacity="0.45" />
+      <stop offset="0.35" stop-color="#05060a" stop-opacity="0" />
+      <stop offset="1" stop-color="#05060a" stop-opacity="0.5" />
+    </linearGradient>
+
+    <linearGradient id="mm-pill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b2325" />
+      <stop offset="1" stop-color="#120d0e" />
+    </linearGradient>
+
+    <radialGradient id="mm-cornerfade" cx="0.05" cy="1" r="0.95">
+      <stop offset="0" stop-color="#050407" stop-opacity="0.72" />
+      <stop offset="0.55" stop-color="#050407" stop-opacity="0.34" />
+      <stop offset="1" stop-color="#050407" stop-opacity="0" />
+    </radialGradient>
+
+    <symbol id="mm-ico-music" viewBox="0 0 20 20">
+      <path d="M7.5 14.5 V5.2 L15 3.6 V12.4" />
+      <circle cx="5.4" cy="15" r="2.4" />
+      <circle cx="12.9" cy="13" r="2.4" />
+    </symbol>
+
+    <symbol id="mm-ico-sound" viewBox="0 0 20 20">
+      <path d="M3.5 7.6 H6.6 L11 4.2 V15.8 L6.6 12.4 H3.5 Z" />
+      <path d="M14 7 a5.4 5.4 0 0 1 0 6" />
+    </symbol>
+
+    <symbol id="mm-ico-full" viewBox="0 0 20 20">
+      <path d="M3.6 8 V3.6 H8" />
+      <path d="M16.4 8 V3.6 H12" />
+      <path d="M3.6 12 v4.4 H8" />
+      <path d="M16.4 12 v4.4 H12" />
+    </symbol>
+  </defs>
+
+  <!-- 一、背景层：城门夜景，压一层上下渐晕把注意力收向中央 -->
+  <g data-role="background" aria-label="背景层">
+    <image href="../../../assets/backgrounds/castle-night-gate.png" x="0" y="0" width="2048" height="1152"
+           data-role="sprite" aria-label="夜雨后的城门与城墙" />
+    <rect x="0" y="0" width="2048" height="1152" fill="url(#mm-vignette)" />
+  </g>
+
+  <!-- 二、装饰层：火把在前，压住左侧骑士的肩甲，给画面一个光源 -->
+  <g data-role="decoration" aria-label="火把与光晕">
+    <circle cx="556" cy="470" r="190" fill="url(#mm-torchglow)" />
+    <image href="../../../assets/decorations/torch-pillar.png" x="514" y="418" width="85" height="367"
+           data-role="sprite" aria-label="铁座火把" />
+  </g>
+
+  <!-- 三、角色层：左紫羽、右金羽，脚底基本齐平于画面下缘往上 55 -->
+  <g data-role="layer" aria-label="角色层">
+    <image href="../../../assets/characters/knight-ashfall-full.png" x="179" y="540" width="479" height="559"
+           data-role="sprite" aria-label="紫羽守灰者立绘" />
+    <image href="../../../assets/characters/knight-embercrest-full.png" x="1377" y="513" width="516" height="582"
+           data-role="sprite" aria-label="金羽守灰者立绘" />
+  </g>
+
+  <!-- 四、标题层：美术字，字面本身就是图形，保留位图 -->
+  <g data-role="layer" aria-label="标题层">
+    <image href="../../../assets/titles/logo-ashfall.png" x="496" y="182" width="1055" height="293"
+           data-role="sprite" aria-label="朽烬归尘 标题美术字" />
+  </g>
+
+  <!-- 五、主菜单：四枚悬赏牌，x 居中 806，节拍 138，牌与牌之间留 0（菱形就是分节） -->
+  <g data-role="layer" aria-label="主菜单层">
+    <g data-role="button" data-action="start-game" data-state="default" role="button" tabindex="0" aria-label="开始游戏">
+      <g transform="translate(806 529)">
+        <image href="../../../assets/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
+               data-role="frame" aria-label="开始游戏按钮底板" />
+        <text x="217.5" y="97" text-anchor="middle" class="mm-btn-shadow">开始游戏</text>
+        <text x="217.5" y="95" text-anchor="middle" class="mm-btn">开始游戏</text>
+        <path class="mm-focus" d="M38 23 H397 L434 46 V116 L397 139 H38 L1 116 V46 Z"
+              fill="none" stroke="#e9bd7c" stroke-width="2.6" stroke-linejoin="round" />
+      </g>
+    </g>
+
+    <g data-role="button" data-action="open-settings" data-state="default" role="button" tabindex="0" aria-label="设置">
+      <g transform="translate(806 675)">
+        <image href="../../../assets/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
+               data-role="frame" aria-label="设置按钮底板" />
+        <text x="217.5" y="97" text-anchor="middle" class="mm-btn-shadow">设置</text>
+        <text x="217.5" y="95" text-anchor="middle" class="mm-btn">设置</text>
+        <path class="mm-focus" d="M38 23 H397 L434 46 V116 L397 139 H38 L1 116 V46 Z"
+              fill="none" stroke="#e9bd7c" stroke-width="2.6" stroke-linejoin="round" />
+      </g>
+    </g>
+
+    <g data-role="button" data-action="open-inventory" data-state="default" role="button" tabindex="0" aria-label="仓库">
+      <g transform="translate(806 821)">
+        <image href="../../../assets/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
+               data-role="frame" aria-label="仓库按钮底板" />
+        <text x="217.5" y="97" text-anchor="middle" class="mm-btn-shadow">仓库</text>
+        <text x="217.5" y="95" text-anchor="middle" class="mm-btn">仓库</text>
+        <path class="mm-focus" d="M38 23 H397 L434 46 V116 L397 139 H38 L1 116 V46 Z"
+              fill="none" stroke="#e9bd7c" stroke-width="2.6" stroke-linejoin="round" />
+      </g>
+    </g>
+
+    <g data-role="button" data-action="quit-game" data-state="default" role="button" tabindex="0" aria-label="退出">
+      <g transform="translate(806 967)">
+        <image href="../../../assets/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
+               data-role="frame" aria-label="退出按钮底板" />
+        <text x="217.5" y="97" text-anchor="middle" class="mm-btn-shadow">退出</text>
+        <text x="217.5" y="95" text-anchor="middle" class="mm-btn">退出</text>
+        <path class="mm-focus" d="M38 23 H397 L434 46 V116 L397 139 H38 L1 116 V46 Z"
+              fill="none" stroke="#e9bd7c" stroke-width="2.6" stroke-linejoin="round" />
+      </g>
+    </g>
+  </g>
+
+  <!-- 六、HUD 层：右上音频工具，左下版本与幕次 -->
+  <g data-role="hud" aria-label="常驻工具">
+    <g data-role="button" data-action="toggle-music" data-state="default" role="button" tabindex="0" aria-label="音乐开关">
+      <circle cx="1888" cy="58" r="24" fill="url(#mm-pill)" stroke="#5c4a46" stroke-width="2" />
+      <use href="#mm-ico-music" x="1877" y="47" width="22" height="22" class="mm-icon" />
+    </g>
+
+    <g data-role="button" data-action="toggle-sound" data-state="default" role="button" tabindex="0" aria-label="音效开关">
+      <circle cx="1944" cy="58" r="24" fill="url(#mm-pill)" stroke="#5c4a46" stroke-width="2" />
+      <use href="#mm-ico-sound" x="1933" y="47" width="22" height="22" class="mm-icon" />
+    </g>
+
+    <g data-role="button" data-action="toggle-fullscreen" data-state="default" role="button" tabindex="0" aria-label="全屏">
+      <circle cx="2000" cy="58" r="24" fill="url(#mm-pill)" stroke="#5c4a46" stroke-width="2" />
+      <use href="#mm-ico-full" x="1989" y="47" width="22" height="22" class="mm-icon" />
+    </g>
+
+    <!-- 版本与幕次压在一层渐隐暗角上，不做成一块贴片 -->
+    <g data-role="label" aria-label="版本信息">
+      <rect x="0" y="1020" width="360" height="132" fill="url(#mm-cornerfade)" />
+      <text x="42" y="1086" class="mm-meta">余烬纪 · 第一幕</text>
+      <text x="42" y="1112" class="mm-meta">v0.1.0</text>
+    </g>
+  </g>
+
+  <!-- 七、遮罩层：设置/仓库弹窗的压黑底，默认不显示 -->
+  <g data-role="overlay" aria-label="遮罩层" opacity="0" />
+</svg>

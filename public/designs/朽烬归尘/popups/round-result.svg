@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" width="2048" height="1152"
+     data-category="popups" data-tags="弹窗,回合结算,战利品,三选一,2048x1152" data-version="0.2.0">
+  <title>回合结算 · 战利品三选一</title>
+  <desc>每回合结束的结算弹窗：胜负判定、造成伤害与剩余血脉统计，并从三件战利品中选一件放进装备阵列。</desc>
+
+  <style>
+    svg text {
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      fill: #ded2bc;
+    }
+    .pr-title {
+      font-size: 44px;
+      font-weight: 700;
+      letter-spacing: 9px;
+      fill: #f0e2c4;
+      text-anchor: middle;
+    }
+    .pr-sub {
+      font-size: 15px;
+      letter-spacing: 3px;
+      fill: #b8a686;
+      text-anchor: middle;
+    }
+    .pr-section {
+      font-size: 14px;
+      letter-spacing: 5px;
+      fill: #b39472;
+      text-anchor: middle;
+    }
+    .pr-item {
+      font-size: 14px;
+      letter-spacing: 1px;
+      fill: #d8c9ae;
+      text-anchor: middle;
+    }
+    .pr-cost {
+      font-family: Impact, "Arial Black", "Microsoft YaHei", sans-serif;
+      font-size: 25px;
+      fill: #f6eee0;
+      text-anchor: middle;
+    }
+    .pr-btn {
+      font-size: 20px;
+      letter-spacing: 6px;
+      fill: #f6ecda;
+      text-anchor: middle;
+    }
+    .pr-stat {
+      font-size: 13px;
+      letter-spacing: 2px;
+      fill: #9d8d75;
+      text-anchor: middle;
+    }
+  </style>
+
+  <defs>
+    <linearGradient id="pr-plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#261b1e" />
+      <stop offset="0.6" stop-color="#1a1214" />
+      <stop offset="1" stop-color="#110b0d" />
+    </linearGradient>
+    <linearGradient id="pr-btn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a8302c" />
+      <stop offset="0.55" stop-color="#7c1d21" />
+      <stop offset="1" stop-color="#4d1114" />
+    </linearGradient>
+    <radialGradient id="pr-scrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#05070a" stop-opacity="0.88" />
+      <stop offset="1" stop-color="#05070a" stop-opacity="0.95" />
+    </radialGradient>
+  </defs>
+
+  <!-- 一、战场压黑 -->
+  <g data-role="background" aria-label="战场底">
+    <image href="../../../assets/backgrounds/arena-dusk-courtyard.png" x="0" y="0" width="2048" height="1152"
+           preserveAspectRatio="xMidYMid slice" data-role="frame" aria-label="暮色庭院原画" opacity="0.5" />
+  </g>
+
+  <!-- 二、遮罩：弹窗底下的压黑 -->
+  <g data-role="overlay" aria-label="压黑遮罩">
+    <rect width="2048" height="1152" fill="url(#pr-scrim)" />
+  </g>
+
+  <!-- 三、结算面板 -->
+  <g data-role="layer" aria-label="结算面板">
+    <path d="M684 300 H1364 L1404 340 V808 L1364 848 H684 L644 808 V340 Z"
+          fill="url(#pr-plate)" stroke="#6a4448" stroke-width="3" />
+    <path d="M692 314 H1356 L1390 348 V800 L1356 834 H692 L658 800 V348 Z"
+          fill="none" stroke="#3d2c2f" stroke-width="2" />
+
+    <g fill="#5c1218" stroke="#8d2226" stroke-width="2">
+      <path d="M644 326 L658 340 L644 354 L630 340 Z" />
+      <path d="M1404 326 L1418 340 L1404 354 L1390 340 Z" />
+      <path d="M644 794 L658 808 L644 822 L630 808 Z" />
+      <path d="M1404 794 L1418 808 L1404 822 L1390 808 Z" />
+    </g>
+    <g fill="#b8343c">
+      <path d="M644 332 L652 340 L644 348 L636 340 Z" />
+      <path d="M1404 332 L1412 340 L1404 348 L1396 340 Z" />
+      <path d="M644 800 L652 808 L644 816 L636 808 Z" />
+      <path d="M1404 800 L1412 808 L1404 816 L1396 808 Z" />
+    </g>
+
+    <text x="1024" y="380" class="pr-title">回合胜利</text>
+    <text x="1024" y="414" class="pr-sub">第 3 回合 · 灰烬教长 血脉溃散</text>
+
+    <path d="M784 434 H1264" stroke="#4a3538" stroke-width="2" />
+    <path d="M984 430 L1024 438 L1064 430" fill="none" stroke="#8d2226" stroke-width="2" />
+
+    <text x="1024" y="464" class="pr-section">择 一 件 战 利 品</text>
+
+    <g data-role="item" data-action="pick-reward" data-state="default" data-reward="curved-knife" role="group"
+       aria-label="弯月刃 · 费用 3 · 耐久 90%">
+      <image href="../../../assets/ui/card-frame.svg" x="812" y="480" width="120" height="184" />
+      <image href="../../../assets/items/item-curved-knife.png" x="820" y="518" width="104" height="118"
+             data-role="sprite" aria-label="弯月刃图" />
+      <text x="834" y="511" class="pr-cost">3</text>
+      <g data-role="bar" data-value="0.9" data-max="1" aria-label="耐久 90%">
+        <rect x="825" y="643" width="86" height="6" rx="3" fill="#b3392f" />
+      </g>
+    </g>
+
+    <g data-role="item" data-action="pick-reward" data-state="selected" data-reward="broadblade" role="group"
+       aria-label="阔刃斧 · 费用 6 · 耐久 78%（已选）">
+      <image href="../../../assets/ui/card-frame.svg" x="964" y="480" width="120" height="184" />
+      <image href="../../../assets/items/item-broadblade.png" x="972" y="518" width="104" height="118"
+             data-role="sprite" aria-label="阔刃斧图" />
+      <text x="986" y="511" class="pr-cost">6</text>
+      <g data-role="bar" data-value="0.78" data-max="1" aria-label="耐久 78%">
+        <rect x="977" y="643" width="75" height="6" rx="3" fill="#b3392f" />
+      </g>
+      <rect x="958" y="474" width="132" height="196" rx="7" fill="none" stroke="#efc07a" stroke-width="3" />
+    </g>
+
+    <g data-role="item" data-action="pick-reward" data-state="default" data-reward="rust-dagger" role="group"
+       aria-label="锈蚀短刃 · 费用 6 · 耐久 62%">
+      <image href="../../../assets/ui/card-frame.svg" x="1116" y="480" width="120" height="184" />
+      <image href="../../../assets/items/item-rust-dagger.png" x="1124" y="518" width="104" height="118"
+             data-role="sprite" aria-label="锈蚀短刃图" />
+      <text x="1138" y="511" class="pr-cost">6</text>
+      <g data-role="bar" data-value="0.62" data-max="1" aria-label="耐久 62%">
+        <rect x="1129" y="643" width="60" height="6" rx="3" fill="#b3392f" />
+      </g>
+    </g>
+
+    <text x="872" y="690" class="pr-item">弯月刃</text>
+    <text x="1024" y="690" class="pr-item">阔刃斧 · 已选</text>
+    <text x="1176" y="690" class="pr-item">锈蚀短刃</text>
+
+    <g data-role="button" data-action="next-round" data-state="default" role="button" tabindex="0" aria-label="继续，进入第 4 回合">
+      <path d="M888 712 H1160 L1174 726 V742 L1160 756 H888 L874 742 V726 Z"
+            fill="url(#pr-btn)" stroke="#c2543d" stroke-width="2" />
+      <text x="1024" y="744" class="pr-btn">继 续</text>
+    </g>
+
+    <text x="1024" y="792" class="pr-stat">造成 84 点伤害 · 剩余血脉 160 · 本回合消耗 6 点余烬</text>
+  </g>
+</svg>

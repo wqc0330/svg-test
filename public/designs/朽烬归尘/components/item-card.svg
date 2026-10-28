@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" width="900" height="620"
+     data-category="components" data-tags="物品卡,部件,三态,规格,可复用" data-version="0.1.0">
+  <title>物品卡 · 部件规格</title>
+  <desc>装备阵列里一张武器卡的构成与三态：外框 120×184 占 2 列 × 3 行，左上费用角标、中部武器图窗口、底部耐久条。</desc>
+
+  <style>
+    svg text {
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      fill: #ded2bc;
+    }
+    .ic-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      fill: #f0e2c4;
+    }
+    .ic-sub {
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      fill: #9d8d75;
+    }
+    .ic-h {
+      font-size: 13px;
+      letter-spacing: 3px;
+      fill: #b39472;
+    }
+    .ic-line {
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      fill: #c7b99f;
+    }
+    .ic-cap {
+      font-size: 13px;
+      letter-spacing: 1px;
+      fill: #d8c9ae;
+      text-anchor: middle;
+    }
+    .ic-note {
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      fill: #8f8271;
+      text-anchor: middle;
+    }
+    .ic-dot {
+      font-family: Impact, "Arial Black", "Microsoft YaHei", sans-serif;
+      font-size: 13px;
+      fill: #f6ecda;
+      text-anchor: middle;
+    }
+    .ic-cost {
+      font-family: Impact, "Arial Black", "Microsoft YaHei", sans-serif;
+      font-size: 50px;
+      fill: #f6eee0;
+      text-anchor: middle;
+    }
+    /* 小卡费用与禁用态文字：必须排在 .ic-cost / .ic-cap 之后才能覆盖字号与颜色 */
+    .ic-cost-s {
+      font-size: 25px;
+    }
+    .ic-warn {
+      font-size: 14px;
+      letter-spacing: 2px;
+      fill: #d6bda0;
+      text-anchor: middle;
+    }
+  </style>
+
+  <defs>
+    <linearGradient id="ic-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141013" />
+      <stop offset="1" stop-color="#0a0809" />
+    </linearGradient>
+  </defs>
+
+  <g data-role="background" aria-label="规格板">
+    <rect width="900" height="620" fill="url(#ic-bg)" />
+    <text x="40" y="50" class="ic-title">物品卡</text>
+    <text x="40" y="74" class="ic-sub">ITEM CARD · 装备阵列最小可交互单元</text>
+    <path d="M40 90 H860" stroke="#3a2c2f" stroke-width="1.5" />
+  </g>
+
+  <!-- 一、大卡：2 倍放大，用来标注细节 -->
+  <g data-role="layer" aria-label="大卡标注">
+    <image href="../../../assets/ui/card-frame.svg" x="40" y="110" width="240" height="368" />
+    <image href="../../../assets/items/item-rust-dagger.png" x="56" y="186" width="208" height="236"
+           data-role="sprite" aria-label="锈蚀短刃图" preserveAspectRatio="xMidYMid slice" />
+    <text x="84" y="168" class="ic-cost">6</text>
+    <rect x="62" y="434" width="180" height="12" rx="6" fill="#b3392f" />
+
+    <!-- 标注点：圆点 + 序号，对应左下方四条说明 -->
+    <g data-role="label" aria-label="标注点 1 费用角标">
+      <circle cx="84" cy="158" r="10" fill="#8d2226" stroke="#e0c08a" stroke-width="1.5" />
+      <text x="84" y="163" class="ic-dot">1</text>
+    </g>
+    <g data-role="label" aria-label="标注点 2 武器图窗口">
+      <circle cx="270" cy="198" r="10" fill="#8d2226" stroke="#e0c08a" stroke-width="1.5" />
+      <text x="270" y="203" class="ic-dot">2</text>
+    </g>
+    <g data-role="label" aria-label="标注点 3 耐久条">
+      <circle cx="270" cy="440" r="10" fill="#8d2226" stroke="#e0c08a" stroke-width="1.5" />
+      <text x="270" y="445" class="ic-dot">3</text>
+    </g>
+    <g data-role="label" aria-label="标注点 4 外框">
+      <circle cx="40" cy="110" r="10" fill="#8d2226" stroke="#e0c08a" stroke-width="1.5" />
+      <text x="40" y="115" class="ic-dot">4</text>
+    </g>
+  </g>
+
+  <!-- 二、左列规格 -->
+  <g data-role="layer" aria-label="规格说明">
+    <text x="40" y="512" class="ic-line">1 费用角标：左上，取值 0–9，Impact</text>
+    <text x="40" y="534" class="ic-line">2 武器图窗口：104×118，slice 裁切</text>
+    <text x="40" y="556" class="ic-line">3 耐久条：100×6，按数值回填宽度</text>
+    <text x="40" y="578" class="ic-line">4 外框：120 × 184 = 阵列 2 列 × 3 行</text>
+  </g>
+
+  <!-- 三、三态：同一份外框，只改状态属性与叠层 -->
+  <g data-role="layer" aria-label="三态">
+    <text x="352" y="126" class="ic-h">三 态</text>
+
+    <g data-role="item" data-action="place-item" data-state="default" role="group" aria-label="物品卡 默认态：可放置">
+      <image href="../../../assets/ui/card-frame.svg" x="352" y="144" width="120" height="184" />
+      <image href="../../../assets/items/item-curved-knife.png" x="360" y="182" width="104" height="118"
+             data-role="sprite" aria-label="弯月刃图" />
+      <text x="374" y="175" class="ic-cost ic-cost-s">3</text>
+      <rect x="365" y="307" width="86" height="6" rx="3" fill="#b3392f" />
+    </g>
+    <text x="412" y="352" class="ic-cap">默认 · 可放置</text>
+    <text x="412" y="372" class="ic-note">data-state="default"</text>
+
+    <g data-role="item" data-action="place-item" data-state="selected" role="group" aria-label="物品卡 选中态">
+      <image href="../../../assets/ui/card-frame.svg" x="500" y="144" width="120" height="184" />
+      <image href="../../../assets/items/item-broadblade.png" x="508" y="182" width="104" height="118"
+             data-role="sprite" aria-label="阔刃斧图" />
+      <text x="522" y="175" class="ic-cost ic-cost-s">6</text>
+      <rect x="513" y="307" width="75" height="6" rx="3" fill="#b3392f" />
+      <rect x="494" y="138" width="132" height="196" rx="7" fill="none" stroke="#efc07a" stroke-width="3" />
+    </g>
+    <text x="560" y="352" class="ic-cap">选中 · 待落格</text>
+    <text x="560" y="372" class="ic-note">data-state="selected"</text>
+
+    <g data-role="item" data-action="place-item" data-state="disabled" role="group" aria-label="物品卡 禁用态：费用不足">
+      <image href="../../../assets/ui/card-frame.svg" x="648" y="144" width="120" height="184" />
+      <image href="../../../assets/items/item-rust-dagger.png" x="656" y="182" width="104" height="118"
+             data-role="sprite" aria-label="锈蚀短刃图" />
+      <text x="670" y="175" class="ic-cost ic-cost-s">6</text>
+      <rect x="661" y="307" width="60" height="6" rx="3" fill="#b3392f" />
+      <rect x="648" y="144" width="120" height="184" rx="8" fill="#07050a" opacity="0.62" />
+      <text x="708" y="246" class="ic-warn">费用不足</text>
+    </g>
+    <text x="708" y="352" class="ic-cap">禁用 · 余烬不足</text>
+    <text x="708" y="372" class="ic-note">data-state="disabled"</text>
+  </g>
+
+  <!-- 四、右列说明 -->
+  <g data-role="layer" aria-label="交互与复用说明">
+    <path d="M352 404 H860" stroke="#33272a" stroke-width="1.5" />
+    <text x="352" y="432" class="ic-line">可交互：data-role="item" + data-action="inspect-item"</text>
+    <text x="352" y="456" class="ic-line">三态只改 data-state 与叠层，不另出一套素材</text>
+    <text x="352" y="480" class="ic-line">落格：卡宽 2 格、高 3 格，坐标取左上格</text>
+    <text x="352" y="504" class="ic-line">同图复用：弯月刃上下阵板共用一份素材</text>
+  </g>
+</svg>

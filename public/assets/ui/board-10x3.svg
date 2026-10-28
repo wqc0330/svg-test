@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 776 240" width="776" height="240">
+  <title>装备阵列 10×3</title>
+  <desc>776×240 阵板素材：切角金属底板 + 左右宝石饰带 + 30 个 56×56 空槽（间距 8）。卡牌按 2 列 × 3 行 = 120×184 落格。</desc>
+  <defs>
+    <linearGradient id="bd-plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1f22" />
+      <stop offset="0.55" stop-color="#1d1517" />
+      <stop offset="1" stop-color="#140e10" />
+    </linearGradient>
+    <g id="bd-slot">
+      <rect width="56" height="56" rx="4" fill="#2b2124" stroke="#4a383b" stroke-width="1.5" />
+      <rect x="5" y="5" width="46" height="46" rx="2" fill="#0d0a0b" />
+      <path d="M5 13 V5 H26" fill="none" stroke="#5b4548" stroke-width="1.5" opacity="0.65" />
+    </g>
+  </defs>
+
+  <!-- 底板与内凹阵区 -->
+  <path d="M20 0 H756 L776 20 V220 L756 240 H20 L0 220 V20 Z"
+        fill="url(#bd-plate)" stroke="#5a4244" stroke-width="2" />
+  <rect x="56" y="24" width="664" height="192" fill="#080607" stroke="#2b2022" stroke-width="2" />
+  <path d="M56 27 H720" stroke="#4a3638" stroke-width="1.5" opacity="0.7" />
+
+  <!-- 10 列 × 3 行空槽，左上角 (72,28)，步进 64 -->
+  <use href="#bd-slot" x="72" y="28" />
+  <use href="#bd-slot" x="136" y="28" />
+  <use href="#bd-slot" x="200" y="28" />
+  <use href="#bd-slot" x="264" y="28" />
+  <use href="#bd-slot" x="328" y="28" />
+  <use href="#bd-slot" x="392" y="28" />
+  <use href="#bd-slot" x="456" y="28" />
+  <use href="#bd-slot" x="520" y="28" />
+  <use href="#bd-slot" x="584" y="28" />
+  <use href="#bd-slot" x="648" y="28" />
+  <use href="#bd-slot" x="72" y="92" />
+  <use href="#bd-slot" x="136" y="92" />
+  <use href="#bd-slot" x="200" y="92" />
+  <use href="#bd-slot" x="264" y="92" />
+  <use href="#bd-slot" x="328" y="92" />
+  <use href="#bd-slot" x="392" y="92" />
+  <use href="#bd-slot" x="456" y="92" />
+  <use href="#bd-slot" x="520" y="92" />
+  <use href="#bd-slot" x="584" y="92" />
+  <use href="#bd-slot" x="648" y="92" />
+  <use href="#bd-slot" x="72" y="156" />
+  <use href="#bd-slot" x="136" y="156" />
+  <use href="#bd-slot" x="200" y="156" />
+  <use href="#bd-slot" x="264" y="156" />
+  <use href="#bd-slot" x="328" y="156" />
+  <use href="#bd-slot" x="392" y="156" />
+  <use href="#bd-slot" x="456" y="156" />
+  <use href="#bd-slot" x="520" y="156" />
+  <use href="#bd-slot" x="584" y="156" />
+  <use href="#bd-slot" x="648" y="156" />
+
+  <!-- 左右饰带：赤晶 / 紫晶交替，纯装饰不承载数值 -->
+  <rect x="8" y="18" width="40" height="204" fill="#1c1416" stroke="#3a2a2c" stroke-width="1.5" />
+  <rect x="728" y="18" width="40" height="204" fill="#1c1416" stroke="#3a2a2c" stroke-width="1.5" />
+  <g fill="#5c1218" stroke="#8d2226" stroke-width="1.5">
+    <path d="M28 44 L42 58 L28 72 L14 58 Z" />
+    <path d="M28 172 L42 186 L28 200 L14 186 Z" />
+    <path d="M748 44 L762 58 L748 72 L734 58 Z" />
+    <path d="M748 172 L762 186 L748 200 L734 186 Z" />
+  </g>
+  <g fill="#b8343c">
+    <path d="M28 50 L36 58 L28 66 L20 58 Z" />
+    <path d="M748 50 L756 58 L748 66 L740 58 Z" />
+  </g>
+  <g fill="#2e1a44" stroke="#4a2a68" stroke-width="1.5">
+    <path d="M28 108 L42 122 L28 136 L14 122 Z" />
+    <path d="M748 108 L762 122 L748 136 L734 122 Z" />
+  </g>
+  <g fill="#6b45a0">
+    <path d="M28 114 L36 122 L28 130 L20 122 Z" />
+    <path d="M748 114 L756 122 L748 130 L740 122 Z" />
+    <path d="M28 178 L36 186 L28 194 L20 186 Z" />
+    <path d="M748 178 L756 186 L748 194 L740 186 Z" />
+  </g>
+  <g fill="#6d5254">
+    <circle cx="14" cy="14" r="3.5" />
+    <circle cx="762" cy="14" r="3.5" />
+    <circle cx="14" cy="226" r="3.5" />
+    <circle cx="762" cy="226" r="3.5" />
+  </g>
+</svg>
