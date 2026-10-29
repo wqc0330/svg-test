@@ -44,6 +44,11 @@ body {
   font-variant-ligatures: none;
 }
 
+/* 单页双视图：hidden 属性必须真正隐藏（避免被 display:flex 等类覆盖） */
+[hidden] {
+  display: none !important;
+}
+
 .muted {
   color: var(--muted);
 }
@@ -377,11 +382,16 @@ a {
 
 /* ---------------- 查看器 ---------------- */
 
-body[data-page="viewer"] {
+/* 查看器视图激活时：整页锁定为视口高度，目录视图隐藏 */
+body.is-viewing {
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+body.is-viewing .page {
+  display: none;
 }
 
 .back {

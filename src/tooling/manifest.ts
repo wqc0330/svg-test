@@ -25,30 +25,29 @@ const PROJECT_FILE = 'project.json';
 
 const toPosix = (p: string): string => p.split(sep).join('/');
 
-async function walk(dir: string): Promise<string[]> {
+/** 项目素材库目录名：designs/<项目>/assets/，里面的文件是素材不是设计稿。 */
+const PROJECT_ASSETS_DIR = 'assets';
+
+/** 通用扫描：root 下所有文件，返回相对 root 的 posix 路径。跳过 `_` 前缀与隐藏目录。 */
+async function walkRel(root: string, prefix = ''): Promise<string[]> {
   let entries: Dirent[];
   try {
-    entries = await readdir(dir, { withFileTypes: true });
+    entries = await readdir(root, { withFileTypes: true });
   } catch {
     return [];
   }
   const files: string[] = [];
   for (const entry of entries) {
-    const full = join(dir, entry.name);
+    if (entry.name.startsWith('_') || entry.name.startsWith('.')) continue;
+    const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
     if (entry.isDirectory()) {
-      files.push(...(await walk(full)));
+      files.push(...(await walkRel(join(root, entry.name), rel)));
     } else if (entry.isFile()) {
-      files.push(full);
+      files.push(rel);
     }
   }
-  return files;
+  return files.sort();
 }
-
-/** `_` 开头的文件/目录是模板、草稿、私有目录：不进目录，也不参与校验。 */
-const isWorkingFile = (path: string): boolean => {
-  const base = path.replace(/^.*[\\/]/, '');
-  return !base.startsWith('_');
-};
 
 interface ProjectMeta {
   name?: string;
@@ -126,18 +125,23 @@ export async function buildManifest(root: string): Promise<Manifest> {
 
   const projects: ProjectEntry[] = [];
   const designs: DesignEntry[] = [];
+  const assets: AssetEntry[] = [];
 
   for (const dirName of await listProjectDirs(designsDir)) {
     const projectDir = join(designsDir, dirName);
     const meta = await readProjectMeta(projectDir);
     const project = { id: dirName, name: meta.name?.trim() || dirName };
 
-    const files = (await walk(projectDir))
-      .filter((f) => extname(f).toLowerCase() === '.svg' && isWorkingFile(f))
-      .sort();
-    for (const file of files) {
-      designs.push(await buildDesignEntry(root, file, project));
+    // 项目内的 assets/ 是素材库，不算设计稿
+    const relFiles = await walkRel(projectDir);
+    const designFiles = relFiles
+      .filter((rel) => extname(rel).toLowerCase() === '.svg' && rel.split('/')[0] !== PROJECT_ASSETS_DIR);
+    for (const rel of designFiles) {
+      designs.push(await buildDesignEntry(root, join(projectDir, rel), project));
     }
+
+    // 项目私有素材：designs/<项目>/assets/
+    assets.push(...(await collectAssets(join(projectDir, PROJECT_ASSETS_DIR), dirName)));
 
     const info = await stat(projectDir);
     projects.push({
@@ -147,7 +151,8 @@ export async function buildManifest(root: string): Promise<Manifest> {
       description: meta.description ?? '',
       path: `public/designs/${dirName}`,
       updatedAt: info.mtime.toISOString(),
-      designCount: files.length,
+      designCount: designFiles.length,
+      assetCount: assets.filter((a) => a.scope === dirName).length,
     });
   }
 
@@ -159,27 +164,34 @@ export async function buildManifest(root: string): Promise<Manifest> {
       a.name.localeCompare(b.name, 'zh-CN'),
   );
 
-  const assetFiles = (await walk(assetsDir))
-    .filter((f) => ASSET_EXTS.has(extname(f).toLowerCase()))
-    .sort();
-
-  const assets: AssetEntry[] = [];
-  for (const file of assetFiles) {
-    const info = await stat(file);
-    const relFromAssets = toPosix(relative(assetsDir, file));
-    assets.push({
-      kind: 'asset',
-      id: relFromAssets,
-      name: relFromAssets.replace(/^.*\//, ''),
-      ext: extname(file).replace('.', '').toUpperCase(),
-      bytes: info.size,
-      file: `/assets/${relFromAssets}`,
-      path: `public/assets/${relFromAssets}`,
-      updatedAt: info.mtime.toISOString(),
-    });
-  }
+  assets.push(...(await collectAssets(assetsDir, 'global')));
 
   return { generatedAt: new Date().toISOString(), projects, designs, assets };
+}
+
+/** 扫描一个素材库目录（scope = 'global' 或项目 id），生成素材条目。目录不存在返回空。 */
+async function collectAssets(dir: string, scope: string): Promise<AssetEntry[]> {
+  const relFiles = await walkRel(dir);
+  const entries: AssetEntry[] = [];
+  for (const rel of relFiles) {
+    if (!ASSET_EXTS.has(extname(rel).toLowerCase())) continue;
+    const abs = join(dir, rel);
+    const info = await stat(abs);
+    const urlBase =
+      scope === 'global' ? 'assets' : `designs/${scope}/${PROJECT_ASSETS_DIR}`;
+    entries.push({
+      kind: 'asset',
+      id: `${scope}:${rel}`,
+      name: rel.replace(/^.*\//, ''),
+      ext: extname(rel).replace('.', '').toUpperCase(),
+      bytes: info.size,
+      file: `/${urlBase}/${rel}`,
+      path: `public/${urlBase}/${rel}`,
+      updatedAt: info.mtime.toISOString(),
+      scope,
+    });
+  }
+  return entries.sort((a, b) => a.id.localeCompare(b.id));
 }
 
 /** 读取单张设计稿详情（查看器用）。file 可传 public/designs/... 或 designs/...。 */
@@ -241,6 +253,7 @@ export async function createProject(root: string, name: string, slug: string): P
   if (existsSync(projectDir)) return { ok: false, status: 409, message: `目录 designs/${cleanId} 已存在` };
 
   await mkdir(projectDir, { recursive: true });
+  await mkdir(join(projectDir, PROJECT_ASSETS_DIR), { recursive: true });
   const createdAt = new Date().toISOString();
   await writeFile(
     join(projectDir, PROJECT_FILE),
@@ -259,6 +272,7 @@ export async function createProject(root: string, name: string, slug: string): P
       path: `public/designs/${cleanId}`,
       updatedAt: info.mtime.toISOString(),
       designCount: 0,
+      assetCount: 0,
     },
   };
 }

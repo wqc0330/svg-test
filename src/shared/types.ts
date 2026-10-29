@@ -35,6 +35,8 @@ export interface ProjectEntry {
   path: string;
   updatedAt: string;
   designCount: number;
+  /** 项目素材库 designs/<id>/assets/ 下的素材数 */
+  assetCount: number;
 }
 
 /** 设计稿条目：目录页的一张卡片、抽屉里树的一个叶子。 */
@@ -61,7 +63,11 @@ export interface DesignEntry {
   issues: LintIssue[];
 }
 
-/** 素材条目：assets/ 下的任意文件（全局共享，不归属项目）。 */
+/**
+ * 素材条目。
+ * scope = 'global' 表示 public/assets/ 下的全局共享素材；
+ * scope = 项目 id 表示 public/designs/<项目>/assets/ 下的项目私有素材。
+ */
 export interface AssetEntry {
   kind: 'asset';
   id: string;
@@ -71,6 +77,8 @@ export interface AssetEntry {
   file: string;
   path: string;
   updatedAt: string;
+  /** 'global' 或项目目录名 */
+  scope: string;
 }
 
 export interface Manifest {

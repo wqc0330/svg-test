@@ -3,27 +3,46 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>设计稿目录 · SVG 工作台</title>
+    <title>设计稿工作台 · SVG</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles/app.css" />
   </head>
-  <body data-page="catalog">
+  <body data-page="workbench">
     <header class="topbar">
-      <div class="brand">
+      <a class="back" id="back" href="/" hidden><span aria-hidden="true">←</span> 目录</a>
+      <div class="brand" id="brand">
         <span class="brand-mark" aria-hidden="true"></span>
         <div class="brand-text">
           <h1>设计稿目录</h1>
           <p class="brand-sub">SVG Design Workbench</p>
         </div>
       </div>
-      <div class="topbar-right">
+      <div class="viewer-heading" id="viewer-heading" hidden>
+        <h1 id="title">加载中…</h1>
+        <p id="subtitle" class="subtitle mono"></p>
+      </div>
+      <div class="topbar-right" id="catalog-tools">
         <input id="search" class="search" type="search" placeholder="搜索名称 / 分类 / 标签 / 路径" autocomplete="off" spellcheck="false" />
         <span class="stat" id="stat">读取中…</span>
+      </div>
+      <div class="toolbar" id="viewer-tools" hidden>
+        <span class="zoom mono" id="zoom">—</span>
+        <button class="btn" id="zoom-fit" type="button">适应窗口</button>
+        <button class="btn" id="zoom-100" type="button">100%</button>
+        <button class="btn" id="toggle-grid" type="button">网格</button>
+        <a class="btn btn-ghost" id="raw" href="#" target="_blank" rel="noreferrer">原始 SVG ↗</a>
       </div>
     </header>
 
     <main id="app" class="page">
       <p class="loading">正在读取 public/designs 与 public/assets…</p>
+    </main>
+
+    <main class="viewer-main" id="viewer-main" hidden>
+      <section class="canvas" id="canvas" aria-label="画布">
+        <div class="stage" id="stage"></div>
+      </section>
+      <aside class="inspector" id="inspector" aria-label="设计稿信息"></aside>
     </main>
 
     <script type="module" src="/js/client/catalog.js"></script>

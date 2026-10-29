@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1140" width="1536" height="1140"
+     data-category="components" data-tags="物品卡,腰带,白框,2x1,规格板,三态" data-version="0.1.0">
+  <title>物品卡 · 白框腰带</title>
+  <desc>栅格 2 列 × 1 行（120×61）的白框腰带卡规格：费用 1、横向长窗承载腰带立绘、耐久 40%，是最扁的一档卡。</desc>
+
+  <defs>
+    <clipPath id="plate-crop"><rect x="0" y="0" width="1536" height="740" /></clipPath>
+  </defs>
+
+  <style>
+    svg text {
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      fill: #ded2bc;
+    }
+    .ic-title { font-size: 40px; font-weight: 700; letter-spacing: 4px; fill: #f0e2c4; }
+    .ic-sub { font-size: 17px; letter-spacing: 2px; fill: #9d8d75; }
+    .ic-h { font-size: 18px; letter-spacing: 4px; fill: #b39472; }
+    .ic-line { font-size: 20px; letter-spacing: 0.5px; fill: #c7b99f; }
+    .ic-meta { font-size: 13px; letter-spacing: 1px; fill: #8f8271; }
+  </style>
+
+  <g data-role="background" aria-label="稿件底板">
+    <rect x="0" y="0" width="1536" height="1140" fill="#0a0809" />
+  </g>
+
+  <g data-role="sprite" aria-label="物品卡 · 白框腰带卡面阵列：大卡与三态小卡" clip-path="url(#plate-crop)">
+    <image href="../assets/items/plates/plate-belt-white-2x1.png" x="0" y="0" width="1536" height="1024"
+           preserveAspectRatio="none" />
+  </g>
+
+  <g data-role="text" aria-label="稿件标题">
+    <text x="56" y="66" class="ic-title">物品卡 · 白框腰带</text>
+    <text x="56" y="100" class="ic-sub">ITEM CARD · 2 × 1 栅格 · 稀有度 白</text>
+  </g>
+
+  <g data-role="panel" aria-label="规格与交互说明区">
+    <rect x="0" y="740" width="1536" height="400" fill="#0b0a0c" />
+    <path d="M0 740 H1536" stroke="#3a2c2f" stroke-width="1.5" />
+
+    <text x="56" y="802" class="ic-h">规格 SPEC</text>
+    <text x="56" y="846" class="ic-line">1 费用角标：左上，0–9，Impact 风格，卡号 1</text>
+    <text x="56" y="890" class="ic-line">2 物品窗口：横向长窗，高仅 1 行，只留一条贴边窗口</text>
+    <text x="56" y="934" class="ic-line">3 耐久条：底部圆角槽，暗红底 + 亮红填充 40%</text>
+    <text x="56" y="978" class="ic-line">4 外框：120 × 61 = 阵列 2 列 × 1 行</text>
+
+    <path d="M780 780 V990" stroke="#2a2023" stroke-width="1.5" />
+    <text x="824" y="802" class="ic-h">交互 INTERACTION</text>
+    <text x="824" y="846" class="ic-line">可交互：data-role="item" + data-action="inspect-item"</text>
+    <text x="824" y="890" class="ic-line">单行卡：只保留费用角标与耐久条，无标题栏</text>
+    <text x="824" y="934" class="ic-line">落格：宽 2 格、高 1 格，坐标取左上格</text>
+
+    <path d="M56 1040 H1480" stroke="#221a1c" stroke-width="1.5" />
+  </g>
+
+  <g data-role="label" aria-label="页脚元信息">
+    <text x="56" y="1088" class="ic-meta">朽烬归尘 · components · v0.1.0 · 栅格 2 列 × 1 行 · 卡面 120 × 61</text>
+    <text x="1480" y="1088" class="ic-meta" text-anchor="end">卡面为图生图输出 · 文字层手工叠字</text>
+  </g>
+</svg>

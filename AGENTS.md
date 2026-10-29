@@ -6,18 +6,18 @@
 
 ## 1. 这是什么
 
-用 **SVG 手写游戏设计稿**（界面 / HUD / 弹窗 / 关卡构图）的工程。
+用 **SVG 手写游戏设计稿**（界面 / HUD / 弹窗 / 关卡构图，以及概念设计类：Key Art、风格板、场景 / 角色 / 道具概念）的工程。
 
 设计稿不是"一张截图"，而是一份**可被程序读懂的结构文档**：命名清晰的图层、明确的语义标注、可回填的数值约定。因此：
 
 - 稿子要能被人看懂，也要能被 `npm run check` 检查、被查看器解析出标注清单。
-- 左侧抽屉是项目树（项目 → 分类 → 稿），可以直接在抽屉里**新建项目**；目录页（`/`）按项目分组展示卡片，**点卡片进查看器、点素材直接打开文件**。
+- 左侧抽屉是项目树（项目 → 分类 → 稿），可以直接在抽屉里**新建项目**；工作台是**单页应用**（`/`），点树、点卡片只做局部切换（`/?file=` 进查看器视图、`/?project=` 回目录），**不整页刷新**；`viewer.html` 仅作旧链接跳转兼容。
 
 ## 2. 三条铁律
 
 ### 铁律一：一切素材都能从目录点进去
 
-`public/designs/**/*.svg` 与 `public/assets/**` 会被服务端扫描成清单，渲染成左侧项目树 + 首页目录。
+`public/designs/**/*.svg` 与所有素材目录（`public/assets/**` 全局 + `public/designs/<项目>/assets/**` 项目私有）会被服务端扫描成清单，渲染成左侧项目树 + 首页目录。
 
 - 新增文件放对目录即可出现在目录里，**不要手工维护任何索引文件**。
 - 文件名以 `_` 开头的（如 `_template.svg`）和 `_` 开头的目录被视为模板/草稿/私有目录，不进目录、不参与校验。
@@ -69,10 +69,12 @@ SVG 没有 `button`、`panel`、`progress` 这些元素，所以分两步走：
 ```
 public/designs/<项目>/project.json      项目元信息：{ name, description, createdAt }
 public/designs/<项目>/<分类>/<稿>.svg   设计稿，分类可省略（省了算「未分类」）
-public/assets/                          全局素材，所有项目共享
+public/designs/<项目>/assets/           项目私有素材库，按用途分子目录
+public/assets/                          全局素材库，跨项目共享
 ```
 
 - 项目 = `public/designs/` 下的一级目录，目录名即 `?project=` 参数。允许中文，但必须是单层、不含 `\ / : * ? " < > |`、不以 `.` `_` 开头、不超过 40 字符。
+- 项目内的 `assets/` 目录被识别为**素材库**，里面的文件不算设计稿；新建项目时会自动创建。
 - `project.json` 缺省时项目名回退为目录名——不阻断目录页，但新建项目时一定会写。
 - 新建方式三种，效果相同：抽屉里「＋ 新建」/ `POST /api/projects` / 手工 `mkdir` + 写 `project.json`。
 
@@ -90,8 +92,8 @@ public/assets/                          全局素材，所有项目共享
 svg-test/
 ├── AGENTS.md                  ← 你正在读的约定
 ├── public/                    ← 直接被浏览器访问的静态根
-│   ├── index.html             目录页（项目树 + 卡片 + 素材）
-│   ├── viewer.html            单稿查看器
+│   ├── index.html             工作台单页（目录视图 + 查看器视图，局部切换）
+│   ├── viewer.html            旧链接兼容：跳转到 /?file=…
 │   ├── favicon.svg
 │   ├── styles/app.css         全站样式
 │   ├── js/                    ⚠️ 编译产物（tsc 生成），不要手改
@@ -99,20 +101,24 @@ svg-test/
 │   │   ├── _template.svg      模板：复制它起手（不在任何项目内，故不进目录）
 │   │   └── echoes-of-the-abyss/
 │   │       ├── project.json   { name: "深渊回响", … }
+│   │       ├── assets/ui/     该项目私有素材
 │   │       ├── screens/main-menu.svg
-│   │       └── hud/battle-hud.svg
-│   └── assets/                ← 素材，按用途分子目录（ui/ icons/ textures/ audio/）
+│   │       ├── hud/battle-hud.svg
+│   │       ├── keyart/main-visual.svg
+│   │       ├── environments/abyss-rift.svg
+│   │       └── characters/abyss-stalker.svg
+│   └── assets/                ← 全局素材库，跨项目共享（按用途分子目录）
 ├── src/
 │   ├── shared/types.ts        前后端共用类型
 │   ├── tooling/
 │   │   ├── svgScan.ts         极简 SVG 扫描器（标签/属性/层级/行号）
 │   │   ├── svgRules.ts        角色词表 + 校验规则（唯一真源）
-│   │   ├── manifest.ts        扫描项目/稿/素材 → 清单、单稿详情、新建项目
+│   │   ├── manifest.ts        扫描项目/稿/素材（全局 + 项目私有）→ 清单、单稿详情、新建项目
 │   │   └── lint.ts            npm run check 的 CLI
 │   ├── server/index.ts        静态服务 + /api/manifest + /api/design + POST /api/projects
 │   └── client/
-│       ├── catalog.ts         目录页
-│       ├── viewer.ts          查看器（稿子画在 Shadow DOM 里）
+│       ├── catalog.ts         工作台路由 + 目录视图（单页，局部刷新）
+│       ├── viewerView.ts      查看器视图控制器（稿子画在 Shadow DOM 里）
 │       ├── drawer.ts          左侧抽屉：项目树 + 新建项目
 │       └── dom.ts             浏览器端小工具
 ├── tsconfig.server.json       src/{server,tooling,shared} → dist/
@@ -175,6 +181,11 @@ PORT=8080 npm run dev      # 换端口
 | `minimap` | 小地图 | `<g>` |
 | `sprite` | 角色/怪物贴图 | `<image>` |
 | `character` | 角色整体（含挂点） | `<g>` |
+| `keyart` | 主视觉 / 定调图整幅构图 | `<g>` |
+| `environment` | 场景概念整体（内部按前/中/后景分 `layer`） | `<g>` |
+| `prop` | 道具 / 载具整体 | `<g>` |
+| `moodboard` | 风格板 / 情绪板容器 | `<g>` |
+| `swatch` | 色卡，`data-value` 存色值（如 `#1B2A4A`） | `<rect>` / `<g>` |
 | `icon` | 图标 | `<symbol>` / `<use>` |
 | `text` | 大段文字块 | `<text>` |
 | `label` | 小标签 / 状态标记 | `<g>` / `<text>` |
@@ -196,7 +207,7 @@ PORT=8080 npm run dev      # 换端口
 | `data-role` | 任意 | 见 6.2 词表 |
 | `data-action` | 可交互容器，或其后代 | 动作标识，kebab-case，与代码里的事件名一致，如 `open-season` |
 | `data-state` | 可交互容器 | `default` / `selected` / `pressed` / `ready` / `cooling` / `disabled` |
-| `data-value` `data-max` | `bar` / `gauge` / `slot` | 真实数值，程序回填用（如 `data-value="0.72" data-max="1"`） |
+| `data-value` `data-max` | `bar` / `gauge` / `slot` / `swatch` | 真实数值或色值，程序回填用（如 `data-value="0.72" data-max="1"`、`data-value="#1B2A4A"`） |
 | `data-layer` | 根级图层 | 设计侧图层名（中文可），不参与校验但便于对齐 |
 | `aria-label` | 可交互容器、`label` | 人类可读名称，查看器标注清单直接显示它 |
 | `role` `tabindex` | 可交互容器 | 可访问性，按钮写 `role="button" tabindex="0"` |
@@ -206,21 +217,30 @@ PORT=8080 npm run dev      # 换端口
 ### 6.4 命名
 
 - 文件：小写 + 连字符，`battle-hud.svg`、`season-pass.svg`。
-- 分类目录：`screens/`（整屏）、`hud/`、`popups/`、`components/`（可复用部件）。
+- 分类目录：`screens/`（整屏）、`hud/`、`popups/`、`components/`（可复用部件）、`keyart/`（定调图/风格板）、`environments/`（场景概念）、`characters/`（角色·怪物概念）、`props/`（道具·载具概念）。
 - `id`：稿内唯一，kebab-case，带稿别前缀（`hud-hp-fill`），避免多稿同页时冲突。
 - 稿内 CSS 类：加稿别前缀（`mm-`、`hud-`、`tpl-`）。查看器用 Shadow DOM 隔离，但导出后可能被内联，前缀能省掉一次事故。
 
 ### 6.5 素材引用
 
-设计稿引用 `public/assets/` 的素材，用**相对路径**，不用 base64 内联。注意层级：稿在 `designs/<项目>/<分类>/` 下，所以往上三层才到 `public/`：
+素材有两个位置，用**相对路径**引用，不用 base64 内联：
+
+| 位置 | 归属 | 从 `designs/<项目>/<分类>/稿.svg` 引用 |
+| --- | --- | --- |
+| `public/designs/<项目>/assets/` | 项目私有（默认选这里） | `../assets/…` |
+| `public/assets/` | 全局共享，跨项目复用 | `../../../assets/…` |
 
 ```svg
-<!-- designs/<项目>/<分类>/xxx.svg -->
+<!-- designs/<项目>/<分类>/xxx.svg：项目私有素材，往上一层 -->
+<image href="../assets/ui/hpbar-frame.svg" width="640" height="60"
+       data-role="frame" aria-label="血条外框" />
+
+<!-- 引用全局共享素材才需要往上三层 -->
 <image href="../../../assets/ui/panel-frame.svg" x="1320" y="288" width="320" height="480"
        data-role="frame" aria-label="赛季面板外框" />
 ```
 
-`npm run check` 会验证目标文件是否存在（SVG009）。能矢量的素材不要用位图。
+`npm run check` 会验证目标文件是否存在（SVG009）。能矢量的素材不要用位图。只被一个项目用的素材放项目 `assets/`，跨项目复用的才升到全局。
 
 ### 6.6 禁止清单
 
@@ -233,6 +253,16 @@ PORT=8080 npm run dev      # 换端口
 | emoji 当图标 | 各平台字形/尺寸不一致 | `<symbol>` + `<use>` |
 | 大段 `<path>` 表示文字 | 不可改字、不可搜索 | `<text>` |
 | 复制粘贴同一图形 | 改一处漏一处 | `<symbol>` + `<use>` |
+
+### 6.7 概念设计稿补充规范
+
+概念设计类（Key Art / Moodboard / 场景 / 角色 / 道具·载具）遵循 6.1 骨架与图层顺序，另有约定：
+
+- **分类目录**：`keyart/`（定调图、风格板）、`environments/`（场景概念）、`characters/`（角色·怪物概念）、`props/`（道具·载具概念）；`data-category` 与所在目录一致。
+- **角色选用**：主视觉整幅用 `keyart`；场景用 `environment`，内部按前 / 中 / 后景分 `layer`；角色沿用 `character`；道具 / 载具用 `prop`。
+- **Moodboard**：容器标 `moodboard`，内部每块色卡标 `swatch` 并把色值写进 `data-value`（如 `data-value="#1B2A4A"`），程序可据此提取配色清单；参考图块用 `frame` 包 `image`，素材进项目 `assets/`。
+- **无交互**：概念稿不使用交互角色与 `data-action`；需要标注观察点、设计要点时用 `label` + `<text>`。
+- **尺寸**：横版构图 1920×1080；竖版角色 / 道具三视图可用 1080×1920；`viewBox` 与 `width`/`height` 保持一致。
 
 ## 7. 校验规则（`npm run check`）
 
@@ -274,7 +304,7 @@ cp public/designs/_template.svg "public/designs/<项目>/screens/my-screen.svg"
 1. 改 `data-category`（项目内分类，与所在目录一致）、`data-tags`、`<title>`、`<desc>`。
 2. 按 6.1 排图层，从底到顶：背景 → 内容 → HUD → 遮罩。
 3. 每个可点/可读的块补 `data-role` + `aria-label`，可点的再加 `data-action` / `data-state`。
-4. 数值条补 `data-value` / `data-max`；重复图形收进 `<symbol>`；引用素材记得三层 `../../../assets/`。
+4. 数值条补 `data-value` / `data-max`；重复图形收进 `<symbol>`；项目素材引用 `../assets/`，全局素材 `../../../assets/`（见 6.5）。
 5. `npm run check` 全绿；打开 `/` 确认项目树、卡片缩略图与查看器都正常。
 
 ## 9. 代码约定
@@ -296,6 +326,7 @@ cp public/designs/_template.svg "public/designs/<项目>/screens/my-screen.svg"
 - **`_` 前缀的文件与目录都不校验**（如 `_template.svg`、`_wip/`），所以模板写完记得复制成正式文件名再验证。
 - **项目目录名会进 URL**，允许中文但要保证单层：不允许 `/ \ : * ? " < > |`，不允许以 `.` `_` 开头。
 - 目录页的缩略图直接用 `<img src>` 渲染原稿，稿内引用外部图片在 `<img>` 模式下不会加载——所以素材引用只走查看器（内联渲染）验证。
+- **内联渲染时相对引用按页面 URL 解析，不是按稿子路径**：查看器挂载前已把 `href` 统一重写为「以稿子自身 URL 为基」的绝对地址（`viewerView.ts` 的 `resolveRelativeRefs`）。若新增别的内联渲染入口，必须做同样的重写，否则稿内 `../assets/…` 会指到站点根导致图片 404。
 - 抽屉的开合与折叠状态存在 `localStorage`（键前缀 `svg-test:`）；排查"树打不开/节点不展开"时先清这两个键。
 
 ## 11. AI 代理须知

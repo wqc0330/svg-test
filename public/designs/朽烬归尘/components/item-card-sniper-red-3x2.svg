@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1240" width="1536" height="1240"
+     data-category="components" data-tags="物品卡,狙击枪,红框,3x2,规格板,三态" data-version="0.1.0">
+  <title>物品卡 · 红框狙击枪</title>
+  <desc>栅格 3 列 × 2 行（180×123）的红框狙击枪卡规格：费用 6、横向宽窗承载长枪立绘、耐久 90%，是阵列里最宽的一档卡。</desc>
+
+  <defs>
+    <clipPath id="plate-crop"><rect x="0" y="0" width="1536" height="840" /></clipPath>
+  </defs>
+
+  <style>
+    svg text {
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      fill: #ded2bc;
+    }
+    .ic-title { font-size: 40px; font-weight: 700; letter-spacing: 4px; fill: #f0e2c4; }
+    .ic-sub { font-size: 17px; letter-spacing: 2px; fill: #9d8d75; }
+    .ic-h { font-size: 18px; letter-spacing: 4px; fill: #b39472; }
+    .ic-line { font-size: 20px; letter-spacing: 0.5px; fill: #c7b99f; }
+    .ic-meta { font-size: 13px; letter-spacing: 1px; fill: #8f8271; }
+  </style>
+
+  <g data-role="background" aria-label="稿件底板">
+    <rect x="0" y="0" width="1536" height="1240" fill="#0a0809" />
+  </g>
+
+  <g data-role="sprite" aria-label="物品卡 · 红框狙击枪卡面阵列：大卡与三态小卡" clip-path="url(#plate-crop)">
+    <image href="../assets/items/plates/plate-sniper-red-3x2.png" x="0" y="0" width="1536" height="1024"
+           preserveAspectRatio="none" />
+  </g>
+
+  <g data-role="text" aria-label="稿件标题">
+    <text x="56" y="66" class="ic-title">物品卡 · 红框狙击枪</text>
+    <text x="56" y="100" class="ic-sub">ITEM CARD · 3 × 2 栅格 · 稀有度 红</text>
+  </g>
+
+  <g data-role="panel" aria-label="规格与交互说明区">
+    <rect x="0" y="840" width="1536" height="400" fill="#0b0a0c" />
+    <path d="M0 840 H1536" stroke="#3a2c2f" stroke-width="1.5" />
+
+    <text x="56" y="902" class="ic-h">规格 SPEC</text>
+    <text x="56" y="946" class="ic-line">1 费用角标：左上，0–9，Impact 风格，卡号 6</text>
+    <text x="56" y="990" class="ic-line">2 物品窗口：横向宽窗，长枪斜置填满窗口</text>
+    <text x="56" y="1034" class="ic-line">3 耐久条：底部圆角槽，暗红底 + 亮红填充 90%</text>
+    <text x="56" y="1078" class="ic-line">4 外框：180 × 123 = 阵列 3 列 × 2 行</text>
+
+    <path d="M780 880 V1090" stroke="#2a2023" stroke-width="1.5" />
+    <text x="824" y="902" class="ic-h">交互 INTERACTION</text>
+    <text x="824" y="946" class="ic-line">可交互：data-role="item" + data-action="inspect-item"</text>
+    <text x="824" y="990" class="ic-line">宽卡：窗口横向加宽，立绘不拉伸只重构图</text>
+    <text x="824" y="1034" class="ic-line">落格：宽 3 格、高 2 格，坐标取左上格</text>
+
+    <path d="M56 1140 H1480" stroke="#221a1c" stroke-width="1.5" />
+  </g>
+
+  <g data-role="label" aria-label="页脚元信息">
+    <text x="56" y="1188" class="ic-meta">朽烬归尘 · components · v0.1.0 · 栅格 3 列 × 2 行 · 卡面 180 × 123</text>
+    <text x="1480" y="1188" class="ic-meta" text-anchor="end">卡面为图生图输出 · 文字层手工叠字</text>
+  </g>
+</svg>

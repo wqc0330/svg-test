@@ -91,7 +91,7 @@
 
   <!-- 一、场景底：这张稿只交付覆盖层，场景压暗当背景 -->
   <g data-role="background" aria-label="场景底">
-    <image href="../../../assets/backgrounds/arena-dusk-courtyard.png" x="0" y="0" width="2048" height="1152"
+    <image href="../assets/backgrounds/arena-dusk-courtyard.png" x="0" y="0" width="2048" height="1152"
            preserveAspectRatio="xMidYMid slice" data-role="frame" aria-label="暮色庭院原画" opacity="0.55" />
     <rect width="2048" height="1152" fill="url(#hb-scrim)" />
   </g>
@@ -121,7 +121,7 @@
   <g data-role="hud" aria-label="对手血脉">
     <g data-role="bar" data-value="72" data-max="160" data-side="opponent" aria-label="灰烬教长 血脉 72/160">
       <g transform="translate(704 76)">
-        <image href="../../../assets/ui/hpbar-frame.svg" width="640" height="60" />
+        <image href="../assets/ui/hpbar-frame.svg" width="640" height="60" />
         <rect x="12" y="12" width="277" height="36" fill="url(#hb-hp)" />
         <rect x="12" y="12" width="277" height="14" fill="url(#hb-gloss)" />
         <text x="26" y="41" class="hb-name">灰烬教长</text>
@@ -135,7 +135,7 @@
   <g data-role="hud" aria-label="己方血脉">
     <g data-role="bar" data-value="160" data-max="160" data-side="player" aria-label="无名守灰者 血脉 160/160">
       <g transform="translate(704 1032)">
-        <image href="../../../assets/ui/hpbar-frame.svg" width="640" height="60" />
+        <image href="../assets/ui/hpbar-frame.svg" width="640" height="60" />
         <rect x="12" y="12" width="616" height="36" fill="url(#hb-hp)" />
         <rect x="12" y="12" width="616" height="14" fill="url(#hb-gloss)" />
         <text x="26" y="41" class="hb-name">无名守灰者</text>
@@ -162,11 +162,11 @@
   <!-- 六、快捷入口 -->
   <g data-role="hud" aria-label="快捷入口">
     <g data-role="button" data-action="open-satchel" data-state="default" role="button" tabindex="0" aria-label="打开行囊">
-      <image href="../../../assets/ui/button-mug.png" x="515" y="1062" width="110" height="76"
+      <image href="../assets/ui/button-mug.png" x="515" y="1062" width="110" height="76"
              data-role="frame" aria-label="行囊按钮底板" />
     </g>
     <g data-role="button" data-action="open-record" data-state="default" role="button" tabindex="0" aria-label="查看战录">
-      <image href="../../../assets/ui/button-crest.png" x="1426" y="1061" width="111" height="77"
+      <image href="../assets/ui/button-crest.png" x="1426" y="1061" width="111" height="77"
              data-role="frame" aria-label="战录按钮底板" />
     </g>
   </g>

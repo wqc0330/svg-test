@@ -72,7 +72,7 @@
 
   <!-- 一、战场压黑 -->
   <g data-role="background" aria-label="战场底">
-    <image href="../../../assets/backgrounds/arena-dusk-courtyard.png" x="0" y="0" width="2048" height="1152"
+    <image href="../assets/backgrounds/arena-dusk-courtyard.png" x="0" y="0" width="2048" height="1152"
            preserveAspectRatio="xMidYMid slice" data-role="frame" aria-label="暮色庭院原画" opacity="0.5" />
   </g>
 
@@ -111,8 +111,8 @@
 
     <g data-role="item" data-action="pick-reward" data-state="default" data-reward="curved-knife" role="group"
        aria-label="弯月刃 · 费用 3 · 耐久 90%">
-      <image href="../../../assets/ui/card-frame.svg" x="812" y="480" width="120" height="184" />
-      <image href="../../../assets/items/item-curved-knife.png" x="820" y="518" width="104" height="118"
+      <image href="../assets/ui/card-frame.svg" x="812" y="480" width="120" height="184" />
+      <image href="../assets/items/item-curved-knife.png" x="820" y="518" width="104" height="118"
              data-role="sprite" aria-label="弯月刃图" />
       <text x="834" y="511" class="pr-cost">3</text>
       <g data-role="bar" data-value="0.9" data-max="1" aria-label="耐久 90%">
@@ -122,8 +122,8 @@
 
     <g data-role="item" data-action="pick-reward" data-state="selected" data-reward="broadblade" role="group"
        aria-label="阔刃斧 · 费用 6 · 耐久 78%（已选）">
-      <image href="../../../assets/ui/card-frame.svg" x="964" y="480" width="120" height="184" />
-      <image href="../../../assets/items/item-broadblade.png" x="972" y="518" width="104" height="118"
+      <image href="../assets/ui/card-frame.svg" x="964" y="480" width="120" height="184" />
+      <image href="../assets/items/item-broadblade.png" x="972" y="518" width="104" height="118"
              data-role="sprite" aria-label="阔刃斧图" />
       <text x="986" y="511" class="pr-cost">6</text>
       <g data-role="bar" data-value="0.78" data-max="1" aria-label="耐久 78%">
@@ -134,8 +134,8 @@
 
     <g data-role="item" data-action="pick-reward" data-state="default" data-reward="rust-dagger" role="group"
        aria-label="锈蚀短刃 · 费用 6 · 耐久 62%">
-      <image href="../../../assets/ui/card-frame.svg" x="1116" y="480" width="120" height="184" />
-      <image href="../../../assets/items/item-rust-dagger.png" x="1124" y="518" width="104" height="118"
+      <image href="../assets/ui/card-frame.svg" x="1116" y="480" width="120" height="184" />
+      <image href="../assets/items/item-rust-dagger.png" x="1124" y="518" width="104" height="118"
              data-role="sprite" aria-label="锈蚀短刃图" />
       <text x="1138" y="511" class="pr-cost">6</text>
       <g data-role="bar" data-value="0.62" data-max="1" aria-label="耐久 62%">

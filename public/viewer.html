@@ -2,34 +2,14 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>设计稿查看器</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/styles/app.css" />
+    <title>跳转中…</title>
+    <script>
+      // viewer.html 已并入工作台单页（/?file=…），这里只做旧链接兼容跳转
+      var file = new URLSearchParams(location.search).get('file');
+      location.replace(file ? '/?file=' + encodeURIComponent(file) : '/');
+    </script>
   </head>
-  <body data-page="viewer">
-    <header class="topbar">
-      <a class="back" href="/"><span aria-hidden="true">←</span> 目录</a>
-      <div class="viewer-heading">
-        <h1 id="title">加载中…</h1>
-        <p id="subtitle" class="subtitle mono"></p>
-      </div>
-      <div class="toolbar">
-        <span class="zoom mono" id="zoom">—</span>
-        <button class="btn" id="zoom-fit" type="button">适应窗口</button>
-        <button class="btn" id="zoom-100" type="button">100%</button>
-        <button class="btn" id="toggle-grid" type="button">网格</button>
-        <a class="btn btn-ghost" id="raw" href="#" target="_blank" rel="noreferrer">原始 SVG ↗</a>
-      </div>
-    </header>
-
-    <main class="viewer-main">
-      <section class="canvas" id="canvas" aria-label="画布">
-        <div class="stage" id="stage"></div>
-      </section>
-      <aside class="inspector" id="inspector" aria-label="设计稿信息"></aside>
-    </main>
-
-    <script type="module" src="/js/client/viewer.js"></script>
+  <body>
+    <p>正在跳转到工作台…</p>
   </body>
 </html>

@@ -66,7 +66,7 @@
 
   <!-- 一、背景：废墟庭院原画 + 压角 -->
   <g data-role="background" aria-label="背景层">
-    <image href="../../../assets/backgrounds/arena-dusk-courtyard.png" x="0" y="0" width="2048" height="1152"
+    <image href="../assets/backgrounds/arena-dusk-courtyard.png" x="0" y="0" width="2048" height="1152"
            preserveAspectRatio="xMidYMid slice" data-role="frame" aria-label="暮色庭院原画" />
     <rect width="2048" height="1152" fill="url(#ba-vignette)" />
   </g>
@@ -76,11 +76,11 @@
     <ellipse cx="794" cy="716" rx="132" ry="26" fill="url(#ba-cast)" />
     <ellipse cx="1268" cy="716" rx="128" ry="26" fill="url(#ba-cast)" />
     <g data-role="character" data-side="player" aria-label="无名守灰者（己方，紫缨）">
-      <image href="../../../assets/characters/knight-ashfall.png" x="670" y="494" width="248" height="221"
+      <image href="../assets/characters/knight-ashfall.png" x="670" y="494" width="248" height="221"
              data-role="sprite" aria-label="守灰者立绘" />
     </g>
     <g data-role="character" data-side="opponent" aria-label="灰烬教长（对手，金缨）">
-      <image href="../../../assets/characters/knight-embercrest.png" x="1147" y="485" width="243" height="230"
+      <image href="../assets/characters/knight-embercrest.png" x="1147" y="485" width="243" height="230"
              data-role="sprite" aria-label="教长立绘" />
     </g>
   </g>
@@ -88,14 +88,14 @@
   <!-- 三、阵板层：上为对手、下为己方；阵板与卡框都是 assets/ui 下的独立素材 -->
   <g data-role="layer" aria-label="阵板层">
     <g data-role="panel" aria-label="对手装备阵列 10×3">
-      <image href="../../../assets/ui/board-10x3.svg" x="636" y="150" width="776" height="240"
+      <image href="../assets/ui/board-10x3.svg" x="636" y="150" width="776" height="240"
              data-role="frame" aria-label="阵板底板" />
     </g>
 
     <g data-role="item" data-action="inspect-item" data-state="default" data-slot="opponent-0" role="group"
        aria-label="阔刃斧 · 费用 6 · 耐久 78%">
-      <image href="../../../assets/ui/card-frame.svg" x="708" y="178" width="120" height="184" />
-      <image href="../../../assets/items/item-broadblade.png" x="716" y="216" width="104" height="118"
+      <image href="../assets/ui/card-frame.svg" x="708" y="178" width="120" height="184" />
+      <image href="../assets/items/item-broadblade.png" x="716" y="216" width="104" height="118"
              data-role="sprite" aria-label="阔刃斧图" />
       <text x="730" y="209" class="ba-cost">6</text>
       <g data-role="bar" data-value="0.78" data-max="1" aria-label="耐久 78%">
@@ -105,8 +105,8 @@
 
     <g data-role="item" data-action="inspect-item" data-state="default" data-slot="opponent-2" role="group"
        aria-label="弯月刃 · 费用 3 · 耐久 55%">
-      <image href="../../../assets/ui/card-frame.svg" x="836" y="178" width="120" height="184" />
-      <image href="../../../assets/items/item-curved-knife.png" x="844" y="216" width="104" height="118"
+      <image href="../assets/ui/card-frame.svg" x="836" y="178" width="120" height="184" />
+      <image href="../assets/items/item-curved-knife.png" x="844" y="216" width="104" height="118"
              data-role="sprite" aria-label="弯月刃图" />
       <text x="858" y="209" class="ba-cost">3</text>
       <g data-role="bar" data-value="0.55" data-max="1" aria-label="耐久 55%">
@@ -115,14 +115,14 @@
     </g>
 
     <g data-role="panel" aria-label="己方装备阵列 10×3">
-      <image href="../../../assets/ui/board-10x3.svg" x="636" y="736" width="776" height="240"
+      <image href="../assets/ui/board-10x3.svg" x="636" y="736" width="776" height="240"
              data-role="frame" aria-label="阵板底板" />
     </g>
 
     <g data-role="item" data-action="inspect-item" data-state="selected" data-slot="player-0" role="group"
        aria-label="锈蚀短刃 · 费用 6 · 耐久 62%">
-      <image href="../../../assets/ui/card-frame.svg" x="708" y="764" width="120" height="184" />
-      <image href="../../../assets/items/item-rust-dagger.png" x="716" y="802" width="104" height="118"
+      <image href="../assets/ui/card-frame.svg" x="708" y="764" width="120" height="184" />
+      <image href="../assets/items/item-rust-dagger.png" x="716" y="802" width="104" height="118"
              data-role="sprite" aria-label="锈蚀短刃图" />
       <text x="730" y="795" class="ba-cost">6</text>
       <g data-role="bar" data-value="0.62" data-max="1" aria-label="耐久 62%">
@@ -132,8 +132,8 @@
 
     <g data-role="item" data-action="inspect-item" data-state="default" data-slot="player-2" role="group"
        aria-label="弯月刃 · 费用 3 · 耐久 55%">
-      <image href="../../../assets/ui/card-frame.svg" x="836" y="764" width="120" height="184" />
-      <image href="../../../assets/items/item-curved-knife.png" x="844" y="802" width="104" height="118"
+      <image href="../assets/ui/card-frame.svg" x="836" y="764" width="120" height="184" />
+      <image href="../assets/items/item-curved-knife.png" x="844" y="802" width="104" height="118"
              data-role="sprite" aria-label="弯月刃图" />
       <text x="858" y="795" class="ba-cost">3</text>
       <g data-role="bar" data-value="0.55" data-max="1" aria-label="耐久 55%">
@@ -146,7 +146,7 @@
   <g data-role="hud" aria-label="灰烬血脉">
     <g data-role="bar" data-value="72" data-max="160" data-side="opponent" aria-label="灰烬教长 血脉 72/160">
       <g transform="translate(704 76)">
-        <image href="../../../assets/ui/hpbar-frame.svg" width="640" height="60" />
+        <image href="../assets/ui/hpbar-frame.svg" width="640" height="60" />
         <!-- 72/160 = 45%，616×0.45 ≈ 277 -->
         <rect x="12" y="12" width="277" height="36" fill="url(#ba-hp)" />
         <rect x="12" y="12" width="277" height="14" fill="url(#ba-gloss)" />
@@ -158,7 +158,7 @@
 
     <g data-role="bar" data-value="160" data-max="160" data-side="player" aria-label="无名守灰者 血脉 160/160">
       <g transform="translate(704 1032)">
-        <image href="../../../assets/ui/hpbar-frame.svg" width="640" height="60" />
+        <image href="../assets/ui/hpbar-frame.svg" width="640" height="60" />
         <!-- 满血：616 全宽 -->
         <rect x="12" y="12" width="616" height="36" fill="url(#ba-hp)" />
         <rect x="12" y="12" width="616" height="14" fill="url(#ba-gloss)" />
@@ -172,11 +172,11 @@
   <!-- 五、快捷按钮：底板是素材，按钮语义挂在外层 -->
   <g data-role="hud" aria-label="快捷按钮">
     <g data-role="button" data-action="open-satchel" data-state="default" role="button" tabindex="0" aria-label="打开行囊">
-      <image href="../../../assets/ui/button-mug.png" x="515" y="1062" width="110" height="76"
+      <image href="../assets/ui/button-mug.png" x="515" y="1062" width="110" height="76"
              data-role="frame" aria-label="行囊按钮底板" />
     </g>
     <g data-role="button" data-action="open-record" data-state="default" role="button" tabindex="0" aria-label="查看战录">
-      <image href="../../../assets/ui/button-crest.png" x="1426" y="1061" width="111" height="77"
+      <image href="../assets/ui/button-crest.png" x="1426" y="1061" width="111" height="77"
              data-role="frame" aria-label="战录按钮底板" />
     </g>
   </g>
