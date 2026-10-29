@@ -54,21 +54,21 @@
     <!-- 参考块一：场景概念 -->
     <g data-role="frame" aria-label="场景参考：深渊裂隙">
       <rect x="96" y="200" width="512" height="512" fill="#131c3a" stroke="#2b3a5c" stroke-width="2" />
-      <image href="../assets/keyart/mb-env-abyss-rift.png" x="100" y="204" width="504" height="504" />
+      <image href="../assets/raw/keyart/mb-env-abyss-rift.png" x="100" y="204" width="504" height="504" />
     </g>
     <text x="96" y="752" class="mb-cap">场景 · 深渊裂隙</text>
 
     <!-- 参考块二：角色概念 -->
     <g data-role="frame" aria-label="角色参考：深渊潜行者">
       <rect x="704" y="200" width="512" height="512" fill="#131c3a" stroke="#2b3a5c" stroke-width="2" />
-      <image href="../assets/keyart/mb-char-abyss-stalker.png" x="708" y="204" width="504" height="504" />
+      <image href="../assets/raw/keyart/mb-char-abyss-stalker.png" x="708" y="204" width="504" height="504" />
     </g>
     <text x="704" y="752" class="mb-cap">角色 · 深渊潜行者</text>
 
     <!-- 参考块三：道具概念 -->
     <g data-role="frame" aria-label="道具参考：回响之钟">
       <rect x="1312" y="200" width="512" height="512" fill="#131c3a" stroke="#2b3a5c" stroke-width="2" />
-      <image href="../assets/keyart/mb-prop-echo-bell.png" x="1316" y="204" width="504" height="504" />
+      <image href="../assets/raw/keyart/mb-prop-echo-bell.png" x="1316" y="204" width="504" height="504" />
     </g>
     <text x="1312" y="752" class="mb-cap">道具 · 回响之钟</text>
 

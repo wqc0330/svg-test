@@ -1,7 +1,16 @@
 import { existsSync, type Dirent } from 'node:fs';
-import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { extname, join, relative, resolve, sep } from 'node:path';
-import type { AssetEntry, DesignDetail, DesignEntry, Manifest, ProjectEntry } from '../shared/types.js';
+import type {
+  AssetEntry,
+  AssetStatus,
+  DesignDetail,
+  DesignEntry,
+  DocDetail,
+  DocEntry,
+  Manifest,
+  ProjectEntry,
+} from '../shared/types.js';
 import { lintSvg } from './svgRules.js';
 
 const ASSET_EXTS = new Set([
@@ -27,6 +36,43 @@ const toPosix = (p: string): string => p.split(sep).join('/');
 
 /** 项目素材库目录名：designs/<项目>/assets/，里面的文件是素材不是设计稿。 */
 const PROJECT_ASSETS_DIR = 'assets';
+
+/** 项目制作文档目录名：designs/<项目>/docs/，里面的 markdown 是文档不是设计稿。 */
+const PROJECT_DOCS_DIR = 'docs';
+
+/** 素材生命周期四层：assets/ 下一级目录名 → 状态。 */
+const ASSET_STATUS_DIRS = new Set(['ref', 'raw', 'scene', 'approved']);
+
+/** 仓库根目录下的文档模板（新建项目时复制成项目 docs/ 骨架）。 */
+const DOCS_TEMPLATE_DIR = 'docs';
+
+const DOC_TEMPLATE_FILES = [
+  '00-OVERVIEW.md',
+  '01-GAMEPLAY.md',
+  '02-SCENES.md',
+  '03-ASSETS.md',
+  '04-DECISIONS.md',
+  '05-SHIP.md',
+] as const;
+
+/** 由素材在 assets/ 下的相对路径推导生命周期状态。 */
+function assetStatus(rel: string): AssetStatus {
+  const top = rel.split('/')[0] ?? '';
+  return ASSET_STATUS_DIRS.has(top) ? (top as AssetStatus) : 'none';
+}
+
+/** 占位素材：文件名以 placeholder- 开头（约定见 AGENTS.md）。 */
+function isPlaceholder(name: string): boolean {
+  return /^placeholder-/i.test(name);
+}
+
+/** 从 markdown 原文提取一级标题作为文档名，失败返回 null。 */
+function firstHeading(md: string): string | null {
+  const match = /^#\s+(.+?)\s*$/m.exec(md);
+  if (!match) return null;
+  const name = match[1].replace(/[（(].*?[)）]\s*$/, '').trim();
+  return name.length > 0 ? name : null;
+}
 
 /** 通用扫描：root 下所有文件，返回相对 root 的 posix 路径。跳过 `_` 前缀与隐藏目录。 */
 async function walkRel(root: string, prefix = ''): Promise<string[]> {
@@ -125,6 +171,7 @@ export async function buildManifest(root: string): Promise<Manifest> {
 
   const projects: ProjectEntry[] = [];
   const designs: DesignEntry[] = [];
+  const docs: DocEntry[] = [];
   const assets: AssetEntry[] = [];
 
   for (const dirName of await listProjectDirs(designsDir)) {
@@ -132,16 +179,21 @@ export async function buildManifest(root: string): Promise<Manifest> {
     const meta = await readProjectMeta(projectDir);
     const project = { id: dirName, name: meta.name?.trim() || dirName };
 
-    // 项目内的 assets/ 是素材库，不算设计稿
+    // 项目内的 assets/（素材库）与 docs/（制作文档）不算设计稿
     const relFiles = await walkRel(projectDir);
-    const designFiles = relFiles
-      .filter((rel) => extname(rel).toLowerCase() === '.svg' && rel.split('/')[0] !== PROJECT_ASSETS_DIR);
+    const reserved = new Set([PROJECT_ASSETS_DIR, PROJECT_DOCS_DIR]);
+    const designFiles = relFiles.filter(
+      (rel) => extname(rel).toLowerCase() === '.svg' && !reserved.has(rel.split('/')[0] ?? ''),
+    );
     for (const rel of designFiles) {
       designs.push(await buildDesignEntry(root, join(projectDir, rel), project));
     }
 
     // 项目私有素材：designs/<项目>/assets/
     assets.push(...(await collectAssets(join(projectDir, PROJECT_ASSETS_DIR), dirName)));
+
+    // 项目制作文档：designs/<项目>/docs/
+    docs.push(...(await collectDocs(join(projectDir, PROJECT_DOCS_DIR), project)));
 
     const info = await stat(projectDir);
     projects.push({
@@ -153,6 +205,7 @@ export async function buildManifest(root: string): Promise<Manifest> {
       updatedAt: info.mtime.toISOString(),
       designCount: designFiles.length,
       assetCount: assets.filter((a) => a.scope === dirName).length,
+      docCount: docs.filter((d) => d.projectId === dirName).length,
     });
   }
 
@@ -163,10 +216,11 @@ export async function buildManifest(root: string): Promise<Manifest> {
       a.category.localeCompare(b.category, 'zh-CN') ||
       a.name.localeCompare(b.name, 'zh-CN'),
   );
+  docs.sort((a, b) => a.projectId.localeCompare(b.projectId) || a.id.localeCompare(b.id));
 
   assets.push(...(await collectAssets(assetsDir, 'global')));
 
-  return { generatedAt: new Date().toISOString(), projects, designs, assets };
+  return { generatedAt: new Date().toISOString(), projects, designs, docs, assets };
 }
 
 /** 扫描一个素材库目录（scope = 'global' 或项目 id），生成素材条目。目录不存在返回空。 */
@@ -189,9 +243,76 @@ async function collectAssets(dir: string, scope: string): Promise<AssetEntry[]> 
       path: `public/${urlBase}/${rel}`,
       updatedAt: info.mtime.toISOString(),
       scope,
+      status: assetStatus(rel),
+      placeholder: isPlaceholder(rel.replace(/^.*\//, '')),
     });
   }
   return entries.sort((a, b) => a.id.localeCompare(b.id));
+}
+
+/** 扫描项目制作文档目录 designs/<项目>/docs/，生成文档条目。目录不存在返回空。 */
+async function collectDocs(
+  dir: string,
+  project: { id: string; name: string },
+): Promise<DocEntry[]> {
+  const relFiles = await walkRel(dir);
+  const entries: DocEntry[] = [];
+  for (const rel of relFiles) {
+    if (extname(rel).toLowerCase() !== '.md') continue;
+    const abs = join(dir, rel);
+    const info = await stat(abs);
+    const id = rel.replace(/\.md$/i, '');
+    const top = rel.split('/')[0] ?? '';
+    const group: DocEntry['group'] = top === 'review' || top === 'specs' ? top : 'doc';
+    let name = rel.replace(/^.*\//, '').replace(/\.md$/i, '');
+    try {
+      const source = await readFile(abs, 'utf8');
+      name = firstHeading(source) ?? name;
+    } catch {
+      // 读不了就用文件名，不阻断清单
+    }
+    entries.push({
+      kind: 'doc',
+      id,
+      projectId: project.id,
+      projectName: project.name,
+      name,
+      group,
+      file: `/designs/${project.id}/${PROJECT_DOCS_DIR}/${rel}`,
+      path: `public/designs/${project.id}/${PROJECT_DOCS_DIR}/${rel}`,
+      updatedAt: info.mtime.toISOString(),
+    });
+  }
+  return entries;
+}
+
+/** 读取项目制作文档详情（文档视图用）。file 可传 public/designs/... 或 designs/...。 */
+export async function buildDocDetail(root: string, relPath: string): Promise<DocDetail | null> {
+  const designsDir = resolve(root, 'public', 'designs');
+  const normalized = relPath.replace(/^\/+/, '').replace(/^public\//, '');
+  const absolute = resolve(root, 'public', normalized);
+  // 只允许读某个项目 docs/ 目录内的 markdown，防目录穿越
+  if (!absolute.startsWith(designsDir + sep) && absolute !== designsDir) return null;
+  const relFromDesigns = toPosix(relative(designsDir, absolute));
+  const projectId = relFromDesigns.split('/')[0];
+  const withinDocs = relFromDesigns.startsWith(`${projectId}/${PROJECT_DOCS_DIR}/`);
+  if (!projectId || projectId === relFromDesigns || !withinDocs) return null;
+  if (!/\.md$/i.test(absolute) || !existsSync(absolute)) return null;
+
+  const meta = await readProjectMeta(join(designsDir, projectId));
+  let content = '';
+  try {
+    content = await readFile(absolute, 'utf8');
+  } catch {
+    return null;
+  }
+  return {
+    path: `public/${normalized.replace(/\\/g, '/')}`,
+    projectId,
+    projectName: meta.name?.trim() || projectId,
+    name: firstHeading(content) ?? absolute.replace(/^.*\//, '').replace(/\.md$/i, ''),
+    content,
+  };
 }
 
 /** 读取单张设计稿详情（查看器用）。file 可传 public/designs/... 或 designs/...。 */
@@ -239,7 +360,7 @@ export type CreateProjectResult =
   | { ok: true; project: ProjectEntry }
   | { ok: false; status: number; message: string };
 
-/** 建 public/designs/<id>/ + project.json。不覆盖已存在的目录。 */
+/** 建 public/designs/<id>/ + project.json + 素材四层 + 文档骨架。不覆盖已存在的目录。 */
 export async function createProject(root: string, name: string, slug: string): Promise<CreateProjectResult> {
   const cleanName = name.trim();
   const cleanId = (slug.trim() || cleanName).replace(/\s+/g, '-');
@@ -254,12 +375,16 @@ export async function createProject(root: string, name: string, slug: string): P
 
   await mkdir(projectDir, { recursive: true });
   await mkdir(join(projectDir, PROJECT_ASSETS_DIR), { recursive: true });
+  for (const layer of ASSET_STATUS_DIRS) {
+    await mkdir(join(projectDir, PROJECT_ASSETS_DIR, layer), { recursive: true });
+  }
   const createdAt = new Date().toISOString();
   await writeFile(
     join(projectDir, PROJECT_FILE),
     `${JSON.stringify({ name: cleanName, description: '', createdAt }, null, 2)}\n`,
     'utf8',
   );
+  await seedProjectDocs(root, projectDir, cleanName);
 
   const info = await stat(projectDir);
   return {
@@ -273,6 +398,42 @@ export async function createProject(root: string, name: string, slug: string): P
       updatedAt: info.mtime.toISOString(),
       designCount: 0,
       assetCount: 0,
+      docCount: 0,
     },
   };
+}
+
+/** 把根目录 docs/ 模板复制成项目文档骨架；模板缺失时至少给一份 00-OVERVIEW。 */
+async function seedProjectDocs(root: string, projectDir: string, projectName: string): Promise<void> {
+  const docsDir = join(projectDir, PROJECT_DOCS_DIR);
+  const templateDir = join(root, DOCS_TEMPLATE_DIR);
+  await mkdir(join(docsDir, 'review'), { recursive: true });
+  await mkdir(join(docsDir, 'specs'), { recursive: true });
+  for (const file of DOC_TEMPLATE_FILES) {
+    try {
+      await copyFile(join(templateDir, file), join(docsDir, file));
+    } catch {
+      // 模板缺失不阻断建项目，骨架文件由下面的 OVERVIEW 兜底
+    }
+  }
+  try {
+    await copyFile(join(templateDir, 'review', '_TEMPLATE.md'), join(docsDir, 'review', '_TEMPLATE.md'));
+    await copyFile(join(templateDir, 'specs', '_TEMPLATE.md'), join(docsDir, 'specs', '_TEMPLATE.md'));
+  } catch {
+    // 同上
+  }
+  const overview = [
+    `# OVERVIEW · ${projectName}`,
+    '',
+    '> 项目唯一入口。先看「当前制作单」，再打开对应场景卡；不必通读全部文档。',
+    '> 模板说明见仓库根 docs/00-OVERVIEW.md，按本项目情况逐项填写。',
+    '',
+    '| 项 | 内容 |',
+    '|---|---|',
+    `| 项目 | ${projectName} |`,
+    '| 当前场景 ID | （待定） |',
+    '| 本轮明确不做 | |',
+    '',
+  ].join('\n');
+  await writeFile(join(docsDir, '00-OVERVIEW.md'), `${overview}\n`, 'utf8');
 }

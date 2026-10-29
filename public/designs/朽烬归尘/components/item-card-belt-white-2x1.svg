@@ -24,7 +24,7 @@
   </g>
 
   <g data-role="sprite" aria-label="物品卡 · 白框腰带卡面阵列：大卡与三态小卡" clip-path="url(#plate-crop)">
-    <image href="../assets/items/plates/plate-belt-white-2x1.png" x="0" y="0" width="1536" height="1024"
+    <image href="../assets/raw/items/plates/plate-belt-white-2x1.png" x="0" y="0" width="1536" height="1024"
            preserveAspectRatio="none" />
   </g>
 

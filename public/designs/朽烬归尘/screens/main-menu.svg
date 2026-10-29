@@ -89,7 +89,7 @@
 
   <!-- 一、背景层：城门夜景，压一层上下渐晕把注意力收向中央 -->
   <g data-role="background" aria-label="背景层">
-    <image href="../assets/backgrounds/castle-night-gate.png" x="0" y="0" width="2048" height="1152"
+    <image href="../assets/raw/backgrounds/castle-night-gate.png" x="0" y="0" width="2048" height="1152"
            data-role="sprite" aria-label="夜雨后的城门与城墙" />
     <rect x="0" y="0" width="2048" height="1152" fill="url(#mm-vignette)" />
   </g>
@@ -97,21 +97,21 @@
   <!-- 二、装饰层：火把在前，压住左侧骑士的肩甲，给画面一个光源 -->
   <g data-role="decoration" aria-label="火把与光晕">
     <circle cx="556" cy="470" r="190" fill="url(#mm-torchglow)" />
-    <image href="../assets/decorations/torch-pillar.png" x="514" y="418" width="85" height="367"
+    <image href="../assets/raw/decorations/torch-pillar.png" x="514" y="418" width="85" height="367"
            data-role="sprite" aria-label="铁座火把" />
   </g>
 
   <!-- 三、角色层：左紫羽、右金羽，脚底基本齐平于画面下缘往上 55 -->
   <g data-role="layer" aria-label="角色层">
-    <image href="../assets/characters/knight-ashfall-full.png" x="179" y="540" width="479" height="559"
+    <image href="../assets/raw/characters/knight-ashfall-full.png" x="179" y="540" width="479" height="559"
            data-role="sprite" aria-label="紫羽守灰者立绘" />
-    <image href="../assets/characters/knight-embercrest-full.png" x="1377" y="513" width="516" height="582"
+    <image href="../assets/raw/characters/knight-embercrest-full.png" x="1377" y="513" width="516" height="582"
            data-role="sprite" aria-label="金羽守灰者立绘" />
   </g>
 
   <!-- 四、标题层：美术字，字面本身就是图形，保留位图 -->
   <g data-role="layer" aria-label="标题层">
-    <image href="../assets/titles/logo-ashfall.png" x="496" y="182" width="1055" height="293"
+    <image href="../assets/raw/titles/logo-ashfall.png" x="496" y="182" width="1055" height="293"
            data-role="sprite" aria-label="朽烬归尘 标题美术字" />
   </g>
 
@@ -119,7 +119,7 @@
   <g data-role="layer" aria-label="主菜单层">
     <g data-role="button" data-action="start-game" data-state="default" role="button" tabindex="0" aria-label="开始游戏">
       <g transform="translate(806 529)">
-        <image href="../assets/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
+        <image href="../assets/raw/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
                data-role="frame" aria-label="开始游戏按钮底板" />
         <text x="217.5" y="97" text-anchor="middle" class="mm-btn-shadow">开始游戏</text>
         <text x="217.5" y="95" text-anchor="middle" class="mm-btn">开始游戏</text>
@@ -130,7 +130,7 @@
 
     <g data-role="button" data-action="open-settings" data-state="default" role="button" tabindex="0" aria-label="设置">
       <g transform="translate(806 675)">
-        <image href="../assets/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
+        <image href="../assets/raw/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
                data-role="frame" aria-label="设置按钮底板" />
         <text x="217.5" y="97" text-anchor="middle" class="mm-btn-shadow">设置</text>
         <text x="217.5" y="95" text-anchor="middle" class="mm-btn">设置</text>
@@ -141,7 +141,7 @@
 
     <g data-role="button" data-action="open-inventory" data-state="default" role="button" tabindex="0" aria-label="仓库">
       <g transform="translate(806 821)">
-        <image href="../assets/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
+        <image href="../assets/raw/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
                data-role="frame" aria-label="仓库按钮底板" />
         <text x="217.5" y="97" text-anchor="middle" class="mm-btn-shadow">仓库</text>
         <text x="217.5" y="95" text-anchor="middle" class="mm-btn">仓库</text>
@@ -152,7 +152,7 @@
 
     <g data-role="button" data-action="quit-game" data-state="default" role="button" tabindex="0" aria-label="退出">
       <g transform="translate(806 967)">
-        <image href="../assets/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
+        <image href="../assets/raw/ui/menu-button-frame.svg" x="0" y="0" width="435" height="138"
                data-role="frame" aria-label="退出按钮底板" />
         <text x="217.5" y="97" text-anchor="middle" class="mm-btn-shadow">退出</text>
         <text x="217.5" y="95" text-anchor="middle" class="mm-btn">退出</text>

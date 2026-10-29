@@ -1,5 +1,6 @@
-import type { AssetEntry, DesignEntry, Manifest } from '../shared/types.js';
+import type { AssetEntry, AssetStatus, DesignEntry, Manifest } from '../shared/types.js';
 import { mountDrawer, type DrawerHandle } from './drawer.js';
+import { createDocView, type DocView } from './docView.js';
 import { createViewerView } from './viewerView.js';
 import { bytes, clear, el, fromNow, must } from './dom.js';
 
@@ -28,6 +29,15 @@ const viewer = createViewerView({
   fullBtn: must<HTMLButtonElement>('#zoom-100'),
 });
 
+const docView: DocView = createDocView({
+  main: must<HTMLElement>('#viewer-main'),
+  canvas: must<HTMLElement>('#canvas'),
+  meta: must<HTMLElement>('#inspector'),
+  title: must<HTMLElement>('#title'),
+  subtitle: must<HTMLElement>('#subtitle'),
+  raw: must<HTMLAnchorElement>('#raw'),
+});
+
 let manifest: Manifest | null = null;
 let activeProject: string | null = new URLSearchParams(location.search).get('project');
 let drawer: DrawerHandle | null = null;
@@ -42,18 +52,28 @@ function navigate(url: string, replace = false): void {
   void route();
 }
 
-/** 根据 URL 渲染对应视图：有 file 参数进查看器，否则进目录。 */
+/** 根据 URL 渲染对应视图：有 file 参数进查看器、doc 参数进文档视图，否则进目录。 */
 async function route(): Promise<void> {
   if (!manifest) return;
   const params = new URLSearchParams(location.search);
   const file = params.get('file');
+  const docPath = params.get('doc');
 
   if (file) {
     const design = manifest.designs.find((d) => d.path === file);
     activeProject = design?.projectId ?? null;
     setChrome('viewer');
     await viewer.open(file);
-    drawer?.update(manifest, { project: activeProject, design: file });
+    drawer?.update(manifest, { project: activeProject, design: file, doc: null });
+    return;
+  }
+
+  if (docPath) {
+    const doc = manifest.docs.find((d) => d.path === docPath);
+    activeProject = doc?.projectId ?? null;
+    setChrome('doc');
+    await docView.open(docPath);
+    drawer?.update(manifest, { project: activeProject, design: null, doc: docPath });
     return;
   }
 
@@ -61,19 +81,23 @@ async function route(): Promise<void> {
   activeProject = project && manifest.projects.some((p) => p.id === project) ? project : null;
   setChrome('catalog');
   render();
-  drawer?.update(manifest, { project: activeProject, design: null });
+  drawer?.update(manifest, { project: activeProject, design: null, doc: null });
 }
 
-function setChrome(view: 'catalog' | 'viewer'): void {
+function setChrome(view: 'catalog' | 'viewer' | 'doc'): void {
+  const isCatalog = view === 'catalog';
   const isViewer = view === 'viewer';
-  brand.hidden = isViewer;
-  backBtn.hidden = !isViewer;
-  viewerHeading.hidden = !isViewer;
+  const isDoc = view === 'doc';
+  brand.hidden = !isCatalog;
+  backBtn.hidden = isCatalog;
+  viewerHeading.hidden = isCatalog;
   viewerTools.hidden = !isViewer;
-  catalogTools.hidden = isViewer;
-  app.hidden = isViewer;
+  catalogTools.hidden = !isCatalog;
+  app.hidden = !isCatalog;
   if (isViewer) viewer.show();
   else viewer.hide();
+  if (isDoc) docView.show();
+  else docView.hide();
 }
 
 /* ------------------------------------------------------------------ */
@@ -126,11 +150,33 @@ function designCard(design: DesignEntry): HTMLElement {
   return card;
 }
 
+const ASSET_STATUS_META: Record<AssetStatus, { label: string; className: string; title: string }> = {
+  approved: { label: '已通过', className: 'badge badge-approved', title: '位于 assets/approved/，人工审核已通过' },
+  raw: { label: '待审', className: 'badge badge-raw', title: '位于 assets/raw/，原始产出未过审' },
+  ref: { label: '参考', className: 'badge badge-ref', title: '位于 assets/ref/，风格参考，不进正式稿' },
+  scene: { label: '场景图', className: 'badge badge-scene', title: '位于 assets/scene/，审核对照用' },
+  none: { label: '未分层', className: 'badge badge-none', title: '未按 ref/raw/scene/approved 分层，建议迁移' },
+};
+
+function statusBadge(asset: AssetEntry): HTMLElement | null {
+  if (asset.status === 'approved' && !asset.placeholder) return null;
+  const meta = ASSET_STATUS_META[asset.status];
+  const badges: HTMLElement[] = [];
+  if (asset.status !== 'approved') {
+    badges.push(el('span', { class: meta.className, title: meta.title, text: meta.label }));
+  }
+  if (asset.placeholder) {
+    badges.push(el('span', { class: 'badge badge-raw', title: '占位素材，不能过审、不能发版', text: '占位' }));
+  }
+  return badges.length > 0 ? badges[0] ?? null : null;
+}
+
 function assetRow(asset: AssetEntry): HTMLElement {
   return el('a', { class: 'asset', href: asset.file, target: '_blank', rel: 'noreferrer' }, [
     el('span', { class: 'asset-ext', text: asset.ext }),
     el('span', { class: 'asset-name', text: asset.name }),
     el('span', { class: 'asset-path mono', text: asset.path.replace('public/', '') }),
+    statusBadge(asset),
     el('span', { class: 'asset-size', text: bytes(asset.bytes) }),
   ]);
 }
@@ -281,12 +327,14 @@ async function boot(): Promise<void> {
       manifest,
       activeProject,
       activeDesignPath: null,
+      activeDocPath: null,
       onSelectProject: (projectId) => navigate(projectId ? `/?project=${encodeURIComponent(projectId)}` : '/'),
       onSelectDesign: (design) => navigate(`/?file=${encodeURIComponent(design.path)}`),
+      onSelectDoc: (doc) => navigate(`/?doc=${encodeURIComponent(doc.path)}`),
       onCreated: (next, projectId) => {
         manifest = next;
         navigate(`/?project=${encodeURIComponent(projectId)}`);
-        drawer?.update(next, { project: projectId, design: null });
+        drawer?.update(next, { project: projectId, design: null, doc: null });
       },
     });
     setChrome('catalog');

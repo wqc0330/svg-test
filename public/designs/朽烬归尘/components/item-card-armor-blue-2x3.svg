@@ -24,7 +24,7 @@
   </g>
 
   <g data-role="sprite" aria-label="物品卡 · 蓝框盔甲卡面阵列：大卡与三态小卡" clip-path="url(#plate-crop)">
-    <image href="../assets/items/plates/plate-armor-blue-2x3.png" x="0" y="0" width="1536" height="1024"
+    <image href="../assets/raw/items/plates/plate-armor-blue-2x3.png" x="0" y="0" width="1536" height="1024"
            preserveAspectRatio="none" />
   </g>
 

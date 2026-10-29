@@ -11,17 +11,18 @@
 设计稿不是"一张截图"，而是一份**可被程序读懂的结构文档**：命名清晰的图层、明确的语义标注、可回填的数值约定。因此：
 
 - 稿子要能被人看懂，也要能被 `npm run check` 检查、被查看器解析出标注清单。
-- 左侧抽屉是项目树（项目 → 分类 → 稿），可以直接在抽屉里**新建项目**；工作台是**单页应用**（`/`），点树、点卡片只做局部切换（`/?file=` 进查看器视图、`/?project=` 回目录），**不整页刷新**；`viewer.html` 仅作旧链接跳转兼容。
+- 左侧抽屉是项目树（项目 → 分类 → 稿 + 制作文档），可以直接在抽屉里**新建项目**；工作台是**单页应用**（`/`），点树、点卡片只做局部切换（`/?file=` 进查看器视图、`/?doc=` 进文档视图、`/?project=` 回目录），**不整页刷新**；`viewer.html` 仅作旧链接跳转兼容。
+- 每个项目带一套**制作文档**（玩法 / 场景卡 / 素材 / 决策 / 发版，模板在根目录 `docs/`），场景卡与设计稿通过 `data-scene-id`（SC-xxx）互相锚定；素材按 `ref / raw / scene / approved` 生命周期分层，**正式稿只认 approved**。
 
 ## 2. 三条铁律
 
 ### 铁律一：一切素材都能从目录点进去
 
-`public/designs/**/*.svg` 与所有素材目录（`public/assets/**` 全局 + `public/designs/<项目>/assets/**` 项目私有）会被服务端扫描成清单，渲染成左侧项目树 + 首页目录。
+`public/designs/**/*.svg`、各项目 `docs/**/*.md`（制作文档）与所有素材目录（`public/assets/**` 全局 + `public/designs/<项目>/assets/**` 项目私有）会被服务端扫描成清单，渲染成左侧项目树 + 首页目录。
 
 - 新增文件放对目录即可出现在目录里，**不要手工维护任何索引文件**。
 - 文件名以 `_` 开头的（如 `_template.svg`）和 `_` 开头的目录被视为模板/草稿/私有目录，不进目录、不参与校验。
-- 每个项目是 `public/designs/` 下的**一级目录**，项目里再分分类目录；直接放在项目根部的稿算「未分类」。
+- 每个项目是 `public/designs/` 下的**一级目录**，项目里再分分类目录；直接放在项目根部的稿算「未分类」。项目内 `assets/` 与 `docs/` 是保留目录名，里面的文件不算设计稿。
 - 导航只有两条路：左侧项目树、目录页 `/`。不要另建第二套入口。
 
 ### 铁律二：语义化标签优先，没有合适标签就用属性标注
@@ -69,12 +70,22 @@ SVG 没有 `button`、`panel`、`progress` 这些元素，所以分两步走：
 ```
 public/designs/<项目>/project.json      项目元信息：{ name, description, createdAt }
 public/designs/<项目>/<分类>/<稿>.svg   设计稿，分类可省略（省了算「未分类」）
-public/designs/<项目>/assets/           项目私有素材库，按用途分子目录
-public/assets/                          全局素材库，跨项目共享
+public/designs/<项目>/docs/             制作文档（六件套 + review/ + specs/，目录树里可见）
+public/designs/<项目>/assets/           项目私有素材库，按生命周期分四层
+public/assets/                          全局素材库，跨项目共享（分层规则相同）
 ```
 
+素材生命周期四层（照搬 game-docs 管线，**可用 = 机器检查过 + 人审过 + 进 approved**）：
+
+| 子目录 | 内容 | 规则 |
+| --- | --- | --- |
+| `assets/ref/` | 风格参考（anchor / ref-card 等） | 只读、只定调，不进正式稿引用 |
+| `assets/raw/` | 原始产出（按用途分子目录：backgrounds / characters / items / ui…） | 未审；正式稿引用 raw 视为待迁移状态 |
+| `assets/scene/` | 场景效果图、标注图、合成预览（`SC-xxx/` 分目录） | 服务审核对照 |
+| `assets/approved/` | 人工审核通过的素材 | **正式稿只认这里**；审核通过后从 raw 移入并同步改稿内引用 |
+
 - 项目 = `public/designs/` 下的一级目录，目录名即 `?project=` 参数。允许中文，但必须是单层、不含 `\ / : * ? " < > |`、不以 `.` `_` 开头、不超过 40 字符。
-- 项目内的 `assets/` 目录被识别为**素材库**，里面的文件不算设计稿；新建项目时会自动创建。
+- 项目内的 `assets/` 目录被识别为**素材库**、`docs/` 被识别为**制作文档**，里面的文件不算设计稿；新建项目时会自动创建素材四层与文档骨架。
 - `project.json` 缺省时项目名回退为目录名——不阻断目录页，但新建项目时一定会写。
 - 新建方式三种，效果相同：抽屉里「＋ 新建」/ `POST /api/projects` / 手工 `mkdir` + 写 `project.json`。
 
@@ -82,8 +93,9 @@ public/assets/                          全局素材库，跨项目共享
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
-| GET | `/api/manifest` | 全部项目 + 设计稿 + 素材（每次现扫磁盘） |
+| GET | `/api/manifest` | 全部项目 + 设计稿 + 制作文档 + 素材（带审核状态，每次现扫磁盘） |
 | GET | `/api/design?file=public/designs/<项目>/<分类>/<稿>.svg` | 单稿详情：元信息、语义标注清单、校验结果 |
+| GET | `/api/doc?file=public/designs/<项目>/docs/<文档>.md` | 项目制作文档 markdown 原文（仅限项目 docs/ 内） |
 | POST | `/api/projects` | 新建项目，body `{ name, slug? }`，成功 201；重名 409；目录名非法 400 |
 
 ### 4.3 目录树
@@ -91,8 +103,9 @@ public/assets/                          全局素材库，跨项目共享
 ```
 svg-test/
 ├── AGENTS.md                  ← 你正在读的约定
+├── docs/                      ← 制作文档空白模板（六件套 + review/specs；不进目录树）
 ├── public/                    ← 直接被浏览器访问的静态根
-│   ├── index.html             工作台单页（目录视图 + 查看器视图，局部切换）
+│   ├── index.html             工作台单页（目录 + 查看器 + 文档视图，局部切换）
 │   ├── viewer.html            旧链接兼容：跳转到 /?file=…
 │   ├── favicon.svg
 │   ├── styles/app.css         全站样式
@@ -101,25 +114,27 @@ svg-test/
 │   │   ├── _template.svg      模板：复制它起手（不在任何项目内，故不进目录）
 │   │   └── echoes-of-the-abyss/
 │   │       ├── project.json   { name: "深渊回响", … }
-│   │       ├── assets/ui/     该项目私有素材
+│   │       ├── docs/          制作文档实例（00-OVERVIEW…05-SHIP + review/ + specs/）
+│   │       ├── assets/        该项目私有素材：ref/ raw/ scene/ approved/ 四层
 │   │       ├── screens/main-menu.svg
 │   │       ├── hud/battle-hud.svg
 │   │       ├── keyart/main-visual.svg
 │   │       ├── environments/abyss-rift.svg
 │   │       └── characters/abyss-stalker.svg
-│   └── assets/                ← 全局素材库，跨项目共享（按用途分子目录）
+│   └── assets/                ← 全局素材库，跨项目共享（分层规则相同）
 ├── src/
 │   ├── shared/types.ts        前后端共用类型
 │   ├── tooling/
 │   │   ├── svgScan.ts         极简 SVG 扫描器（标签/属性/层级/行号）
 │   │   ├── svgRules.ts        角色词表 + 校验规则（唯一真源）
-│   │   ├── manifest.ts        扫描项目/稿/素材（全局 + 项目私有）→ 清单、单稿详情、新建项目
+│   │   ├── manifest.ts        扫描项目/稿/文档/素材（全局 + 项目私有）→ 清单、单稿详情、新建项目
 │   │   └── lint.ts            npm run check 的 CLI
-│   ├── server/index.ts        静态服务 + /api/manifest + /api/design + POST /api/projects
+│   ├── server/index.ts        静态服务 + /api/manifest + /api/design + /api/doc + POST /api/projects
 │   └── client/
 │       ├── catalog.ts         工作台路由 + 目录视图（单页，局部刷新）
 │       ├── viewerView.ts      查看器视图控制器（稿子画在 Shadow DOM 里）
-│       ├── drawer.ts          左侧抽屉：项目树 + 新建项目
+│       ├── docView.ts         文档视图控制器（渲染项目制作文档 markdown）
+│       ├── drawer.ts          左侧抽屉：项目树（稿 + 文档）+ 新建项目
 │       └── dom.ts             浏览器端小工具
 ├── tsconfig.server.json       src/{server,tooling,shared} → dist/
 └── tsconfig.client.json       src/{client,shared} → public/js/
@@ -223,24 +238,24 @@ PORT=8080 npm run dev      # 换端口
 
 ### 6.5 素材引用
 
-素材有两个位置，用**相对路径**引用，不用 base64 内联：
+素材有两个位置，用**相对路径**引用，不用 base64 内联。生命周期分层见 4.1：正式稿引用 `approved/`，制作中的稿允许暂时引用 `raw/`，过审后把素材移入 `approved/` 并同步改引用；`ref/` 只允许被风格板与概念稿引用：
 
 | 位置 | 归属 | 从 `designs/<项目>/<分类>/稿.svg` 引用 |
 | --- | --- | --- |
-| `public/designs/<项目>/assets/` | 项目私有（默认选这里） | `../assets/…` |
-| `public/assets/` | 全局共享，跨项目复用 | `../../../assets/…` |
+| `public/designs/<项目>/assets/<层>/` | 项目私有（默认选这里） | `../assets/<层>/…` |
+| `public/assets/<层>/` | 全局共享，跨项目复用 | `../../../assets/<层>/…` |
 
 ```svg
 <!-- designs/<项目>/<分类>/xxx.svg：项目私有素材，往上一层 -->
-<image href="../assets/ui/hpbar-frame.svg" width="640" height="60"
+<image href="../assets/approved/ui/hpbar-frame.svg" width="640" height="60"
        data-role="frame" aria-label="血条外框" />
 
 <!-- 引用全局共享素材才需要往上三层 -->
-<image href="../../../assets/ui/panel-frame.svg" x="1320" y="288" width="320" height="480"
+<image href="../../../assets/approved/ui/panel-frame.svg" x="1320" y="288" width="320" height="480"
        data-role="frame" aria-label="赛季面板外框" />
 ```
 
-`npm run check` 会验证目标文件是否存在（SVG009）。能矢量的素材不要用位图。只被一个项目用的素材放项目 `assets/`，跨项目复用的才升到全局。
+`npm run check` 会验证目标文件是否存在（SVG009）。能矢量的素材不要用位图。只被一个项目用的素材放项目 `assets/`，跨项目复用的才升到全局。缺素材先用文件名以 `placeholder-` 开头的占位图（工作台会标记），不擅自发明正式素材。
 
 ### 6.6 禁止清单
 
@@ -263,6 +278,26 @@ PORT=8080 npm run dev      # 换端口
 - **Moodboard**：容器标 `moodboard`，内部每块色卡标 `swatch` 并把色值写进 `data-value`（如 `data-value="#1B2A4A"`），程序可据此提取配色清单；参考图块用 `frame` 包 `image`，素材进项目 `assets/`。
 - **无交互**：概念稿不使用交互角色与 `data-action`；需要标注观察点、设计要点时用 `label` + `<text>`。
 - **尺寸**：横版构图 1920×1080；竖版角色 / 道具三视图可用 1080×1920；`viewBox` 与 `width`/`height` 保持一致。
+
+### 4.4 制作文档体系（源自 game-docs 管线）
+
+每个项目在 `docs/` 下维护六件套，**一份文档只回答一类问题**；空白模板在仓库根 `docs/`（不进目录树），项目实例进目录树、可在工作台阅读。
+
+| 文档 | 只回答什么 |
+| --- | --- |
+| `00-OVERVIEW.md` | 项目是什么、核心循环、**当前制作单**（唯一入口） |
+| `01-GAMEPLAY.md` | 玩法机制、关键状态、参数基线 |
+| `02-SCENES.md` | 场景索引 + 场景卡（画面、布局、交互、状态、素材清单） |
+| `03-ASSETS.md` | 素材生产卡、机器检查、人工审核、图量表 |
+| `04-DECISIONS.md` | 决策日志：已生效 + **已否决**（防止旧方案被重新提出） |
+| `05-SHIP.md` | 发版清单，10 条封顶 |
+
+- `docs/review/SC-xxx.md` 人工审核单：机器结果工具可填，**人工结论只能由审核人填写，AI 不得代签**。
+- `docs/specs/001-功能名.md` 复杂功能规格，按需建，普通交互写在场景卡。
+- **ID 契约**：场景 `SC-xxx`、机制 `M0x`、参数 `P0xx`、素材 `A0xx` 全线统一；场景稿根节点写 `data-scene-id="SC-xxx"` 与场景卡锚定（格式校验后续版本加入）。
+- 制作主线：**定玩法 → 画场景 → 拆素材 → 生产素材 → 拼回场景 → 人工审核 → 实现交互 → 实机验收**。占位素材可以验证玩法，但不能过审、不能发版。
+- 换风格参考（`ref/anchor`）、改内容边界，必须在 `04-DECISIONS.md` 记一行。
+
 
 ## 7. 校验规则（`npm run check`）
 
@@ -289,11 +324,13 @@ PORT=8080 npm run dev      # 换端口
 
 ## 8. 新增一份设计稿 / 一个项目
 
-新建项目：左侧抽屉「＋ 新建」填名称即可（目录名默认同项目名，可改）。命令行等价：
+新建项目：左侧抽屉「＋ 新建」填名称即可（目录名默认同项目名，可改；会自动创建 `assets/{ref,raw,scene,approved}` 四层与 `docs/` 文档骨架）。命令行等价：
 
 ```bash
 mkdir -p "public/designs/夜航/screens" && echo '{"name":"夜航","description":""}' > "public/designs/夜航/project.json"
 ```
+
+手工建项目时记得把根目录 `docs/` 模板复制成 `public/designs/<项目>/docs/` 实例并填写 00-OVERVIEW。
 
 新增稿子：
 

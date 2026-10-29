@@ -1,4 +1,4 @@
-import type { DesignEntry, Manifest } from '../shared/types.js';
+import type { DesignEntry, DocEntry, Manifest } from '../shared/types.js';
 import { el } from './dom.js';
 
 export interface DrawerOptions {
@@ -7,14 +7,17 @@ export interface DrawerOptions {
   activeProject?: string | null;
   /** 当前高亮的设计稿 path */
   activeDesignPath?: string | null;
+  /** 当前高亮的文档 path */
+  activeDocPath?: string | null;
   onSelectProject: (projectId: string | null) => void;
   onSelectDesign: (design: DesignEntry) => void;
+  onSelectDoc: (doc: DocEntry) => void;
   /** 新建项目成功后回调，参数是刷新后的清单 */
   onCreated?: (manifest: Manifest, projectId: string) => void;
 }
 
 export interface DrawerHandle {
-  update(manifest: Manifest, active?: { project?: string | null; design?: string | null }): void;
+  update(manifest: Manifest, active?: { project?: string | null; design?: string | null; doc?: string | null }): void;
   open(): void;
   close(): void;
   toggle(): void;
@@ -231,9 +234,19 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
 
   function selectDesign(design: DesignEntry): void {
     state.activeDesignPath = design.path;
+    state.activeDocPath = null;
     state.activeProject = design.projectId;
     render();
     state.onSelectDesign(design);
+    if (isNarrow()) setOpen(false);
+  }
+
+  function selectDoc(doc: DocEntry): void {
+    state.activeDocPath = doc.path;
+    state.activeDesignPath = null;
+    state.activeProject = doc.projectId;
+    render();
+    state.onSelectDoc(doc);
     if (isNarrow()) setOpen(false);
   }
 
@@ -241,7 +254,7 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
     depth: number,
     key: string,
     label: string,
-    meta: { count?: number; active?: boolean; kind: 'project' | 'category' | 'design' | 'all'; hasChildren: boolean },
+    meta: { count?: number; active?: boolean; kind: 'project' | 'category' | 'design' | 'doc' | 'all'; hasChildren: boolean },
     handlers: { onSelect: () => void; onToggle: () => void },
   ): HTMLElement {
     const isOpen = !collapsed.has(key);
@@ -318,6 +331,7 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
       const projectKey = `p:${project.id}`;
       const projectOpen = !collapsed.has(projectKey);
       const projectDesigns = designs.filter((d) => d.projectId === project.id);
+      const projectDocs = state.manifest.docs.filter((d) => d.projectId === project.id);
 
       const categories = new Map<string, DesignEntry[]>();
       for (const design of projectDesigns) {
@@ -334,8 +348,9 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
           {
             kind: 'project',
             count: project.designCount,
-            active: state.activeProject === project.id && !state.activeDesignPath,
-            hasChildren: projectDesigns.length > 0,
+            active:
+              state.activeProject === project.id && !state.activeDesignPath && !state.activeDocPath,
+            hasChildren: projectDesigns.length > 0 || projectDocs.length > 0,
           },
           {
             onSelect: () => selectProject(project.id),
@@ -346,7 +361,7 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
 
       if (!projectOpen) continue;
 
-      if (categories.size === 0) {
+      if (categories.size === 0 && projectDocs.length === 0) {
         treeBox.append(
           el('div', { class: 'tree-hint', style: '--depth:1' }, [el('span', { text: '暂无设计稿' })]),
         );
@@ -386,6 +401,41 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
           );
         }
       }
+
+      // 制作文档分组：docs/ 下的 markdown（含审核单与规格）
+      if (projectDocs.length > 0) {
+        const docsKey = `c:${project.id}/__docs__`;
+        const docsOpen = !collapsed.has(docsKey);
+        treeBox.append(
+          nodeRow(
+            1,
+            docsKey,
+            '制作文档',
+            { kind: 'category', count: projectDocs.length, active: false, hasChildren: true },
+            {
+              onSelect: () => toggleNode(docsKey),
+              onToggle: () => toggleNode(docsKey),
+            },
+          ),
+        );
+        if (docsOpen) {
+          for (const doc of projectDocs) {
+            const active = state.activeDocPath === doc.path;
+            treeBox.append(
+              nodeRow(
+                2,
+                `doc:${doc.path}`,
+                doc.name,
+                { kind: 'doc', active, hasChildren: false },
+                {
+                  onSelect: () => selectDoc(doc),
+                  onToggle: () => undefined,
+                },
+              ),
+            );
+          }
+        }
+      }
     }
 
     foot.textContent = `${projects.length} 个项目 · ${designs.length} 份设计稿`;
@@ -398,6 +448,7 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
       state.manifest = manifest;
       if (active && 'project' in active) state.activeProject = active.project ?? null;
       if (active && 'design' in active) state.activeDesignPath = active.design ?? null;
+      if (active && 'doc' in active) state.activeDocPath = active.doc ?? null;
       render();
     },
     open: () => setOpen(true),

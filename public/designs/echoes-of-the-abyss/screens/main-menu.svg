@@ -125,7 +125,7 @@
 
   <!-- 四、赛季面板：外框引用素材，整块可点击 -->
   <g data-role="button" data-action="open-season" data-state="default" role="button" tabindex="0" aria-label="查看第 3 赛季详情">
-    <image href="../assets/ui/panel-frame.svg" x="1320" y="288" width="320" height="480" />
+    <image href="../assets/raw/ui/panel-frame.svg" x="1320" y="288" width="320" height="480" />
     <text x="1352" y="352" class="mm-panel-kicker">第 3 赛季</text>
     <text x="1352" y="404" class="mm-panel-title">深渊回响</text>
     <line x1="1352" y1="428" x2="1608" y2="428" stroke="#2c3d63" stroke-width="1" />

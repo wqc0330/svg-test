@@ -2,7 +2,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildDesignDetail, buildManifest, createProject } from '../tooling/manifest.js';
+import { buildDesignDetail, buildDocDetail, buildManifest, createProject } from '../tooling/manifest.js';
 
 /** dist/server/index.js → 项目根目录 */
 const PROJECT_ROOT = resolve(fileURLToPath(new URL('../../', import.meta.url)));
@@ -147,6 +147,21 @@ async function handle(req: IncomingMessage, res: ServerResponse): Promise<void> 
       const detail = await buildDesignDetail(PROJECT_ROOT, rel);
       if (!detail) {
         sendJson(res, 404, { error: `找不到设计稿：${rel}` });
+        return;
+      }
+      sendJson(res, 200, detail);
+      return;
+    }
+
+    if (pathname === '/api/doc') {
+      const rel = url.searchParams.get('file');
+      if (!rel) {
+        sendJson(res, 400, { error: '缺少 file 参数，例如 /api/doc?file=public/designs/<项目>/docs/00-OVERVIEW.md' });
+        return;
+      }
+      const detail = await buildDocDetail(PROJECT_ROOT, rel);
+      if (!detail) {
+        sendJson(res, 404, { error: `找不到项目文档（仅限 designs/<项目>/docs/ 内的 .md）：${rel}` });
         return;
       }
       sendJson(res, 200, detail);

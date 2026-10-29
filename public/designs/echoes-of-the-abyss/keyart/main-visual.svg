@@ -49,7 +49,7 @@
 
   <!-- 二、主视觉：整幅概念图素材 -->
   <g data-role="keyart" aria-label="主视觉：沉没的钟楼" data-layer="keyart">
-    <image href="../assets/keyart/abyss-main-visual.png" x="0" y="0" width="1920" height="1080" />
+    <image href="../assets/raw/keyart/abyss-main-visual.png" x="0" y="0" width="1920" height="1080" />
   </g>
 
   <!-- 三、压暗层：为标题让出可读性 -->

@@ -81,8 +81,8 @@
 
   <!-- 一、大卡：2 倍放大，用来标注细节 -->
   <g data-role="layer" aria-label="大卡标注">
-    <image href="../assets/ui/card-frame.svg" x="40" y="110" width="240" height="368" />
-    <image href="../assets/items/item-rust-dagger.png" x="56" y="186" width="208" height="236"
+    <image href="../assets/raw/ui/card-frame.svg" x="40" y="110" width="240" height="368" />
+    <image href="../assets/raw/items/item-rust-dagger.png" x="56" y="186" width="208" height="236"
            data-role="sprite" aria-label="锈蚀短刃图" preserveAspectRatio="xMidYMid slice" />
     <text x="84" y="168" class="ic-cost">6</text>
     <rect x="62" y="434" width="180" height="12" rx="6" fill="#b3392f" />
@@ -119,8 +119,8 @@
     <text x="352" y="126" class="ic-h">三 态</text>
 
     <g data-role="item" data-action="place-item" data-state="default" role="group" aria-label="物品卡 默认态：可放置">
-      <image href="../assets/ui/card-frame.svg" x="352" y="144" width="120" height="184" />
-      <image href="../assets/items/item-curved-knife.png" x="360" y="182" width="104" height="118"
+      <image href="../assets/raw/ui/card-frame.svg" x="352" y="144" width="120" height="184" />
+      <image href="../assets/raw/items/item-curved-knife.png" x="360" y="182" width="104" height="118"
              data-role="sprite" aria-label="弯月刃图" />
       <text x="374" y="175" class="ic-cost ic-cost-s">3</text>
       <rect x="365" y="307" width="86" height="6" rx="3" fill="#b3392f" />
@@ -129,8 +129,8 @@
     <text x="412" y="372" class="ic-note">data-state="default"</text>
 
     <g data-role="item" data-action="place-item" data-state="selected" role="group" aria-label="物品卡 选中态">
-      <image href="../assets/ui/card-frame.svg" x="500" y="144" width="120" height="184" />
-      <image href="../assets/items/item-broadblade.png" x="508" y="182" width="104" height="118"
+      <image href="../assets/raw/ui/card-frame.svg" x="500" y="144" width="120" height="184" />
+      <image href="../assets/raw/items/item-broadblade.png" x="508" y="182" width="104" height="118"
              data-role="sprite" aria-label="阔刃斧图" />
       <text x="522" y="175" class="ic-cost ic-cost-s">6</text>
       <rect x="513" y="307" width="75" height="6" rx="3" fill="#b3392f" />
@@ -140,8 +140,8 @@
     <text x="560" y="372" class="ic-note">data-state="selected"</text>
 
     <g data-role="item" data-action="place-item" data-state="disabled" role="group" aria-label="物品卡 禁用态：费用不足">
-      <image href="../assets/ui/card-frame.svg" x="648" y="144" width="120" height="184" />
-      <image href="../assets/items/item-rust-dagger.png" x="656" y="182" width="104" height="118"
+      <image href="../assets/raw/ui/card-frame.svg" x="648" y="144" width="120" height="184" />
+      <image href="../assets/raw/items/item-rust-dagger.png" x="656" y="182" width="104" height="118"
              data-role="sprite" aria-label="锈蚀短刃图" />
       <text x="670" y="175" class="ic-cost ic-cost-s">6</text>
       <rect x="661" y="307" width="60" height="6" rx="3" fill="#b3392f" />
