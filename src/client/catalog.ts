@@ -2,11 +2,13 @@ import type { AssetEntry, AssetStatus, DesignEntry, Manifest } from '../shared/t
 import { mountDrawer, type DrawerHandle } from './drawer.js';
 import { createDocView, type DocView } from './docView.js';
 import { createViewerView } from './viewerView.js';
+import { createAssetView } from './assetView.js';
 import { bytes, clear, el, fromNow, must } from './dom.js';
 
 const app = must<HTMLElement>('#app');
 const stat = must<HTMLElement>('#stat');
 const search = must<HTMLInputElement>('#search');
+const viewerMain = must<HTMLElement>('#viewer-main');
 
 // —— 顶栏两套工具区 + 查看器主区 ——
 const brand = must<HTMLElement>('#brand');
@@ -29,6 +31,12 @@ const viewer = createViewerView({
   fullBtn: must<HTMLButtonElement>('#zoom-100'),
 });
 
+// 缩放/网格工具只属于稿子查看器，素材预览时隐藏（直接持有节点方便 setChrome 切换）
+const zoomChip = must<HTMLElement>('#zoom');
+const gridBtn = must<HTMLButtonElement>('#toggle-grid');
+const fitBtn = must<HTMLButtonElement>('#zoom-fit');
+const fullBtn = must<HTMLButtonElement>('#zoom-100');
+
 const docView: DocView = createDocView({
   main: must<HTMLElement>('#viewer-main'),
   canvas: must<HTMLElement>('#canvas'),
@@ -38,8 +46,18 @@ const docView: DocView = createDocView({
   raw: must<HTMLAnchorElement>('#raw'),
 });
 
+const assetView = createAssetView({
+  main: must<HTMLElement>('#viewer-main'),
+  canvas: must<HTMLElement>('#canvas'),
+  meta: must<HTMLElement>('#inspector'),
+  title: must<HTMLElement>('#title'),
+  subtitle: must<HTMLElement>('#subtitle'),
+  raw: must<HTMLAnchorElement>('#raw'),
+});
+
 let manifest: Manifest | null = null;
-let activeProject: string | null = new URLSearchParams(location.search).get('project');
+const initialParams = new URLSearchParams(location.search);
+let activeProject: string | null = initialParams.get('project');
 let drawer: DrawerHandle | null = null;
 
 /* ------------------------------------------------------------------ */
@@ -52,19 +70,20 @@ function navigate(url: string, replace = false): void {
   void route();
 }
 
-/** 根据 URL 渲染对应视图：有 file 参数进查看器、doc 参数进文档视图，否则进目录。 */
+/** 根据 URL 渲染对应视图：有 file 进查看器、doc 进文档视图、asset 进素材预览，否则进目录。 */
 async function route(): Promise<void> {
   if (!manifest) return;
   const params = new URLSearchParams(location.search);
   const file = params.get('file');
   const docPath = params.get('doc');
+  const assetPath = params.get('asset');
 
   if (file) {
     const design = manifest.designs.find((d) => d.path === file);
     activeProject = design?.projectId ?? null;
     setChrome('viewer');
     await viewer.open(file);
-    drawer?.update(manifest, { project: activeProject, design: file, doc: null });
+    drawer?.update(manifest, { project: activeProject, design: file, doc: null, asset: null });
     return;
   }
 
@@ -73,7 +92,16 @@ async function route(): Promise<void> {
     activeProject = doc?.projectId ?? null;
     setChrome('doc');
     await docView.open(docPath);
-    drawer?.update(manifest, { project: activeProject, design: null, doc: docPath });
+    drawer?.update(manifest, { project: activeProject, design: null, doc: docPath, asset: null });
+    return;
+  }
+
+  if (assetPath) {
+    const asset = manifest.assets.find((a) => a.path === assetPath) ?? null;
+    activeProject = asset && asset.scope !== 'global' ? asset.scope : null;
+    setChrome('asset');
+    await assetView.open(asset);
+    drawer?.update(manifest, { project: activeProject, design: null, doc: null, asset: assetPath });
     return;
   }
 
@@ -81,23 +109,37 @@ async function route(): Promise<void> {
   activeProject = project && manifest.projects.some((p) => p.id === project) ? project : null;
   setChrome('catalog');
   render();
-  drawer?.update(manifest, { project: activeProject, design: null, doc: null });
+  drawer?.update(manifest, { project: activeProject, design: null, doc: null, asset: null });
 }
 
-function setChrome(view: 'catalog' | 'viewer' | 'doc'): void {
+function setChrome(view: 'catalog' | 'viewer' | 'doc' | 'asset'): void {
   const isCatalog = view === 'catalog';
   const isViewer = view === 'viewer';
   const isDoc = view === 'doc';
+  const isAsset = view === 'asset';
   brand.hidden = !isCatalog;
   backBtn.hidden = isCatalog;
   viewerHeading.hidden = isCatalog;
-  viewerTools.hidden = !isViewer;
+  // 缩放工具只属于稿子查看器；素材预览保留「原始文件」链接即可
+  zoomChip.hidden = !isViewer;
+  gridBtn.hidden = !isViewer;
+  fitBtn.hidden = !isViewer;
+  fullBtn.hidden = !isViewer;
+  viewerTools.hidden = !(isViewer || isAsset);
   catalogTools.hidden = !isCatalog;
   app.hidden = !isCatalog;
+  // 共享主区（viewer/doc/asset 三个视图同住 viewer-main）：
+  // 总闸在这里统一开合，各视图的 show/hide 不许自己碰 main.hidden，否则互相打架
+  viewerMain.hidden = !(isViewer || isDoc || isAsset);
+  viewerMain.classList.toggle('is-doc', isDoc);
+  viewerMain.classList.toggle('is-asset', isAsset);
+  document.body.classList.toggle('is-viewing', !isCatalog);
   if (isViewer) viewer.show();
   else viewer.hide();
   if (isDoc) docView.show();
   else docView.hide();
+  if (isAsset) assetView.show();
+  else assetView.hide();
 }
 
 /* ------------------------------------------------------------------ */
@@ -172,13 +214,20 @@ function statusBadge(asset: AssetEntry): HTMLElement | null {
 }
 
 function assetRow(asset: AssetEntry): HTMLElement {
-  return el('a', { class: 'asset', href: asset.file, target: '_blank', rel: 'noreferrer' }, [
+  const row = el('a', { class: 'asset', href: `/?asset=${encodeURIComponent(asset.path)}` }, [
     el('span', { class: 'asset-ext', text: asset.ext }),
     el('span', { class: 'asset-name', text: asset.name }),
     el('span', { class: 'asset-path mono', text: asset.path.replace('public/', '') }),
     statusBadge(asset),
     el('span', { class: 'asset-size', text: bytes(asset.bytes) }),
   ]);
+  // 左键在工作台内预览（与目录卡一致）；Ctrl/Cmd/中键保持默认行为，新标签页打开
+  row.addEventListener('click', (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+    event.preventDefault();
+    navigate(`/?asset=${encodeURIComponent(asset.path)}`);
+  });
+  return row;
 }
 
 function section(title: string, count: number, children: HTMLElement[]): HTMLElement {
@@ -328,9 +377,11 @@ async function boot(): Promise<void> {
       activeProject,
       activeDesignPath: null,
       activeDocPath: null,
+      activeAssetPath: initialParams.get('asset'),
       onSelectProject: (projectId) => navigate(projectId ? `/?project=${encodeURIComponent(projectId)}` : '/'),
       onSelectDesign: (design) => navigate(`/?file=${encodeURIComponent(design.path)}`),
       onSelectDoc: (doc) => navigate(`/?doc=${encodeURIComponent(doc.path)}`),
+      onSelectAsset: (asset) => navigate(`/?asset=${encodeURIComponent(asset.path)}`),
       onCreated: (next, projectId) => {
         manifest = next;
         navigate(`/?project=${encodeURIComponent(projectId)}`);

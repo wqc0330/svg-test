@@ -17,15 +17,22 @@ export interface DrawerOptions {
   activeDesignPath?: string | null;
   /** 当前高亮的文档 path */
   activeDocPath?: string | null;
+  /** 当前高亮的素材 path */
+  activeAssetPath?: string | null;
   onSelectProject: (projectId: string | null) => void;
   onSelectDesign: (design: DesignEntry) => void;
   onSelectDoc: (doc: DocEntry) => void;
+  /** 选中素材：在工作台右侧预览，不新开标签页 */
+  onSelectAsset: (asset: AssetEntry) => void;
   /** 新建项目成功后回调，参数是刷新后的清单 */
   onCreated?: (manifest: Manifest, projectId: string) => void;
 }
 
 export interface DrawerHandle {
-  update(manifest: Manifest, active?: { project?: string | null; design?: string | null; doc?: string | null }): void;
+  update(
+    manifest: Manifest,
+    active?: { project?: string | null; design?: string | null; doc?: string | null; asset?: string | null },
+  ): void;
   open(): void;
   close(): void;
   toggle(): void;
@@ -258,9 +265,15 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
     if (isNarrow()) setOpen(false);
   }
 
-  /** 打开素材文件：与目录页素材卡一致，新标签页直接看原文件。 */
-  function openAsset(asset: AssetEntry): void {
-    window.open(asset.file, '_blank', 'noopener');
+  /** 选中素材：右侧画布内预览（路由 /?asset=…），不新开标签页。 */
+  function selectAsset(asset: AssetEntry): void {
+    state.activeAssetPath = asset.path;
+    state.activeDesignPath = null;
+    state.activeDocPath = null;
+    state.activeProject = asset.scope === 'global' ? null : asset.scope;
+    render();
+    state.onSelectAsset(asset);
+    if (isNarrow()) setOpen(false);
   }
 
   /** 按生命周期四层渲染素材节点（结构完全按 00-OVERVIEW：四层固定，层内子目录自由）。 */
@@ -283,14 +296,15 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
       );
       if (!layerOpen) continue;
       for (const asset of inLayer) {
+        const active = state.activeAssetPath === asset.path;
         treeBox.append(
           nodeRow(
             depth + 1,
             `a:${asset.id}`,
             asset.placeholder ? `${asset.name}（占位）` : asset.name,
-            { kind: 'asset', active: false, hasChildren: false },
+            { kind: 'asset', active, hasChildren: false },
             {
-              onSelect: () => openAsset(asset),
+              onSelect: () => selectAsset(asset),
               onToggle: () => undefined,
             },
           ),
@@ -539,6 +553,7 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
       if (active && 'project' in active) state.activeProject = active.project ?? null;
       if (active && 'design' in active) state.activeDesignPath = active.design ?? null;
       if (active && 'doc' in active) state.activeDocPath = active.doc ?? null;
+      if (active && 'asset' in active) state.activeAssetPath = active.asset ?? null;
       render();
     },
     open: () => setOpen(true),

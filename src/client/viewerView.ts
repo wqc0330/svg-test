@@ -30,8 +30,9 @@ const REL_URL = /^(?:[a-z][a-z0-9+.-]*:|[#/])/i;
  * 稿内相对引用（../assets/…）必须按**稿子自己的 URL**解析。
  * 查看器是把 SVG 内联进工作台文档渲染的，浏览器默认会按页面 URL（站点根）解析，
  * 相对路径就会指向错误的地址。这里在挂载前统一重写成绝对 URL。
+ * 素材预览内联 SVG 时同样需要，故导出共用。
  */
-function resolveRelativeRefs(root: Element, base: string): void {
+export function resolveRelativeRefs(root: Element, base: string): void {
   const XLINK = 'http://www.w3.org/1999/xlink';
   for (const node of root.querySelectorAll('*')) {
     const href = node.getAttribute('href');
@@ -179,6 +180,7 @@ export function createViewerView(els: ViewerElements): ViewerView {
       els.title.textContent = entry.name;
       els.subtitle.textContent = `${entry.path.replace('public/', '')} · ${entry.width}×${entry.height}`;
       els.raw.href = entry.file;
+      els.raw.textContent = '原始 SVG ↗';
 
       const sourceRes = await fetch(entry.file);
       if (!sourceRes.ok) throw new Error(`读取 SVG 失败：HTTP ${sourceRes.status}`);
@@ -206,14 +208,13 @@ export function createViewerView(els: ViewerElements): ViewerView {
   }
 
   function show(): void {
-    els.main.hidden = false;
-    document.body.classList.add('is-viewing');
+    // 防御：万一画布被别的视图清空过（stage 脱离 DOM），先接回来，否则 Shadow DOM 渲染进孤儿节点
+    if (!els.stage.isConnected) els.canvas.prepend(els.stage);
     layout();
   }
 
   function hide(): void {
-    els.main.hidden = true;
-    document.body.classList.remove('is-viewing');
+    // main 的显隐由 setChrome 统一管理（共享容器，视图各自 hidden 会互相打架）
   }
 
   els.gridBtn.addEventListener('click', () => {

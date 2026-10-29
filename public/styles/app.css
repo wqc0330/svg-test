@@ -1173,6 +1173,21 @@ body.is-viewing .page {
   display: none;
 }
 
+/* 素材预览（/?asset=）：与文档视图同理，藏起稿子舞台，用自己的宿主渲染 */
+.viewer-main.is-asset .stage {
+  display: none;
+}
+
+/* 素材宿主只在素材视图出现；其他视图下必须藏掉，否则一个空块会撑高画布 */
+.viewer-main:not(.is-asset) .asset-stage {
+  display: none;
+}
+
+.asset-stage {
+  width: 100%;
+  height: 100%;
+}
+
 .doc {
   max-width: 880px;
   margin: 0 auto;

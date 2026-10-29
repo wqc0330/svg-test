@@ -185,13 +185,28 @@ function renderBlocks(lines: string[], resolveUrl: UrlResolver): string {
 
 /** 文档视图：与 SVG 查看器共用 viewer-main 布局，markdown 渲染进画布区。 */
 export function createDocView(els: DocElements): DocView {
+  /**
+   * 文档内容挂在自己的容器里，绝不能 clear(els.canvas)——
+   * canvas 里还住着查看器的 #stage（Shadow DOM 宿主），清掉它，
+   * 之后再看任何稿子都会渲染进脱离 DOM 的孤儿节点，右侧永远空白。
+   */
+  let host: HTMLElement | null = null;
+
+  function ensureHost(): HTMLElement {
+    if (!host || !host.isConnected) {
+      host = el('div', { class: 'doc-host' });
+      els.canvas.append(host);
+    }
+    return host;
+  }
+
   function fail(message: string): void {
-    clear(els.canvas);
-    els.title.textContent = '加载失败';
-    els.subtitle.textContent = '';
-    els.canvas.append(
+    const box = ensureHost();
+    box.replaceChildren(
       el('div', { class: 'stage-error' }, [el('p', { text: message })]),
     );
+    els.title.textContent = '加载失败';
+    els.subtitle.textContent = '';
   }
 
   async function open(path: string): Promise<void> {
@@ -222,8 +237,8 @@ export function createDocView(els: DocElements): DocView {
       const article = el('article', { class: 'doc' });
       article.innerHTML = renderBlocks(detail.content.split(/\r?\n/), resolveUrl);
 
-      clear(els.canvas);
-      els.canvas.append(article);
+      const box = ensureHost();
+      box.replaceChildren(article);
       els.canvas.scrollTop = 0;
 
       // 元信息面板：项目 + 路径 + 更新时间，兼作文档信息栏
@@ -254,14 +269,11 @@ export function createDocView(els: DocElements): DocView {
   }
 
   function show(): void {
-    els.main.hidden = false;
-    els.main.classList.add('is-doc');
-    document.body.classList.add('is-viewing');
+    if (host) host.hidden = false;
   }
 
   function hide(): void {
-    els.main.hidden = true;
-    els.main.classList.remove('is-doc');
+    // main 的显隐与 is-doc 类由 setChrome 统一管理
   }
 
   return { open, show, hide };
