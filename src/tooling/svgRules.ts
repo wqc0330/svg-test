@@ -41,8 +41,11 @@ export type Role = (typeof ROLES)[number];
 /** 可交互角色：内部元素允许挂 data-action，且必须带 aria-label。 */
 export const INTERACTIVE_ROLES: readonly string[] = ['button', 'control', 'item', 'hotspot', 'slot'];
 
-/** 概念设计稿分类：允许引用 ref/ 与 raw/（风格定调与制作中参考），豁免生命周期引用检查。 */
+/** 概念设计稿分类：允许引用 ref/ 与 raw/（风格定调与制作中参考），豁免生命周期引用检查。固定四个，不得自建。 */
 export const CONCEPT_CATEGORIES: readonly string[] = ['keyart', 'environments', 'characters', 'props'];
+
+/** 场景稿分类：根节点必须写 data-scene-id 与场景卡锚定（缺失报 SVG016）。 */
+export const SCENE_CATEGORIES: readonly string[] = ['screens', 'hud', 'popups'];
 
 /** 场景 ID 格式：SC- 后至少三位数字（SC-001、SC-012…），与场景卡、审核单共用同一组 ID。 */
 export const SCENE_ID_RE = /^SC-\d{3,}$/;
@@ -143,10 +146,13 @@ export function lintSvg(source: string, options: LintOptions): LintResult {
     push('warn', 'SVG103', '根 <svg> 缺少 data-category，已回退为目录名', root.line);
   }
 
-  // —— 场景锚定 ——（可选属性：写了才校验格式，场景稿通过它与场景卡互相锚定）
+  // —— 场景锚定 ——（场景稿必填并与场景卡互相锚定；其他分类写了才校验格式）
   const sceneId = root.attrs['data-scene-id'];
   if (sceneId !== undefined && !SCENE_ID_RE.test(sceneId)) {
     push('error', 'SVG015', `data-scene-id="${sceneId}" 格式不对：应为 SC-xxx（SC 后至少三位数字），与场景卡一致`, root.line);
+  }
+  if (sceneId === undefined && SCENE_CATEGORIES.includes(category ?? '')) {
+    push('error', 'SVG016', `场景稿（${category}/）根节点缺少 data-scene-id：场景卡与审核单靠它锚定`, root.line);
   }
 
   // —— 图层语义 ——
@@ -221,8 +227,12 @@ export function lintSvg(source: string, options: LintOptions): LintResult {
         continue;
       }
       // 生命周期分级检查：ref/scene 引用报错（拿参考图/预览图当素材），raw 提示（未审，过审迁入 approved 后更新）
+      const inAssets = /\/assets\//.test(`/${clean.replace(/\\/g, '/')}`);
       const layer = /\/assets\/(ref|raw|scene|approved)\//.exec(`/${clean.replace(/\\/g, '/')}`)?.[1];
-      if (layer && !isConcept) {
+      if (inAssets && !layer) {
+        // 目录结构完全按 00-OVERVIEW：素材必须落在四层内，assets/ 根与自建层都不算
+        push('error', 'SVG017', `素材 ${href} 未放在 assets/ 生命周期四层（ref/raw/scene/approved）内`, tag.line);
+      } else if (layer && !isConcept) {
         if (/\/placeholder-[^/]*$/.test(clean)) {
           push('warn', 'SVG106', `引用了占位素材 ${href}：占位图不能过审、不能发版，记得替换`, tag.line);
         } else if (layer === 'ref') {

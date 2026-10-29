@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" data-category="hud" data-tags="战斗HUD,常驻层,1080p" data-version="0.1.0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" data-category="hud" data-tags="战斗HUD,常驻层,1080p" data-version="0.1.0" data-scene-id="SC-002">
   <title>战斗 HUD</title>
   <desc>战斗中的常驻信息层：左上角玩家血量与蓝量、顶部关卡目标与 Boss 血条、右上小地图、底部技能栏与 buff 计时、右下战斗播报。</desc>
 

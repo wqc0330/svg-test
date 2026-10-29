@@ -56,7 +56,7 @@ SVG 没有 `button`、`panel`、`progress` 这些元素，所以分两步走：
 | --- | --- |
 | 运行时 | Node ≥ 20.11（ESM，`"type": "module"`） |
 | 语言 | TypeScript 5，`strict: true` |
-| 服务端 | `node:http` 手写静态服务 + 3 个 JSON 接口（清单 / 单稿 / 新建项目） |
+| 服务端 | `node:http` 手写静态服务 + 4 个 JSON 接口（清单 / 单稿 / 文档 / 新建项目） |
 | 前端 | 原生 DOM + ES Module，编译到 `public/js/` |
 | 样式 | 手写 CSS（`public/styles/app.css`），无预处理器 |
 | 构建 | `tsc` 两个 project，无打包器 |
@@ -84,7 +84,10 @@ public/assets/                          全局素材库，跨项目共享（分�
 | `assets/scene/` | 场景效果图、标注图、合成预览（`SC-xxx/` 分目录） | 服务审核对照；正式稿引用报 SVG014 |
 | `assets/approved/` | 人工审核通过的素材 | **正式稿只认这里** |
 
-- **四层是固定约束，层内子目录自由**：按项目需要自建（如 `raw/components/`、`raw/ui/`、`approved/icons/`），不强制用途名单；设计稿分类目录同理（`screens/` `hud/` 是示例不是封闭清单）。素材状态由所在层推导，与子目录名无关。
+- **四层是固定约束，层内子目录自由**：按项目需要自建（如 `raw/components/`、`raw/ui/`、`approved/icons/`），不强制用途名单。素材状态由所在层推导，与子目录名无关。
+- **素材必须落在四层内**：`assets/` 根目录不放素材。未分层的素材清单里标 `none`，正式稿引用它报错（SVG017）。
+- **设计稿分类目录自由，但概念稿分类固定**：`screens/` `hud/` `popups/` `components/` 等可按需自建；概念稿（Key Art / 风格板 / 场景 / 角色 / 道具·载具概念）只允许放 `keyart/` `environments/` `characters/` `props/` 四个固定目录——校验器据此豁免生命周期引用检查，自建概念分类不豁免。
+- **两种「状态」不通用**：清单里素材的 `status`（`approved/raw/ref/scene/none`）是生命周期层，服务端按目录自动推导，不可手改；`03-ASSETS.md` 里的 `待做/制作中/待审/驳回/已通过` 是生产状态，由人维护。同名不同义，别混用。
 
 - 项目 = `public/designs/` 下的一级目录，目录名即 `?project=` 参数。允许中文，但必须是单层、不含 `\ / : * ? " < > |`、不以 `.` `_` 开头、不超过 40 字符。
 - 项目内的 `assets/` 目录被识别为**素材库**、`docs/` 被识别为**制作文档**，里面的文件不算设计稿；新建项目时会自动创建素材四层与文档骨架。
@@ -141,6 +144,25 @@ svg-test/
 ├── tsconfig.server.json       src/{server,tooling,shared} → dist/
 └── tsconfig.client.json       src/{client,shared} → public/js/
 ```
+
+### 4.4 制作文档体系（源自 game-docs 管线）
+
+每个项目在 `docs/` 下维护六件套，**一份文档只回答一类问题**；空白模板在仓库根 `docs/`（不进目录树），项目实例进目录树、可在工作台阅读。
+
+| 文档 | 只回答什么 |
+| --- | --- |
+| `00-OVERVIEW.md` | 项目是什么、核心循环、**当前制作单**（唯一入口） |
+| `01-GAMEPLAY.md` | 玩法机制、关键状态、参数基线 |
+| `02-SCENES.md` | 场景索引 + 场景卡（画面、布局、交互、状态、素材清单） |
+| `03-ASSETS.md` | 素材生产卡、机器检查、人工审核、图量表 |
+| `04-DECISIONS.md` | 决策日志：已生效 + **已否决**（防止旧方案被重新提出） |
+| `05-SHIP.md` | 发版清单，10 条封顶 |
+
+- `docs/review/SC-xxx.md` 人工审核单：机器结果工具可填，**人工结论只能由审核人填写，AI 不得代签**。
+- `docs/specs/001-功能名.md` 复杂功能规格，按需建，普通交互写在场景卡。
+- **ID 契约**：场景 `SC-xxx`、机制 `M0x`、参数 `P0xx`、素材 `A0xx` 全线统一；场景稿根节点写 `data-scene-id="SC-xxx"` 与场景卡锚定（格式与必填由 SVG015/SVG016 校验）。
+- 制作主线：**定玩法 → 画场景 → 拆素材 → 生产素材 → 拼回场景 → 人工审核 → 实现交互 → 实机验收**。占位素材可以验证玩法，但不能过审、不能发版。
+- 换风格参考（`ref/anchor`）、改内容边界，必须在 `04-DECISIONS.md` 记一行。
 
 ## 5. 命令
 
@@ -221,13 +243,14 @@ PORT=8080 npm run dev      # 换端口
 | `data-category` | 根 `<svg>` | 目录页分组名，缺省回退为文件夹名 |
 | `data-tags` | 根 `<svg>` | 逗号分隔，供目录页搜索 |
 | `data-version` | 根 `<svg>` | 稿子版本，改版时递增 |
-| `data-scene-id` | 根 `<svg>`（场景稿） | 场景锚定：`SC-xxx`，与场景卡 / 审核单共用同一 ID（格式错误报 SVG015） |
+| `data-scene-id` | 根 `<svg>`（场景稿） | 场景锚定：`SC-xxx`，与场景卡 / 审核单共用同一 ID；`screens/` `hud/` `popups/` 场景稿**必填**（缺失报 SVG016，格式错误报 SVG015） |
 | `data-role` | 任意 | 见 6.2 词表 |
 | `data-action` | 可交互容器，或其后代 | 动作标识，kebab-case，与代码里的事件名一致，如 `open-season` |
 | `data-state` | 可交互容器 | `default` / `selected` / `pressed` / `ready` / `cooling` / `disabled` |
 | `data-value` `data-max` | `bar` / `gauge` / `slot` / `swatch` | 真实数值或色值，程序回填用（如 `data-value="0.72" data-max="1"`、`data-value="#1B2A4A"`） |
 | `data-layer` | 根级图层 | 设计侧图层名（中文可），不参与校验但便于对齐 |
 | `aria-label` | 可交互容器、`label` | 人类可读名称，查看器标注清单直接显示它 |
+| `data-label` | 任意 | `aria-label` 的替代写法，SVG010 与标注清单同样认可；优先用 `aria-label` |
 | `role` `tabindex` | 可交互容器 | 可访问性，按钮写 `role="button" tabindex="0"` |
 
 文字一律用 `<text>` + `font-size`/`fill`，**不要转曲**——转曲后不可搜、不可改字，等于把稿子变成图片。
@@ -241,7 +264,7 @@ PORT=8080 npm run dev      # 换端口
 
 ### 6.5 素材引用
 
-素材有两个位置，用**相对路径**引用，不用 base64 内联。生命周期分层见 4.1；**四层是固定约束，层内子目录自由创建**（如 `raw/components/`、`raw/ui/`、`approved/icons/`）。校验分级：正式稿引用 `ref/` 或 `scene/` **报错**（SVG013/014），引用 `raw/` **提示**（SVG105，过审迁入 approved 后同步改引用）；`ref/` 只允许被风格板与概念稿引用，概念稿（keyart / environments / characters / props）豁免：
+素材有两个位置，用**相对路径**引用，不用 base64 内联。生命周期分层见 4.1；**四层是固定约束，层内子目录自由创建**（如 `raw/components/`、`raw/ui/`、`approved/icons/`）。校验分级：正式稿引用 `ref/` 或 `scene/` **报错**（SVG013/014），引用 `raw/` **提示**（SVG105，过审迁入 approved 后同步改引用），引用四层之外的素材**报错**（SVG017）；`ref/` 只允许被风格板与概念稿引用，概念稿（仅限 `keyart/` `environments/` `characters/` `props/` 四个固定分类）豁免：
 
 | 位置 | 归属 | 从 `designs/<项目>/<分类>/稿.svg` 引用 |
 | --- | --- | --- |
@@ -282,26 +305,6 @@ PORT=8080 npm run dev      # 换端口
 - **无交互**：概念稿不使用交互角色与 `data-action`；需要标注观察点、设计要点时用 `label` + `<text>`。
 - **尺寸**：横版构图 1920×1080；竖版角色 / 道具三视图可用 1080×1920；`viewBox` 与 `width`/`height` 保持一致。
 
-### 4.4 制作文档体系（源自 game-docs 管线）
-
-每个项目在 `docs/` 下维护六件套，**一份文档只回答一类问题**；空白模板在仓库根 `docs/`（不进目录树），项目实例进目录树、可在工作台阅读。
-
-| 文档 | 只回答什么 |
-| --- | --- |
-| `00-OVERVIEW.md` | 项目是什么、核心循环、**当前制作单**（唯一入口） |
-| `01-GAMEPLAY.md` | 玩法机制、关键状态、参数基线 |
-| `02-SCENES.md` | 场景索引 + 场景卡（画面、布局、交互、状态、素材清单） |
-| `03-ASSETS.md` | 素材生产卡、机器检查、人工审核、图量表 |
-| `04-DECISIONS.md` | 决策日志：已生效 + **已否决**（防止旧方案被重新提出） |
-| `05-SHIP.md` | 发版清单，10 条封顶 |
-
-- `docs/review/SC-xxx.md` 人工审核单：机器结果工具可填，**人工结论只能由审核人填写，AI 不得代签**。
-- `docs/specs/001-功能名.md` 复杂功能规格，按需建，普通交互写在场景卡。
-- **ID 契约**：场景 `SC-xxx`、机制 `M0x`、参数 `P0xx`、素材 `A0xx` 全线统一；场景稿根节点写 `data-scene-id="SC-xxx"` 与场景卡锚定（格式由 SVG015 校验）。
-- 制作主线：**定玩法 → 画场景 → 拆素材 → 生产素材 → 拼回场景 → 人工审核 → 实现交互 → 实机验收**。占位素材可以验证玩法，但不能过审、不能发版。
-- 换风格参考（`ref/anchor`）、改内容边界，必须在 `04-DECISIONS.md` 记一行。
-
-
 ## 7. 校验规则（`npm run check`）
 
 错误会让退出码为 1，必须修；提示不影响通过。
@@ -323,6 +326,8 @@ PORT=8080 npm run dev      # 换端口
 | SVG013 | 错误 | 正式稿引用 `assets/ref/` 风格参考 | 换正式素材；ref 只允许风格板与概念稿引用 |
 | SVG014 | 错误 | 正式稿引用 `assets/scene/` 预览图 | scene 是审核对照图，换正式素材 |
 | SVG015 | 错误 | `data-scene-id` 格式不对 | 写成 `SC-xxx`（SC 后至少三位数字），与场景卡一致 |
+| SVG016 | 错误 | 场景稿（`screens/` `hud/` `popups/`）根节点缺 `data-scene-id` | 补 `data-scene-id="SC-xxx"`，与场景卡一致 |
+| SVG017 | 错误 | 引用了 `assets/` 生命周期四层之外的素材 | 移入 `ref/raw/scene/approved` 之一，再同步更新引用 |
 | SVG101 | 提示 | `<text>` 未声明 `font-family` | 在 `<style>` 里统一声明 |
 | SVG102 | 提示 | 引用外部 http 资源 | 下载到 `assets/` |
 | SVG103 | 提示 | 根节点缺 `data-category` | 补分类名 |

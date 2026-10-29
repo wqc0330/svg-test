@@ -1,5 +1,13 @@
-import type { DesignEntry, DocEntry, Manifest } from '../shared/types.js';
+import type { AssetEntry, AssetStatus, DesignEntry, DocEntry, Manifest } from '../shared/types.js';
 import { el } from './dom.js';
+
+/** 素材生命周期四层：目录结构完全按 00-OVERVIEW，固定顺序、层内子目录自由。 */
+const ASSET_LAYERS: ReadonlyArray<{ status: AssetStatus; label: string }> = [
+  { status: 'ref', label: 'ref · 风格参考' },
+  { status: 'raw', label: 'raw · 原始素材' },
+  { status: 'scene', label: 'scene · 场景预览' },
+  { status: 'approved', label: 'approved · 已通过' },
+];
 
 export interface DrawerOptions {
   manifest: Manifest;
@@ -250,11 +258,52 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
     if (isNarrow()) setOpen(false);
   }
 
+  /** 打开素材文件：与目录页素材卡一致，新标签页直接看原文件。 */
+  function openAsset(asset: AssetEntry): void {
+    window.open(asset.file, '_blank', 'noopener');
+  }
+
+  /** 按生命周期四层渲染素材节点（结构完全按 00-OVERVIEW：四层固定，层内子目录自由）。 */
+  function renderAssetLayers(assets: AssetEntry[], depth: number, keyPrefix: string): void {
+    for (const layer of ASSET_LAYERS) {
+      const inLayer = assets.filter((a) => a.status === layer.status);
+      const layerKey = `${keyPrefix}/${layer.status}`;
+      const layerOpen = !collapsed.has(layerKey);
+      treeBox.append(
+        nodeRow(
+          depth,
+          layerKey,
+          layer.label,
+          { kind: 'category', count: inLayer.length, active: false, hasChildren: inLayer.length > 0 },
+          {
+            onSelect: () => toggleNode(layerKey),
+            onToggle: () => toggleNode(layerKey),
+          },
+        ),
+      );
+      if (!layerOpen) continue;
+      for (const asset of inLayer) {
+        treeBox.append(
+          nodeRow(
+            depth + 1,
+            `a:${asset.id}`,
+            asset.placeholder ? `${asset.name}（占位）` : asset.name,
+            { kind: 'asset', active: false, hasChildren: false },
+            {
+              onSelect: () => openAsset(asset),
+              onToggle: () => undefined,
+            },
+          ),
+        );
+      }
+    }
+  }
+
   function nodeRow(
     depth: number,
     key: string,
     label: string,
-    meta: { count?: number; active?: boolean; kind: 'project' | 'category' | 'design' | 'doc' | 'all'; hasChildren: boolean },
+    meta: { count?: number; active?: boolean; kind: 'project' | 'category' | 'design' | 'doc' | 'asset' | 'all'; hasChildren: boolean },
     handlers: { onSelect: () => void; onToggle: () => void },
   ): HTMLElement {
     const isOpen = !collapsed.has(key);
@@ -327,11 +376,32 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
       ),
     );
 
+    // 全局素材库（public/assets/）：结构与项目素材库相同，有素材才显示
+    const globalAssets = state.manifest.assets.filter((a) => a.scope === 'global');
+    if (globalAssets.length > 0) {
+      const globalKey = 'assets:global';
+      const globalOpen = !collapsed.has(globalKey);
+      treeBox.append(
+        nodeRow(
+          0,
+          globalKey,
+          '全局素材库',
+          { kind: 'category', count: globalAssets.length, active: false, hasChildren: true },
+          {
+            onSelect: () => toggleNode(globalKey),
+            onToggle: () => toggleNode(globalKey),
+          },
+        ),
+      );
+      if (globalOpen) renderAssetLayers(globalAssets, 1, globalKey);
+    }
+
     for (const project of projects) {
       const projectKey = `p:${project.id}`;
       const projectOpen = !collapsed.has(projectKey);
       const projectDesigns = designs.filter((d) => d.projectId === project.id);
       const projectDocs = state.manifest.docs.filter((d) => d.projectId === project.id);
+      const projectAssets = state.manifest.assets.filter((a) => a.scope === project.id);
 
       const categories = new Map<string, DesignEntry[]>();
       for (const design of projectDesigns) {
@@ -350,7 +420,8 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
             count: project.designCount,
             active:
               state.activeProject === project.id && !state.activeDesignPath && !state.activeDocPath,
-            hasChildren: projectDesigns.length > 0 || projectDocs.length > 0,
+            hasChildren:
+              projectDesigns.length > 0 || projectDocs.length > 0 || projectAssets.length > 0,
           },
           {
             onSelect: () => selectProject(project.id),
@@ -361,7 +432,7 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
 
       if (!projectOpen) continue;
 
-      if (categories.size === 0 && projectDocs.length === 0) {
+      if (categories.size === 0 && projectDocs.length === 0 && projectAssets.length === 0) {
         treeBox.append(
           el('div', { class: 'tree-hint', style: '--depth:1' }, [el('span', { text: '暂无设计稿' })]),
         );
@@ -435,6 +506,25 @@ export function mountDrawer(options: DrawerOptions): DrawerHandle {
             );
           }
         }
+      }
+
+      // 素材库分组：按 00-OVERVIEW 的生命周期四层固定结构（ref/raw/scene/approved）
+      if (projectAssets.length > 0) {
+        const assetsKey = `c:${project.id}/__assets__`;
+        const assetsOpen = !collapsed.has(assetsKey);
+        treeBox.append(
+          nodeRow(
+            1,
+            assetsKey,
+            '素材库',
+            { kind: 'category', count: projectAssets.length, active: false, hasChildren: true },
+            {
+              onSelect: () => toggleNode(assetsKey),
+              onToggle: () => toggleNode(assetsKey),
+            },
+          ),
+        );
+        if (assetsOpen) renderAssetLayers(projectAssets, 2, assetsKey);
       }
     }
 
