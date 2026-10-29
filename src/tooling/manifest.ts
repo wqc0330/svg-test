@@ -124,12 +124,13 @@ export async function buildDesignEntry(
   const id = relFromProject.replace(/\.svg$/i, '');
   const path = `public/designs/${relFromDesigns}`;
   const info = await stat(absolutePath);
+  const folder = id.includes('/') ? (id.split('/')[0] as string) : '';
   const { meta, annotations, issues } = lintSvg(source, {
     file: `designs/${relFromDesigns}`,
     baseDir: resolve(absolutePath, '..'),
     fileExists: (p) => existsSync(p),
+    category: folder,
   });
-  const folder = id.includes('/') ? (id.split('/')[0] as string) : '';
 
   return {
     kind: 'design',
@@ -330,10 +331,12 @@ export async function buildDesignDetail(root: string, relPath: string): Promise<
 
   const entry = await buildDesignEntry(root, absolute, { id: projectId, name: meta.name?.trim() || projectId });
   const source = await readFile(absolute, 'utf8');
+  const detailFolder = relFromDesigns.includes('/') ? (relFromDesigns.split('/')[1] as string) : '';
   const { annotations } = lintSvg(source, {
     file: entry.path,
     baseDir: resolve(absolute, '..'),
     fileExists: (p) => existsSync(p),
+    category: detailFolder,
   });
   return { entry, annotations, issues: entry.issues };
 }

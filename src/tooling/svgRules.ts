@@ -41,6 +41,12 @@ export type Role = (typeof ROLES)[number];
 /** 可交互角色：内部元素允许挂 data-action，且必须带 aria-label。 */
 export const INTERACTIVE_ROLES: readonly string[] = ['button', 'control', 'item', 'hotspot', 'slot'];
 
+/** 概念设计稿分类：允许引用 ref/ 与 raw/（风格定调与制作中参考），豁免生命周期引用检查。 */
+export const CONCEPT_CATEGORIES: readonly string[] = ['keyart', 'environments', 'characters', 'props'];
+
+/** 场景 ID 格式：SC- 后至少三位数字（SC-001、SC-012…），与场景卡、审核单共用同一组 ID。 */
+export const SCENE_ID_RE = /^SC-\d{3,}$/;
+
 export interface SvgMeta {
   name: string;
   description: string;
@@ -57,6 +63,8 @@ export interface LintOptions {
   /** 该 SVG 所在目录的绝对路径，用于检查素材引用是否存在 */
   baseDir?: string;
   fileExists?: (absolutePath: string) => boolean;
+  /** 设计稿所在分类目录名（screens / hud / keyart…），用于概念稿豁免判断 */
+  category?: string;
 }
 
 export interface LintResult {
@@ -107,7 +115,7 @@ export function readMeta(source: string, fallbackName: string): SvgMeta {
 }
 
 export function lintSvg(source: string, options: LintOptions): LintResult {
-  const { file, baseDir, fileExists } = options;
+  const { file, baseDir, fileExists, category } = options;
   const { tags, root } = scanSvg(source);
   const issues: LintIssue[] = [];
   const push = (level: 'error' | 'warn', code: string, message: string, line?: number): void => {
@@ -133,6 +141,12 @@ export function lintSvg(source: string, options: LintOptions): LintResult {
   }
   if (!meta.category) {
     push('warn', 'SVG103', '根 <svg> 缺少 data-category，已回退为目录名', root.line);
+  }
+
+  // —— 场景锚定 ——（可选属性：写了才校验格式，场景稿通过它与场景卡互相锚定）
+  const sceneId = root.attrs['data-scene-id'];
+  if (sceneId !== undefined && !SCENE_ID_RE.test(sceneId)) {
+    push('error', 'SVG015', `data-scene-id="${sceneId}" 格式不对：应为 SC-xxx（SC 后至少三位数字），与场景卡一致`, root.line);
   }
 
   // —— 图层语义 ——
@@ -191,6 +205,7 @@ export function lintSvg(source: string, options: LintOptions): LintResult {
   }
 
   // —— 素材引用 ——
+  const isConcept = CONCEPT_CATEGORIES.includes(category ?? '');
   for (const tag of tags) {
     const href = tag.attrs['href'] ?? tag.attrs['xlink:href'];
     if (!href || href.startsWith('#') || href.startsWith('data:')) continue;
@@ -203,6 +218,20 @@ export function lintSvg(source: string, options: LintOptions): LintResult {
       const absolute = resolve(join(baseDir, clean));
       if (!fileExists(absolute)) {
         push('error', 'SVG009', `引用的素材不存在：${href}`, tag.line);
+        continue;
+      }
+      // 生命周期分级检查：ref/scene 引用报错（拿参考图/预览图当素材），raw 提示（未审，过审迁入 approved 后更新）
+      const layer = /\/assets\/(ref|raw|scene|approved)\//.exec(`/${clean.replace(/\\/g, '/')}`)?.[1];
+      if (layer && !isConcept) {
+        if (/\/placeholder-[^/]*$/.test(clean)) {
+          push('warn', 'SVG106', `引用了占位素材 ${href}：占位图不能过审、不能发版，记得替换`, tag.line);
+        } else if (layer === 'ref') {
+          push('error', 'SVG013', `正式稿引用了风格参考 ${href}：ref/ 只允许被风格板与概念稿引用`, tag.line);
+        } else if (layer === 'scene') {
+          push('error', 'SVG014', `正式稿引用了场景预览 ${href}：scene/ 是审核对照图，不是游戏素材`, tag.line);
+        } else if (layer === 'raw') {
+          push('warn', 'SVG105', `引用了未审素材 ${href}：人工审核通过迁入 assets/approved/ 后同步更新引用`, tag.line);
+        }
       }
     }
   }

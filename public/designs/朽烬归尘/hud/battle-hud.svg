@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" width="2048" height="1152"
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" width="2048" height="1152" data-scene-id="SC-002"
      data-category="hud" data-tags="战斗HUD,常驻层,回合计时,血条,2048x1152" data-version="0.1.0">
   <title>擂台 HUD · 常驻层</title>
   <desc>对战中的常驻信息层：顶部回合与布阵倒计时、上下两条灰烬血脉、牌库与弃牌计数、右侧战报、底部操作提示与两个快捷入口。</desc>

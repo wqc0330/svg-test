@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" width="2048" height="1152"
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1152" width="2048" height="1152" data-scene-id="SC-003"
      data-category="popups" data-tags="弹窗,回合结算,战利品,三选一,2048x1152" data-version="0.2.0">
   <title>回合结算 · 战利品三选一</title>
   <desc>每回合结束的结算弹窗：胜负判定、造成伤害与剩余血脉统计，并从三件战利品中选一件放进装备阵列。</desc>

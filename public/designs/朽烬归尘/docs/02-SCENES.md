@@ -45,7 +45,7 @@
 - 常驻 HUD：`hud/battle-hud.svg`
 
 - [x] 已画完整场景，而不是素材散图
-- [ ] 稿子根节点已写 `data-scene-id="SC-002"`（待补）
+- [x] 稿子根节点已写 `data-scene-id="SC-002"`
 - [ ] 占位素材已明确标记（文件名 `placeholder-` 开头）
 
 ### 3. 尺寸与布局

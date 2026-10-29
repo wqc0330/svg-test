@@ -55,17 +55,19 @@ public/designs/朽烬归尘/
 ├── docs/                 本套文档（目录树里可见）
 │   ├── review/           人工审核单，人填写结论
 │   └── specs/            复杂功能规格（可选）
-├── screens/ hud/ popups/ components/  设计稿
-└── assets/
+├── screens/ hud/ popups/ components/  设计稿（示例，可按需自建分类）
+└── assets/               生命周期四层固定，层内子目录自由
     ├── ref/              风格参考，只读，不进游戏
-    ├── raw/              原始素材，未通过审核
+    ├── raw/              原始素材，未通过审核（层内可自建 components/ ui/ …）
     ├── scene/            场景效果图、标注图、合成预览
     └── approved/         人工通过的素材，正式稿只认这里
 ```
 
+四层是固定约束，层内子目录自由创建（如 `raw/components/`、`raw/items/plates/`）；素材审核状态由所在层推导，与子目录名无关。
+
 ## 硬规则
 
-- 正式设计稿不得引用 `assets/approved/` 之外的素材（`ref/` 只允许被风格板、场景概念稿引用）。
+- 正式设计稿只认 `assets/approved/` 的素材：引用 `ref/` `scene/` 报错（SVG013/014），引用 `raw/` 提示（SVG105）；`ref/` 只允许被风格板、概念稿引用。
 - **AI 不得代替人填写审核通过，也不得自行把素材标为已通过。**
 - 场景、素材、交互和参数使用同一组 ID，禁止各写各的。
 - 缺素材先用文件名以 `placeholder-` 开头的占位图，不擅自发明正式素材。
