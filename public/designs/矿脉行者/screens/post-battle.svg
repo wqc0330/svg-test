@@ -1,0 +1,429 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920" data-category="screens" data-tags="战后整备,装备三选一,背包,安全箱,空间整理" data-version="0.1.0" data-scene-id="SC-005" class="pb-svg">
+  <title>矿脉行者 · 战后整备页</title>
+  <desc>SC-005 战后整备正式设计稿：普通战胜利后进行装备三选一与资源拾取，在 4×4 装备栏、6×6 背包和 2 格安全箱之间旋转、移动、替换或丢弃物品，完成整理后返回矿区。</desc>
+  <style>
+    text{font-family:"Noto Sans SC","Microsoft YaHei","PingFang SC",sans-serif;fill:#26344A}
+    .pb-outline{stroke:#26344A;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+    .pb-thin{stroke:#26344A;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+    .pb-detail{fill:none;stroke:#26344A;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    .pb-panel{fill:#FFF8E8;stroke:#26344A;stroke-width:6}
+    .pb-title{font-size:32px;font-weight:900;letter-spacing:1px}
+    .pb-subtitle{font-size:20px;font-weight:600;fill:#4D77A8}
+    .pb-label{font-size:19px;font-weight:800}
+    .pb-small{font-size:16px;font-weight:600}
+    .pb-tiny{font-size:14px;font-weight:700}
+    .pb-white{fill:#FFF8E8}
+    .pb-pale{fill:#BDEFE1}
+    .pb-gold{fill:#FFC94D}
+    .pb-coral{fill:#F25F5C}
+    .pb-teal{fill:#2AB7A9}
+    .pb-blue{fill:#4D77A8}
+    .pb-button-label{font-size:22px;font-weight:900}
+    .pb-conflict{fill:#FDE1D8;stroke:#F25F5C;stroke-width:5;stroke-dasharray:8 5}
+  </style>
+  <defs>
+    <linearGradient id="post-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#BDEFE1"/>
+      <stop offset="0.6" stop-color="#EFF4C9"/>
+      <stop offset="1" stop-color="#FFE2A1"/>
+    </linearGradient>
+    <linearGradient id="post-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF0A8"/>
+      <stop offset="1" stop-color="#FFC94D"/>
+    </linearGradient>
+    <linearGradient id="post-teal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#78E0D2"/>
+      <stop offset="1" stop-color="#2AB7A9"/>
+    </linearGradient>
+    <symbol id="post-bolt" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="8" fill="#FFC94D" stroke="#26344A" stroke-width="3"/>
+      <path d="M6 10H14" stroke="#26344A" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-equipment-cell" viewBox="0 0 64 64">
+      <rect x="2" y="2" width="60" height="60" rx="12" fill="#E8EEE4" stroke="#7892A0" stroke-width="3"/>
+      <path d="M12 14H26M12 14V28" fill="none" stroke="#FFF8E8" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-backpack-cell" viewBox="0 0 64 64">
+      <rect x="2" y="2" width="60" height="60" rx="12" fill="#F0E9D7" stroke="#9C927E" stroke-width="3"/>
+      <path d="M12 14H26M12 14V28" fill="none" stroke="#FFF8E8" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-safe-cell" viewBox="0 0 112 112">
+      <rect x="3" y="3" width="106" height="106" rx="20" fill="#E1F3E8" stroke="#26344A" stroke-width="5"/>
+      <rect x="12" y="12" width="88" height="88" rx="14" fill="#FFF8E8" stroke="#2AB7A9" stroke-width="3" stroke-dasharray="8 5"/>
+    </symbol>
+    <symbol id="post-mini-cell" viewBox="0 0 24 24">
+      <rect x="1" y="1" width="22" height="22" rx="5" fill="#DDE4D9" stroke="#26344A" stroke-width="2"/>
+    </symbol>
+    <symbol id="post-mini-filled" viewBox="0 0 24 24">
+      <rect x="1" y="1" width="22" height="22" rx="5" fill="#2AB7A9" stroke="#26344A" stroke-width="2"/>
+      <path d="M6 7H13" stroke="#8CF0D9" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-ore" viewBox="0 0 72 72">
+      <path d="M10 48L6 30L22 12L46 8L66 28L60 54L38 66L16 62Z" fill="#4D77A8" stroke="#26344A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M22 12L32 34L10 48L6 30Z" fill="#769FC1"/>
+      <path d="M32 34L46 8L66 28L52 42Z" fill="#345E8C"/>
+      <path d="M24 42L34 24L46 40L38 56Z" fill="#7DE4DC" stroke="#26344A" stroke-width="3"/>
+      <path d="M29 39L34 31" stroke="#FFF8E8" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-jade" viewBox="0 0 72 72">
+      <path d="M36 4L60 22L56 52L36 68L12 52L8 24Z" fill="#2AB7A9" stroke="#26344A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M36 4L38 54L12 52L8 24Z" fill="#74D9C8"/>
+      <path d="M36 4L60 22L38 28Z" fill="#D5FFF0"/>
+      <path d="M20 26L28 16M20 34V44" stroke="#FFF8E8" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-pickaxe" viewBox="0 0 80 120">
+      <path d="M24 108L56 30" stroke="#26344A" stroke-width="12" stroke-linecap="round"/>
+      <path d="M25 104L53 34" stroke="#B97B52" stroke-width="5" stroke-linecap="round"/>
+      <path d="M14 32Q40 4 72 22L66 40Q42 28 24 48Z" fill="#4D77A8" stroke="#26344A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M28 27L48 18" stroke="#C7E4EC" stroke-width="4" stroke-linecap="round"/>
+      <path d="M16 104L30 110" stroke="#FFC94D" stroke-width="8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-armor" viewBox="0 0 120 120">
+      <path d="M40 12L60 24L80 12L108 28L96 56L86 50L92 108H28L34 50L24 56L12 28Z" fill="#4D77A8" stroke="#26344A" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M40 12Q60 44 80 12" fill="#FFF8E8" stroke="#26344A" stroke-width="5"/>
+      <path d="M60 44V100M38 64H48M72 64H82" stroke="#7DE4DC" stroke-width="5" stroke-linecap="round"/>
+      <path d="M40 96H80" stroke="#26344A" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="60" cy="72" r="10" fill="#FFC94D" stroke="#26344A" stroke-width="4"/>
+    </symbol>
+    <symbol id="post-gloves" viewBox="0 0 80 80">
+      <path d="M20 66L12 38Q10 30 18 28Q24 28 26 36L24 16Q24 8 32 10Q38 10 38 18L40 32L42 12Q44 4 52 8Q56 10 54 18L52 34L58 20Q62 14 68 20Q72 24 66 36L60 58L48 72H28Z" fill="#FFC94D" stroke="#26344A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M24 56H58M30 64H52" stroke="#B97B52" stroke-width="4" stroke-linecap="round"/>
+      <path d="M32 20V38M48 18L46 36" stroke="#FFF1AE" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-lamp" viewBox="0 0 80 100">
+      <path d="M24 28V18Q24 4 40 4Q56 4 56 18V28" fill="none" stroke="#26344A" stroke-width="6" stroke-linecap="round"/>
+      <path d="M16 34H64L58 88H22Z" fill="#FFC94D" stroke="#26344A" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M26 44H54L50 74H30Z" fill="#FFF8E8" stroke="#26344A" stroke-width="4"/>
+      <path d="M34 50H46V68H34Z" fill="#FFF1A8"/>
+      <path d="M12 34H68M20 88H60" stroke="#26344A" stroke-width="7" stroke-linecap="round"/>
+      <path d="M32 24H48" stroke="#4D77A8" stroke-width="6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-shield" viewBox="0 0 80 80">
+      <path d="M40 6L68 18V40C68 58 54 70 40 76C26 70 12 58 12 40V18Z" fill="#2AB7A9" stroke="#26344A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M40 18L56 24V40C56 50 49 58 40 62Z" fill="#8CF0D9"/>
+      <path d="M27 39L36 48L54 29" fill="none" stroke="#FFF8E8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="post-check" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="21" fill="#2AB7A9" stroke="#26344A" stroke-width="4"/>
+      <path d="M13 24L21 32L36 16" fill="none" stroke="#FFF8E8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="post-rotate" viewBox="0 0 64 64">
+      <path d="M14 26Q18 10 36 12Q52 14 54 32Q54 50 36 54Q22 56 14 44" fill="none" stroke="#26344A" stroke-width="6" stroke-linecap="round"/>
+      <path d="M8 14L14 28L28 20" fill="#FFC94D" stroke="#26344A" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M26 26H42V42H26Z" fill="#4D77A8" stroke="#26344A" stroke-width="4"/>
+    </symbol>
+    <symbol id="post-move" viewBox="0 0 64 64">
+      <path d="M32 6V58M6 32H58" stroke="#26344A" stroke-width="7" stroke-linecap="round"/>
+      <path d="M22 16L32 6L42 16M22 48L32 58L42 48M16 22L6 32L16 42M48 22L58 32L48 42" fill="none" stroke="#26344A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="32" cy="32" r="8" fill="#2AB7A9" stroke="#26344A" stroke-width="3"/>
+    </symbol>
+    <symbol id="post-replace" viewBox="0 0 64 64">
+      <path d="M10 22H48L40 12M54 42H16L24 52" fill="none" stroke="#26344A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="8" y="8" width="18" height="18" rx="5" fill="#4D77A8" stroke="#26344A" stroke-width="3"/>
+      <rect x="38" y="38" width="18" height="18" rx="5" fill="#FFC94D" stroke="#26344A" stroke-width="3"/>
+    </symbol>
+    <symbol id="post-discard" viewBox="0 0 64 64">
+      <path d="M16 18H48L44 56H20Z" fill="#F25F5C" stroke="#26344A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M10 18H54M26 18V8H38V18M28 28V46M38 28V46" fill="none" stroke="#26344A" stroke-width="5" stroke-linecap="round"/>
+      <path d="M26 28L40 46M40 28L26 46" stroke="#FFF8E8" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-skip" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="25" fill="#FFF8E8" stroke="#26344A" stroke-width="5"/>
+      <path d="M16 48L48 16" stroke="#F25F5C" stroke-width="7" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="post-arrow" viewBox="0 0 80 48">
+      <path d="M6 24H66M48 8L68 24L48 40" fill="none" stroke="#26344A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="post-crystal" viewBox="0 0 100 140">
+      <path d="M50 4L86 38L76 112L50 136L20 110L10 40Z" fill="#7DE4DC" stroke="#26344A" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M50 4L52 112L20 110L10 40Z" fill="#2AB7A9" opacity="0.7"/>
+      <path d="M50 4L86 38L52 48Z" fill="#D7FFF1"/>
+      <path d="M28 42L40 28M30 58V82" fill="none" stroke="#FFF8E8" stroke-width="6" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+
+  <g id="post-background" data-role="background" data-layer="背景层" aria-label="明亮矿场整备背景">
+    <rect x="0" y="0" width="1080" height="1920" fill="url(#post-sky)"/>
+    <path d="M0 0H1080V82L1028 122L982 70L936 136L886 84L834 128L780 64L724 130L664 86L608 134L548 70L488 126L430 82L370 138L310 78L254 126L196 72L142 134L86 88L38 128L0 98Z" fill="#4D77A8"/>
+    <path d="M0 238L64 190L112 248L90 412L128 560L72 720L112 884L66 1050L106 1220L54 1390L102 1560L48 1730L0 1760Z" fill="#6F9FC5" class="pb-outline"/>
+    <path d="M1080 224L1016 182L968 250L994 410L954 572L1012 730L968 898L1016 1060L970 1230L1024 1400L978 1570L1032 1730L1080 1760Z" fill="#6F9FC5" class="pb-outline"/>
+    <path d="M0 1710Q210 1650 420 1714T810 1700T1080 1708V1920H0Z" fill="#67AB99"/>
+    <g data-role="decoration" aria-label="矿灯与晶矿装饰">
+      <use href="#post-crystal" x="4" y="600" width="64" height="90"/>
+      <use href="#post-crystal" x="1012" y="864" width="56" height="80"/>
+      <use href="#post-lamp" x="10" y="252" width="54" height="68"/>
+      <use href="#post-lamp" x="1016" y="260" width="54" height="68"/>
+      <path d="M36 182V252M1044 182V252" class="pb-detail"/>
+      <circle cx="36" cy="300" r="54" fill="#FFC94D" opacity="0.12"/>
+      <circle cx="1044" cy="300" r="54" fill="#FFC94D" opacity="0.12"/>
+    </g>
+    <g data-role="decoration" aria-label="底部矿车轨道">
+      <path d="M0 1832H1080M0 1880H1080" stroke="#26344A" stroke-width="10"/>
+      <path d="M0 1828H1080M0 1876H1080" stroke="#C4D9D2" stroke-width="4"/>
+      <path d="M80 1810V1900M240 1810V1900M400 1810V1900M560 1810V1900M720 1810V1900M880 1810V1900M1040 1810V1900" stroke="#8B624C" stroke-width="24"/>
+      <path d="M80 1810V1900M240 1810V1900M400 1810V1900M560 1810V1900M720 1810V1900M880 1810V1900M1040 1810V1900" stroke="#26344A" stroke-width="4"/>
+    </g>
+  </g>
+
+  <g id="post-content" data-role="layer" data-layer="奖励与储物内容层" aria-label="奖励、资源与三类储物空间">
+    <g id="post-reward-cards" data-role="panel" aria-label="装备三选一奖励">
+      <g id="post-reward-one" data-role="item" data-action="choose-reward-1" data-state="selected" role="button" tabindex="0" aria-label="选择奖励一，巡矿护甲，已选中">
+        <rect x="48" y="190" width="312" height="340" rx="28" fill="#FFF8E8" stroke="#26344A" stroke-width="9"/>
+        <rect x="56" y="198" width="296" height="324" rx="22" fill="none" stroke="#FFC94D" stroke-width="6"/>
+        <path d="M48 218Q48 190 76 190H332Q360 190 360 218V246H48Z" fill="#4D77A8"/>
+        <text x="76" y="228" class="pb-label pb-white">01 · 护甲类</text>
+        <use href="#post-check" x="300" y="200" width="42" height="42"/>
+        <circle cx="204" cy="340" r="78" fill="#DCEAF2"/>
+        <use href="#post-armor" x="144" y="272" width="120" height="120"/>
+        <text x="204" y="438" text-anchor="middle" class="pb-title">巡矿护甲</text>
+        <text x="82" y="472" class="pb-small">防护倾向 · 占格预览</text>
+        <g data-role="decoration" aria-label="巡矿护甲二乘二占格">
+          <use href="#post-mini-filled" x="272" y="450" width="24" height="24"/>
+          <use href="#post-mini-filled" x="298" y="450" width="24" height="24"/>
+          <use href="#post-mini-filled" x="272" y="476" width="24" height="24"/>
+          <use href="#post-mini-filled" x="298" y="476" width="24" height="24"/>
+        </g>
+        <rect x="82" y="488" width="142" height="28" rx="14" fill="#FFC94D"/>
+        <text x="153" y="508" text-anchor="middle" class="pb-tiny">已选中 · 预览落格</text>
+      </g>
+      <g id="post-reward-two" data-role="item" data-action="choose-reward-2" data-state="default" role="button" tabindex="0" aria-label="选择奖励二，重型矿镐">
+        <rect x="384" y="190" width="312" height="340" rx="28" fill="#FFF8E8" stroke="#26344A" stroke-width="6"/>
+        <path d="M384 218Q384 190 412 190H668Q696 190 696 218V246H384Z" fill="#2AB7A9"/>
+        <text x="412" y="228" class="pb-label pb-white">02 · 矿镐类</text>
+        <rect x="620" y="204" width="52" height="28" rx="14" fill="#FFF8E8"/>
+        <text x="646" y="224" text-anchor="middle" class="pb-tiny">可选</text>
+        <circle cx="540" cy="340" r="78" fill="#D8F1E7"/>
+        <use href="#post-pickaxe" x="496" y="266" width="88" height="132" transform="rotate(18 540 332)"/>
+        <text x="540" y="438" text-anchor="middle" class="pb-title">重型矿镐</text>
+        <text x="418" y="472" class="pb-small">采掘倾向 · 占格预览</text>
+        <g data-role="decoration" aria-label="重型矿镐一乘二占格">
+          <use href="#post-mini-filled" x="608" y="450" width="24" height="24"/>
+          <use href="#post-mini-filled" x="608" y="476" width="24" height="24"/>
+          <use href="#post-mini-cell" x="634" y="450" width="24" height="24"/>
+          <use href="#post-mini-cell" x="634" y="476" width="24" height="24"/>
+        </g>
+        <text x="418" y="508" class="pb-tiny pb-blue">点击后选择目标格</text>
+      </g>
+      <g id="post-reward-three" data-role="item" data-action="choose-reward-3" data-state="default" role="button" tabindex="0" aria-label="选择奖励三，晶灯手套">
+        <rect x="720" y="190" width="312" height="340" rx="28" fill="#FFF8E8" stroke="#26344A" stroke-width="6"/>
+        <path d="M720 218Q720 190 748 190H1004Q1032 190 1032 218V246H720Z" fill="#F2A93B"/>
+        <text x="748" y="228" class="pb-label pb-white">03 · 手套类</text>
+        <rect x="956" y="204" width="52" height="28" rx="14" fill="#FFF8E8"/>
+        <text x="982" y="224" text-anchor="middle" class="pb-tiny">可选</text>
+        <circle cx="876" cy="340" r="78" fill="#FFF0C4"/>
+        <use href="#post-gloves" x="830" y="288" width="96" height="96"/>
+        <text x="876" y="438" text-anchor="middle" class="pb-title">晶灯手套</text>
+        <text x="754" y="472" class="pb-small">灵巧倾向 · 占格预览</text>
+        <g data-role="decoration" aria-label="晶灯手套一乘一占格">
+          <use href="#post-mini-filled" x="944" y="450" width="24" height="24"/>
+          <use href="#post-mini-cell" x="970" y="450" width="24" height="24"/>
+          <use href="#post-mini-cell" x="944" y="476" width="24" height="24"/>
+          <use href="#post-mini-cell" x="970" y="476" width="24" height="24"/>
+        </g>
+        <text x="754" y="508" class="pb-tiny pb-blue">点击后选择目标格</text>
+      </g>
+    </g>
+
+    <g id="post-resource-drop" data-role="item" data-action="select-resource" data-state="default" role="button" tabindex="0" aria-label="选择掉落资源，晶簇矿石一件，待拾取">
+      <rect x="48" y="560" width="984" height="110" rx="26" fill="#FFF8E8" stroke="#26344A" stroke-width="6"/>
+      <path d="M48 586Q48 560 74 560H146V670H74Q48 670 48 644Z" fill="#4D77A8"/>
+      <use href="#post-ore" x="70" y="578" width="72" height="72"/>
+      <text x="170" y="604" class="pb-label">战利品 · 晶簇矿石 ×1</text>
+      <text x="170" y="638" class="pb-small pb-blue">点击资源，再选择背包或安全箱空格</text>
+      <rect x="746" y="584" width="136" height="46" rx="23" fill="#FFF0C4" stroke="#26344A" stroke-width="3"/>
+      <text x="814" y="615" text-anchor="middle" class="pb-label">待拾取</text>
+      <use href="#post-arrow" x="910" y="590" width="76" height="46"/>
+    </g>
+
+    <g id="post-equipment-grid" data-role="panel" aria-label="四乘四装备栏，仅装备且属性生效">
+      <rect x="48" y="700" width="320" height="450" rx="28" class="pb-panel"/>
+      <path d="M48 728Q48 700 76 700H340Q368 700 368 728V758H48Z" fill="#4D77A8"/>
+      <text x="72" y="740" class="pb-label pb-white">装备栏</text>
+      <rect x="270" y="714" width="74" height="30" rx="15" fill="#FFF8E8"/>
+      <text x="307" y="735" text-anchor="middle" class="pb-small">4×4</text>
+      <g id="post-equipment-cell-1-1" data-role="slot" data-action="select-equipment-cell" data-state="selected" role="button" tabindex="0" aria-label="装备栏第1行第1列，训练矿镐"><use href="#post-equipment-cell" x="68" y="786" width="64" height="64"/></g>
+      <g id="post-equipment-cell-1-2" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第1行第2列，空格"><use href="#post-equipment-cell" x="138" y="786" width="64" height="64"/></g>
+      <g id="post-equipment-cell-1-3" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第1行第3列，空格"><use href="#post-equipment-cell" x="208" y="786" width="64" height="64"/></g>
+      <g id="post-equipment-cell-1-4" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第1行第4列，空格"><use href="#post-equipment-cell" x="278" y="786" width="64" height="64"/></g>
+      <g id="post-equipment-cell-2-1" data-role="slot" data-action="select-equipment-cell" data-state="selected" role="button" tabindex="0" aria-label="装备栏第2行第1列，训练矿镐"><use href="#post-equipment-cell" x="68" y="856" width="64" height="64"/></g>
+      <g id="post-equipment-cell-2-2" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第2行第2列，轻型护甲"><use href="#post-equipment-cell" x="138" y="856" width="64" height="64"/></g>
+      <g id="post-equipment-cell-2-3" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第2行第3列，轻型护甲"><use href="#post-equipment-cell" x="208" y="856" width="64" height="64"/></g>
+      <g id="post-equipment-cell-2-4" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第2行第4列，空格"><use href="#post-equipment-cell" x="278" y="856" width="64" height="64"/></g>
+      <g id="post-equipment-cell-3-1" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第3行第1列，空格"><use href="#post-equipment-cell" x="68" y="926" width="64" height="64"/></g>
+      <g id="post-equipment-cell-3-2" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第3行第2列，轻型护甲"><use href="#post-equipment-cell" x="138" y="926" width="64" height="64"/></g>
+      <g id="post-equipment-cell-3-3" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第3行第3列，轻型护甲"><use href="#post-equipment-cell" x="208" y="926" width="64" height="64"/></g>
+      <g id="post-equipment-cell-3-4" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第3行第4列，空格"><use href="#post-equipment-cell" x="278" y="926" width="64" height="64"/></g>
+      <g id="post-equipment-cell-4-1" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第4行第1列，空格"><use href="#post-equipment-cell" x="68" y="996" width="64" height="64"/></g>
+      <g id="post-equipment-cell-4-2" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第4行第2列，旧手套"><use href="#post-equipment-cell" x="138" y="996" width="64" height="64"/></g>
+      <g id="post-equipment-cell-4-3" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第4行第3列，空格"><use href="#post-equipment-cell" x="208" y="996" width="64" height="64"/></g>
+      <g id="post-equipment-cell-4-4" data-role="slot" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="装备栏第4行第4列，旧矿灯"><use href="#post-equipment-cell" x="278" y="996" width="64" height="64"/></g>
+      <g id="post-equipped-pickaxe" data-role="item" data-action="select-equipment-cell" data-state="selected" role="button" tabindex="0" aria-label="训练矿镐，占一乘二格，已选中">
+        <rect x="68" y="786" width="64" height="134" rx="14" fill="#FFF0C4" stroke="#FFC94D" stroke-width="5"/>
+        <use href="#post-pickaxe" x="72" y="794" width="56" height="112"/>
+      </g>
+      <g id="post-equipped-armor" data-role="item" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="轻型护甲，占二乘二格">
+        <rect x="138" y="856" width="134" height="134" rx="16" fill="#DCEAF2" stroke="#4D77A8" stroke-width="4"/>
+        <use href="#post-armor" x="150" y="864" width="110" height="110"/>
+      </g>
+      <g id="post-equipped-gloves" data-role="item" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="旧手套，占一格"><use href="#post-gloves" x="140" y="998" width="60" height="60"/></g>
+      <g id="post-equipped-lamp" data-role="item" data-action="select-equipment-cell" data-state="default" role="button" tabindex="0" aria-label="旧矿灯，占一格"><use href="#post-lamp" x="288" y="996" width="44" height="62"/></g>
+      <text x="72" y="1094" class="pb-small">4 件装备 · 属性生效</text>
+      <rect x="72" y="1108" width="272" height="26" rx="13" fill="#D8F1E7"/>
+      <text x="208" y="1127" text-anchor="middle" class="pb-tiny">选中装备可旋转或移动</text>
+    </g>
+
+    <g id="post-backpack-grid" data-role="panel" aria-label="六乘六背包，装备不生效且资源不可叠加">
+      <rect x="392" y="700" width="640" height="450" rx="28" class="pb-panel"/>
+      <path d="M392 728Q392 700 420 700H1004Q1032 700 1032 728V746H392Z" fill="#9A684C"/>
+      <text x="420" y="734" class="pb-label pb-white">背包</text>
+      <text x="498" y="734" class="pb-small pb-white">装备不生效 · 资源每件 1 格</text>
+      <rect x="934" y="708" width="74" height="28" rx="14" fill="#FFF8E8"/>
+      <text x="971" y="728" text-anchor="middle" class="pb-small">6×6</text>
+      <g id="post-backpack-cell-1-1" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第1行第1列，晶簇矿石"><use href="#post-backpack-cell" x="515" y="752" width="64" height="64"/><use href="#post-ore" x="522" y="759" width="50" height="50"/></g>
+      <g id="post-backpack-cell-1-2" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第1行第2列，空格"><use href="#post-backpack-cell" x="581" y="752" width="64" height="64"/></g>
+      <g id="post-backpack-cell-1-3" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第1行第3列，青辉玉石"><use href="#post-backpack-cell" x="647" y="752" width="64" height="64"/><use href="#post-jade" x="654" y="759" width="50" height="50"/></g>
+      <g id="post-backpack-cell-1-4" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第1行第4列，空格"><use href="#post-backpack-cell" x="713" y="752" width="64" height="64"/></g>
+      <g id="post-backpack-cell-1-5" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第1行第5列，空格"><use href="#post-backpack-cell" x="779" y="752" width="64" height="64"/></g>
+      <g id="post-backpack-cell-1-6" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第1行第6列，空格"><use href="#post-backpack-cell" x="845" y="752" width="64" height="64"/></g>
+      <g id="post-backpack-cell-2-1" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第2行第1列，空格"><use href="#post-backpack-cell" x="515" y="818" width="64" height="64"/></g>
+      <g id="post-backpack-cell-2-2" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第2行第2列，晶簇矿石"><use href="#post-backpack-cell" x="581" y="818" width="64" height="64"/><use href="#post-ore" x="588" y="825" width="50" height="50"/></g>
+      <g id="post-backpack-cell-2-3" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第2行第3列，空格"><use href="#post-backpack-cell" x="647" y="818" width="64" height="64"/></g>
+      <g id="post-backpack-cell-2-4" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第2行第4列，旧手套，装备不生效"><use href="#post-backpack-cell" x="713" y="818" width="64" height="64"/><use href="#post-gloves" x="721" y="826" width="48" height="48"/></g>
+      <g id="post-backpack-cell-2-5" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第2行第5列，空格"><use href="#post-backpack-cell" x="779" y="818" width="64" height="64"/></g>
+      <g id="post-backpack-cell-2-6" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第2行第6列，空格"><use href="#post-backpack-cell" x="845" y="818" width="64" height="64"/></g>
+      <g id="post-backpack-cell-3-1" data-role="slot" data-action="select-backpack-cell" data-state="selected" role="button" tabindex="0" aria-label="背包第3行第1列，晶簇矿石，已选中"><rect x="515" y="884" width="64" height="64" rx="12" fill="#FFF0C4" stroke="#FFC94D" stroke-width="5"/><use href="#post-ore" x="522" y="891" width="50" height="50"/></g>
+      <g id="post-backpack-cell-3-2" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第3行第2列，空格"><use href="#post-backpack-cell" x="581" y="884" width="64" height="64"/></g>
+      <g id="post-backpack-cell-3-3" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第3行第3列，空格"><use href="#post-backpack-cell" x="647" y="884" width="64" height="64"/></g>
+      <g id="post-backpack-cell-3-4" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第3行第4列，空格"><use href="#post-backpack-cell" x="713" y="884" width="64" height="64"/></g>
+      <g id="post-backpack-cell-3-5" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第3行第5列，青辉玉石"><use href="#post-backpack-cell" x="779" y="884" width="64" height="64"/><use href="#post-jade" x="786" y="891" width="50" height="50"/></g>
+      <g id="post-backpack-cell-3-6" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第3行第6列，空格"><use href="#post-backpack-cell" x="845" y="884" width="64" height="64"/></g>
+      <g id="post-backpack-cell-4-1" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第4行第1列，空格"><use href="#post-backpack-cell" x="515" y="950" width="64" height="64"/></g>
+      <g id="post-backpack-cell-4-2" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第4行第2列，空格"><use href="#post-backpack-cell" x="581" y="950" width="64" height="64"/></g>
+      <g id="post-backpack-cell-4-3" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第4行第3列，空格"><use href="#post-backpack-cell" x="647" y="950" width="64" height="64"/></g>
+      <g id="post-backpack-cell-4-4" data-role="slot" data-action="select-backpack-cell" data-state="selected" role="button" tabindex="0" aria-label="背包第4行第4列，占用冲突预览"><rect x="713" y="950" width="64" height="64" rx="12" class="pb-conflict"/><path d="M731 968L759 996M759 968L731 996" stroke="#F25F5C" stroke-width="6" stroke-linecap="round"/></g>
+      <g id="post-backpack-cell-4-5" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第4行第5列，空格"><use href="#post-backpack-cell" x="779" y="950" width="64" height="64"/></g>
+      <g id="post-backpack-cell-4-6" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第4行第6列，晶簇矿石"><use href="#post-backpack-cell" x="845" y="950" width="64" height="64"/><use href="#post-ore" x="852" y="957" width="50" height="50"/></g>
+      <g id="post-backpack-cell-5-1" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第5行第1列，空格"><use href="#post-backpack-cell" x="515" y="1016" width="64" height="64"/></g>
+      <g id="post-backpack-cell-5-2" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第5行第2列，空格"><use href="#post-backpack-cell" x="581" y="1016" width="64" height="64"/></g>
+      <g id="post-backpack-cell-5-3" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第5行第3列，空格"><use href="#post-backpack-cell" x="647" y="1016" width="64" height="64"/></g>
+      <g id="post-backpack-cell-5-4" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第5行第4列，空格"><use href="#post-backpack-cell" x="713" y="1016" width="64" height="64"/></g>
+      <g id="post-backpack-cell-5-5" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第5行第5列，空格"><use href="#post-backpack-cell" x="779" y="1016" width="64" height="64"/></g>
+      <g id="post-backpack-cell-5-6" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第5行第6列，空格"><use href="#post-backpack-cell" x="845" y="1016" width="64" height="64"/></g>
+      <g id="post-backpack-cell-6-1" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第6行第1列，空格"><use href="#post-backpack-cell" x="515" y="1082" width="64" height="64"/></g>
+      <g id="post-backpack-cell-6-2" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第6行第2列，空格"><use href="#post-backpack-cell" x="581" y="1082" width="64" height="64"/></g>
+      <g id="post-backpack-cell-6-3" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第6行第3列，空格"><use href="#post-backpack-cell" x="647" y="1082" width="64" height="64"/></g>
+      <g id="post-backpack-cell-6-4" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第6行第4列，空格"><use href="#post-backpack-cell" x="713" y="1082" width="64" height="64"/></g>
+      <g id="post-backpack-cell-6-5" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第6行第5列，空格"><use href="#post-backpack-cell" x="779" y="1082" width="64" height="64"/></g>
+      <g id="post-backpack-cell-6-6" data-role="slot" data-action="select-backpack-cell" data-state="default" role="button" tabindex="0" aria-label="背包第6行第6列，空格"><use href="#post-backpack-cell" x="845" y="1082" width="64" height="64"/></g>
+      <g data-role="label" aria-label="背包整理状态">
+        <rect x="418" y="784" width="76" height="260" rx="20" fill="#F0E9D7"/>
+        <text x="456" y="816" text-anchor="middle" class="pb-tiny">已选物品</text>
+        <use href="#post-ore" x="430" y="834" width="52" height="52"/>
+        <text x="456" y="914" text-anchor="middle" class="pb-tiny">晶簇</text>
+        <text x="456" y="934" text-anchor="middle" class="pb-tiny">矿石</text>
+        <path d="M438 962H474M438 982H474" stroke="#9C927E" stroke-width="4" stroke-linecap="round"/>
+        <text x="456" y="1020" text-anchor="middle" class="pb-tiny pb-coral">红格冲突</text>
+      </g>
+      <g data-role="label" aria-label="背包操作提示">
+        <rect x="930" y="784" width="76" height="260" rx="20" fill="#E1F3E8"/>
+        <text x="968" y="818" text-anchor="middle" class="pb-tiny">空格可放</text>
+        <path d="M950 846H986M968 828V864" stroke="#2AB7A9" stroke-width="6" stroke-linecap="round"/>
+        <text x="968" y="904" text-anchor="middle" class="pb-tiny">点击</text>
+        <text x="968" y="926" text-anchor="middle" class="pb-tiny">或拖动</text>
+        <path d="M948 958H988M948 978H988" stroke="#2AB7A9" stroke-width="4" stroke-linecap="round"/>
+        <text x="968" y="1020" text-anchor="middle" class="pb-tiny">不可叠加</text>
+      </g>
+    </g>
+
+    <g id="post-safebox-panel" data-role="panel" aria-label="两格安全箱，仅放矿石与玉石">
+      <rect x="48" y="1180" width="984" height="170" rx="28" class="pb-panel"/>
+      <path d="M48 1208Q48 1180 76 1180H188V1350H76Q48 1350 48 1322Z" fill="#2AB7A9"/>
+      <use href="#post-shield" x="78" y="1216" width="82" height="82"/>
+      <text x="216" y="1230" class="pb-title">安全箱</text>
+      <text x="216" y="1266" class="pb-label pb-teal">2 格 · 任何结局必定带出</text>
+      <text x="216" y="1304" class="pb-small pb-blue">仅矿石 / 玉石 · 装备禁止放入</text>
+      <g id="post-safe-cell-1" data-role="slot" data-action="select-safe-cell" data-state="default" role="button" tabindex="0" aria-label="安全箱第1格，晶簇矿石">
+        <use href="#post-safe-cell" x="688" y="1208" width="112" height="112"/>
+        <use href="#post-ore" x="708" y="1228" width="72" height="72"/>
+      </g>
+      <g id="post-safe-cell-2" data-role="slot" data-action="select-safe-cell" data-state="default" role="button" tabindex="0" aria-label="安全箱第2格，青辉玉石">
+        <use href="#post-safe-cell" x="836" y="1208" width="112" height="112"/>
+        <use href="#post-jade" x="856" y="1228" width="72" height="72"/>
+      </g>
+      <path d="M812 1264H824" stroke="#26344A" stroke-width="5" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <g id="post-hud" data-role="hud" data-layer="整备操作层" aria-label="整备标题与全部整理操作">
+    <g id="post-reward-header" data-role="panel" aria-label="战斗胜利与奖励步骤">
+      <rect x="48" y="56" width="984" height="110" rx="28" fill="#26344A" stroke="#26344A" stroke-width="6"/>
+      <path d="M48 84Q48 56 76 56H130V166H76Q48 166 48 138Z" fill="#FFC94D"/>
+      <path d="M70 92L88 110L116 78" fill="none" stroke="#26344A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="154" y="105" class="pb-title pb-white">战斗胜利 · 战利品整备</text>
+      <text x="154" y="140" class="pb-small pb-pale">01 选装备  /  02 理空间  /  03 回矿区</text>
+      <g data-role="label" aria-label="普通胜利恢复最大生命百分之十">
+        <rect x="770" y="80" width="232" height="62" rx="22" fill="#2AB7A9"/>
+        <use href="#post-shield" x="782" y="89" width="44" height="44"/>
+        <text x="838" y="106" class="pb-small pb-white">普通胜利</text>
+        <text x="838" y="130" class="pb-label pb-white">生命恢复 10%</text>
+      </g>
+    </g>
+
+    <g id="post-inventory-tools" data-role="panel" aria-label="旋转、移动、替换、丢弃与跳过奖励">
+      <rect x="48" y="1390" width="984" height="260" rx="30" fill="#E9F0DF" stroke="#26344A" stroke-width="6"/>
+      <g id="post-rotate-item" data-role="button" data-action="rotate-item" data-state="default" role="button" tabindex="0" aria-label="顺时针旋转选中装备九十度">
+        <rect x="72" y="1414" width="216" height="112" rx="24" fill="#FFF8E8" stroke="#26344A" stroke-width="5"/>
+        <use href="#post-rotate" x="90" y="1436" width="64" height="64"/>
+        <text x="166" y="1464" class="pb-button-label">旋转</text>
+        <text x="166" y="1492" class="pb-small pb-blue">顺时针 90°</text>
+      </g>
+      <g id="post-move-item" data-role="button" data-action="move-item" data-state="selected" role="button" tabindex="0" aria-label="移动选中物品，当前已选中">
+        <rect x="304" y="1414" width="216" height="112" rx="24" fill="#FFC94D" stroke="#26344A" stroke-width="7"/>
+        <use href="#post-move" x="322" y="1436" width="64" height="64"/>
+        <text x="398" y="1464" class="pb-button-label">移动</text>
+        <text x="398" y="1492" class="pb-small">选择目标格</text>
+      </g>
+      <g id="post-replace-item" data-role="button" data-action="replace-item" data-state="default" role="button" tabindex="0" aria-label="替换选中物品与目标物品">
+        <rect x="536" y="1414" width="216" height="112" rx="24" fill="#FFF8E8" stroke="#26344A" stroke-width="5"/>
+        <use href="#post-replace" x="554" y="1436" width="64" height="64"/>
+        <text x="630" y="1464" class="pb-button-label">替换</text>
+        <text x="630" y="1492" class="pb-small pb-blue">交换占用格</text>
+      </g>
+      <g id="post-discard-item" data-role="button" data-action="discard-item" data-state="default" role="button" tabindex="0" aria-label="丢弃选中物品，需要二次确认">
+        <rect x="768" y="1414" width="216" height="112" rx="24" fill="#FDE1D8" stroke="#26344A" stroke-width="5"/>
+        <use href="#post-discard" x="786" y="1436" width="64" height="64"/>
+        <text x="862" y="1464" class="pb-button-label">丢弃</text>
+        <text x="862" y="1492" class="pb-small pb-coral">需要确认</text>
+      </g>
+      <g id="post-skip-reward" data-role="button" data-action="skip-reward" data-state="default" role="button" tabindex="0" aria-label="跳过本次装备三选一奖励，需要二次确认">
+        <rect x="72" y="1546" width="912" height="76" rx="24" fill="#FFF8E8" stroke="#26344A" stroke-width="5"/>
+        <use href="#post-skip" x="96" y="1558" width="52" height="52"/>
+        <text x="166" y="1581" class="pb-label">跳过装备奖励</text>
+        <text x="166" y="1606" class="pb-small pb-blue">放弃本次三选一 · 不影响资源整理</text>
+        <rect x="800" y="1564" width="156" height="40" rx="20" fill="#F0E9D7"/>
+        <text x="878" y="1591" text-anchor="middle" class="pb-small">二次确认</text>
+      </g>
+    </g>
+
+    <g id="post-continue" data-role="button" data-action="continue-deeper" data-state="disabled" role="button" tabindex="0" aria-label="完成整备并返回矿区，当前有一件资源待拾取">
+      <rect x="48" y="1690" width="984" height="120" rx="30" fill="#A9B9B2" stroke="#26344A" stroke-width="7"/>
+      <path d="M72 1712H1008" stroke="#D8E2D8" stroke-width="6" stroke-linecap="round"/>
+      <text x="104" y="1750" font-size="32" font-weight="900" class="pb-white">完成整备 · 返回矿区</text>
+      <text x="104" y="1786" class="pb-label pb-white">还需处理：1 件掉落资源</text>
+      <circle cx="928" cy="1750" r="42" fill="#FFF8E8" stroke="#26344A" stroke-width="5"/>
+      <path d="M912 1750H944M932 1734L948 1750L932 1766" fill="none" stroke="#26344A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <g id="post-overlay" data-role="overlay" data-layer="整备提示层" aria-label="奖励选择与空间冲突提示">
+    <g data-role="label" aria-label="已选择巡矿护甲，请选择合法落格">
+      <rect x="326" y="532" width="428" height="48" rx="22" fill="#26344A"/>
+      <circle cx="352" cy="556" r="8" fill="#FFC94D"/>
+      <text x="372" y="564" class="pb-label pb-white">已选巡矿护甲 · 点击目标格确认落格</text>
+    </g>
+    <g data-role="label" aria-label="安全箱保底提示">
+      <rect x="510" y="1162" width="202" height="38" rx="19" fill="#FFC94D" stroke="#26344A" stroke-width="3"/>
+      <text x="611" y="1188" text-anchor="middle" class="pb-small">保底空间 · 固定 2 格</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,275 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920"
+     data-category="screens" data-tags="仓库,矿石,玉石,开矿,1080x1920" data-version="0.1.0" data-scene-id="SC-002">
+  <title>矿脉行者 · 仓库</title>
+  <desc>明亮手绘矿场仓库，支持矿石与玉石页签切换、矿石选择、单个开矿和批量开矿，并展示选中项与最近开矿结果。</desc>
+  <style>
+    text { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; }
+    .warehouse-outline { stroke: #26344A; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+    .warehouse-thin { stroke: #26344A; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .warehouse-detail { stroke: #26344A; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .warehouse-title { fill: #26344A; font-size: 44px; font-weight: 900; letter-spacing: 2px; }
+    .warehouse-heading { fill: #26344A; font-size: 30px; font-weight: 800; }
+    .warehouse-label { fill: #26344A; font-size: 24px; font-weight: 700; }
+    .warehouse-small { fill: #52647A; font-size: 20px; font-weight: 600; }
+    .warehouse-number { fill: #26344A; font-size: 32px; font-weight: 900; }
+    .warehouse-button-text { fill: #26344A; font-size: 32px; font-weight: 900; text-anchor: middle; }
+  </style>
+  <defs>
+    <linearGradient id="warehouse-wall-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#B9E5DA"/>
+      <stop offset="1" stop-color="#E8E5BC"/>
+    </linearGradient>
+    <linearGradient id="warehouse-gold-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE38A"/>
+      <stop offset="1" stop-color="#FFC94D"/>
+    </linearGradient>
+    <symbol id="warehouse-bolt" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="8" fill="#FFF3C4" stroke="#26344A" stroke-width="3"/>
+      <path d="M6 10H14" fill="none" stroke="#26344A" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="warehouse-spark" viewBox="0 0 40 40">
+      <path d="M20 3L25 15L37 20L25 25L20 37L15 25L3 20L15 15Z" fill="#FFF7B2" stroke="#26344A" stroke-width="2.5" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="warehouse-ore" viewBox="0 0 160 140">
+      <path d="M18 91L12 53L37 22L82 10L125 26L148 65L136 111L97 131L47 124Z" fill="currentColor" stroke="#26344A" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M37 22L63 56L12 53Z" fill="#FFFFFF" opacity="0.24"/>
+      <path d="M63 56L82 10L125 26L107 67Z" fill="#FFFFFF" opacity="0.16"/>
+      <path d="M18 91L63 56L97 131L47 124Z" fill="#26344A" opacity="0.14"/>
+      <path d="M63 56L107 67L136 111L97 131Z" fill="#26344A" opacity="0.22"/>
+      <path d="M55 75L70 42L96 48L110 82L84 103Z" fill="#A8F3DE" stroke="#26344A" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M70 42L84 103M55 75L110 82M96 48L55 75" fill="none" stroke="#2AB7A9" stroke-width="3"/>
+      <path d="M29 46L42 34" fill="none" stroke="#FFFDF4" stroke-width="7" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="warehouse-jade" viewBox="0 0 140 140">
+      <path d="M70 7L112 32L130 78L104 121L59 133L18 105L10 57L35 20Z" fill="currentColor" stroke="#26344A" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M70 7L72 73L35 20Z" fill="#FFFFFF" opacity="0.42"/>
+      <path d="M72 73L112 32L130 78L104 121Z" fill="#26344A" opacity="0.16"/>
+      <path d="M10 57L72 73L59 133L18 105Z" fill="#FFFFFF" opacity="0.15"/>
+      <path d="M72 73L70 7M72 73L130 78M72 73L59 133M72 73L10 57" fill="none" stroke="#26344A" stroke-width="3" opacity="0.55"/>
+      <path d="M42 36L55 25" fill="none" stroke="#FFFDF4" stroke-width="7" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="warehouse-cell" viewBox="0 0 284 270">
+      <rect x="4" y="8" width="276" height="258" rx="26" fill="#26344A" opacity="0.12"/>
+      <rect x="0" y="0" width="276" height="258" rx="26" fill="#FFFDF4" stroke="#26344A" stroke-width="4"/>
+      <rect x="16" y="16" width="244" height="156" rx="20" fill="#E4F1F5"/>
+      <path d="M18 193H258" stroke="#D9CAA8" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="warehouse-jade-chip" viewBox="0 0 54 54">
+      <path d="M27 3L46 15L50 35L34 51L13 46L4 27L12 9Z" fill="currentColor" stroke="#26344A" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M27 3L28 31L12 9Z" fill="#FFFFFF" opacity="0.38"/>
+    </symbol>
+  </defs>
+
+  <g id="warehouse-background" data-role="background" data-layer="背景层" aria-label="矿场仓库背景">
+    <rect width="1080" height="1920" fill="url(#warehouse-wall-gradient)"/>
+    <path d="M0 0H1080V72H0ZM0 1690H1080V1760H0Z" fill="#4D77A8"/>
+    <path d="M28 72H64V1690H28ZM1016 72H1052V1690H1016Z" fill="#9B653F" stroke="#26344A" stroke-width="5"/>
+    <path d="M0 226L1080 85V133L0 274Z" fill="#B77948" stroke="#26344A" stroke-width="6"/>
+    <path d="M0 1608L1080 1470V1520L0 1658Z" fill="#B77948" stroke="#26344A" stroke-width="6" opacity="0.5"/>
+    <g opacity="0.5" stroke="#6C9E96" stroke-width="4" stroke-linecap="round">
+      <path d="M106 314H310M780 286H982M92 1180H286M806 1250H1000"/>
+      <path d="M86 1360H248M850 1368H1004M104 1590H284"/>
+    </g>
+    <g id="warehouse-background-shelves" data-role="decoration" aria-label="仓库木架与矿灯">
+      <path d="M70 530H240V550H70ZM840 540H1010V560H840Z" fill="#9B653F" stroke="#26344A" stroke-width="4"/>
+      <path d="M90 550V630M220 550V630M860 560V640M990 560V640" stroke="#26344A" stroke-width="6"/>
+      <path d="M96 514L107 463H148L158 514Z" fill="#F25F5C" stroke="#26344A" stroke-width="4"/>
+      <path d="M874 524L883 476H929L941 524Z" fill="#2AB7A9" stroke="#26344A" stroke-width="4"/>
+      <path d="M152 0V96M928 0V96" stroke="#26344A" stroke-width="5"/>
+      <path d="M116 131L127 95H177L189 131Z" fill="#FFC94D" stroke="#26344A" stroke-width="5"/>
+      <rect x="124" y="129" width="57" height="59" rx="17" fill="#FFF0A6" stroke="#26344A" stroke-width="4"/>
+      <path d="M892 131L903 95H953L965 131Z" fill="#FFC94D" stroke="#26344A" stroke-width="5"/>
+      <rect x="900" y="129" width="57" height="59" rx="17" fill="#FFF0A6" stroke="#26344A" stroke-width="4"/>
+    </g>
+    <path d="M0 1760H1080V1920H0Z" fill="#C69C68"/>
+    <path d="M0 1830H1080M190 1760L144 1920M850 1760L902 1920" stroke="#9B744F" stroke-width="5" opacity="0.5"/>
+  </g>
+
+  <g id="warehouse-content" data-role="layer" data-layer="内容层" aria-label="仓库库存与开矿摘要">
+    <g id="warehouse-grid" data-role="panel" aria-label="矿石库存网格，内容超高时内部滚动">
+      <rect x="56" y="390" width="984" height="780" rx="34" fill="#26344A" opacity="0.14"/>
+      <rect x="48" y="380" width="984" height="780" rx="34" fill="#FFF4D6" class="warehouse-outline"/>
+      <text x="82" y="435" class="warehouse-heading">矿石货架</text>
+      <text x="82" y="466" class="warehouse-small">每件独立存放 · 点击选择要开启的矿石</text>
+      <rect x="800" y="405" width="196" height="50" rx="25" fill="#DDF5E9" class="warehouse-detail"/>
+      <text x="898" y="439" class="warehouse-label" text-anchor="middle">共 24 件</text>
+
+      <g id="warehouse-ore-1" data-role="item" data-action="select-ore" data-state="selected"
+         role="button" tabindex="0" aria-label="选择青晶矿石，库存 6 件">
+        <use href="#warehouse-cell" x="80" y="492" width="284" height="270"/>
+        <rect x="76" y="488" width="284" height="266" rx="28" fill="none" stroke="#FFC94D" stroke-width="9"/>
+        <use href="#warehouse-ore" x="133" y="514" width="166" height="145" color="#4D77A8"/>
+        <use href="#warehouse-spark" x="274" y="512" width="34" height="34"/>
+        <text x="100" y="710" class="warehouse-label">青晶矿石</text>
+        <text x="100" y="739" class="warehouse-small">清透晶脉</text>
+        <rect x="279" y="680" width="58" height="51" rx="17" fill="#2AB7A9" class="warehouse-detail"/>
+        <text x="308" y="715" class="warehouse-label" text-anchor="middle">6</text>
+        <circle cx="329" cy="507" r="20" fill="#FFC94D" class="warehouse-detail"/>
+        <path d="M319 507L326 514L339 499" fill="none" class="warehouse-detail"/>
+      </g>
+
+      <g id="warehouse-ore-2" data-role="item" data-action="select-ore" data-state="default"
+         role="button" tabindex="0" aria-label="选择金晖矿石，库存 5 件">
+        <use href="#warehouse-cell" x="392" y="492" width="284" height="270"/>
+        <use href="#warehouse-ore" x="445" y="514" width="166" height="145" color="#D6A83D"/>
+        <text x="412" y="710" class="warehouse-label">金晖矿石</text>
+        <text x="412" y="739" class="warehouse-small">暖金断口</text>
+        <rect x="591" y="680" width="58" height="51" rx="17" fill="#FFF0B9" class="warehouse-detail"/>
+        <text x="620" y="715" class="warehouse-label" text-anchor="middle">5</text>
+      </g>
+
+      <g id="warehouse-ore-3" data-role="item" data-action="select-ore" data-state="default"
+         role="button" tabindex="0" aria-label="选择珊红矿石，库存 4 件">
+        <use href="#warehouse-cell" x="704" y="492" width="284" height="270"/>
+        <use href="#warehouse-ore" x="757" y="514" width="166" height="145" color="#F25F5C"/>
+        <text x="724" y="710" class="warehouse-label">珊红矿石</text>
+        <text x="724" y="739" class="warehouse-small">赤色岩纹</text>
+        <rect x="903" y="680" width="58" height="51" rx="17" fill="#FFE0D7" class="warehouse-detail"/>
+        <text x="932" y="715" class="warehouse-label" text-anchor="middle">4</text>
+      </g>
+
+      <g id="warehouse-ore-4" data-role="item" data-action="select-ore" data-state="default"
+         role="button" tabindex="0" aria-label="选择湖蓝矿石，库存 4 件">
+        <use href="#warehouse-cell" x="80" y="790" width="284" height="270"/>
+        <use href="#warehouse-ore" x="133" y="812" width="166" height="145" color="#2AB7A9"/>
+        <text x="100" y="1008" class="warehouse-label">湖蓝矿石</text>
+        <text x="100" y="1037" class="warehouse-small">深潭晶光</text>
+        <rect x="279" y="978" width="58" height="51" rx="17" fill="#DDF5E9" class="warehouse-detail"/>
+        <text x="308" y="1013" class="warehouse-label" text-anchor="middle">4</text>
+      </g>
+
+      <g id="warehouse-ore-5" data-role="item" data-action="select-ore" data-state="default"
+         role="button" tabindex="0" aria-label="选择岩蓝矿石，库存 3 件">
+        <use href="#warehouse-cell" x="392" y="790" width="284" height="270"/>
+        <use href="#warehouse-ore" x="445" y="812" width="166" height="145" color="#4D77A8"/>
+        <path d="M470 862L504 846L531 866L502 886Z" fill="#FFC94D" class="warehouse-detail"/>
+        <text x="412" y="1008" class="warehouse-label">岩蓝矿石</text>
+        <text x="412" y="1037" class="warehouse-small">层叠矿壳</text>
+        <rect x="591" y="978" width="58" height="51" rx="17" fill="#E4F1F5" class="warehouse-detail"/>
+        <text x="620" y="1013" class="warehouse-label" text-anchor="middle">3</text>
+      </g>
+
+      <g id="warehouse-ore-6" data-role="item" data-action="select-ore" data-state="default"
+         role="button" tabindex="0" aria-label="选择蜜黄石矿石，库存 2 件">
+        <use href="#warehouse-cell" x="704" y="790" width="284" height="270"/>
+        <use href="#warehouse-ore" x="757" y="812" width="166" height="145" color="#E7B956"/>
+        <text x="724" y="1008" class="warehouse-label">蜜黄矿石</text>
+        <text x="724" y="1037" class="warehouse-small">细腻金线</text>
+        <rect x="903" y="978" width="58" height="51" rx="17" fill="#FFF0B9" class="warehouse-detail"/>
+        <text x="932" y="1013" class="warehouse-label" text-anchor="middle">2</text>
+      </g>
+
+      <g data-role="label" aria-label="库存滚动提示">
+        <rect x="386" y="1090" width="308" height="46" rx="23" fill="#E9DDBE"/>
+        <path d="M419 1104V1122M412 1115L419 1122L426 1115" fill="none" class="warehouse-detail"/>
+        <text x="548" y="1121" class="warehouse-small" text-anchor="middle">上下滑动查看更多库存</text>
+      </g>
+      <rect x="1010" y="491" width="8" height="617" rx="4" fill="#D9CAA8"/>
+      <rect x="1010" y="491" width="8" height="216" rx="4" fill="#4D77A8"/>
+    </g>
+
+    <g id="warehouse-selection" data-role="panel" aria-label="选中矿石与最近开矿结果摘要">
+      <rect x="56" y="1206" width="984" height="180" rx="30" fill="#26344A" opacity="0.14"/>
+      <rect x="48" y="1196" width="984" height="180" rx="30" fill="#FFF4D6" class="warehouse-outline"/>
+      <rect x="68" y="1216" width="140" height="140" rx="25" fill="#DDEAF2" class="warehouse-thin"/>
+      <use href="#warehouse-ore" x="79" y="1231" width="120" height="105" color="#4D77A8"/>
+      <circle cx="190" cy="1233" r="16" fill="#FFC94D" class="warehouse-detail"/>
+      <path d="M182 1233L188 1239L198 1227" fill="none" class="warehouse-detail"/>
+      <text x="234" y="1243" class="warehouse-heading">青晶矿石</text>
+      <text x="234" y="1281" class="warehouse-small">已选中 1 件 · 库存 6 件</text>
+      <rect x="232" y="1303" width="216" height="42" rx="21" fill="#DDF5E9"/>
+      <text x="340" y="1332" class="warehouse-small" text-anchor="middle">开启后必得 1 件玉石</text>
+      <path d="M502 1224V1348" stroke="#D9CAA8" stroke-width="3"/>
+      <text x="536" y="1243" class="warehouse-label">最近开矿</text>
+      <text x="996" y="1243" class="warehouse-small" text-anchor="end">新收藏已入库</text>
+      <rect x="534" y="1264" width="462" height="82" rx="22" fill="#DDF5E9" class="warehouse-detail"/>
+      <use href="#warehouse-jade-chip" x="550" y="1278" width="54" height="54" color="#2AB7A9"/>
+      <text x="622" y="1300" class="warehouse-label">青髓玉</text>
+      <text x="622" y="1330" class="warehouse-small">精良品质 · 数量 +1</text>
+      <rect x="859" y="1282" width="111" height="43" rx="21" fill="#2AB7A9"/>
+      <text x="914" y="1312" font-size="22" font-weight="800" fill="#FFFDF4" text-anchor="middle">收藏 17</text>
+    </g>
+  </g>
+
+  <g id="warehouse-hud" data-role="hud" data-layer="HUD 层" aria-label="仓库导航与开矿操作">
+    <g id="warehouse-header" data-role="panel" aria-label="仓库标题与库存摘要">
+      <rect x="56" y="82" width="984" height="140" rx="32" fill="#26344A" opacity="0.15"/>
+      <rect x="48" y="72" width="984" height="140" rx="32" fill="#FFF4D6" class="warehouse-outline"/>
+      <g id="warehouse-back-base" data-role="button" data-action="back-base" data-state="default"
+         role="button" tabindex="0" aria-label="返回基地">
+        <rect x="68" y="92" width="100" height="100" rx="27" fill="#2AB7A9" class="warehouse-thin"/>
+        <path d="M137 117L108 142L137 167M110 142H149" fill="none" class="warehouse-outline"/>
+      </g>
+      <text x="194" y="134" class="warehouse-title">行者仓库</text>
+      <text x="197" y="174" class="warehouse-small">把矿脉里的光，收进收藏架</text>
+      <path d="M622 96V188" stroke="#D9CAA8" stroke-width="3"/>
+      <g data-role="label" aria-label="矿石与玉石库存总数">
+        <use href="#warehouse-ore" x="651" y="101" width="76" height="67" color="#4D77A8"/>
+        <text x="729" y="132" class="warehouse-number">24</text>
+        <text x="690" y="178" class="warehouse-small" text-anchor="middle">矿石</text>
+        <use href="#warehouse-jade" x="828" y="96" width="78" height="78" color="#2AB7A9"/>
+        <text x="913" y="132" class="warehouse-number">17</text>
+        <text x="870" y="178" class="warehouse-small" text-anchor="middle">玉石</text>
+      </g>
+    </g>
+
+    <g id="warehouse-tabs" data-role="panel" aria-label="矿石与玉石页签">
+      <rect x="48" y="244" width="984" height="104" rx="30" fill="#E6D9B9" class="warehouse-outline"/>
+      <g id="warehouse-tab-ore" data-role="control" data-action="tab-ore" data-state="selected"
+         role="tab" tabindex="0" aria-label="切换到矿石页" aria-selected="true">
+        <rect x="62" y="256" width="468" height="80" rx="23" fill="url(#warehouse-gold-gradient)" class="warehouse-thin"/>
+        <use href="#warehouse-ore" x="92" y="267" width="66" height="58" color="#4D77A8"/>
+        <text x="316" y="308" class="warehouse-button-text">矿石库存</text>
+        <text x="483" y="306" class="warehouse-label" text-anchor="middle">24</text>
+      </g>
+      <g id="warehouse-tab-jade" data-role="control" data-action="tab-jade" data-state="default"
+         role="tab" tabindex="0" aria-label="切换到玉石页" aria-selected="false">
+        <rect x="550" y="256" width="468" height="80" rx="23" fill="#FFFDF4" class="warehouse-thin"/>
+        <use href="#warehouse-jade" x="584" y="267" width="60" height="60" color="#2AB7A9"/>
+        <text x="803" y="308" class="warehouse-button-text">玉石收藏</text>
+        <text x="971" y="306" class="warehouse-label" text-anchor="middle">17</text>
+      </g>
+    </g>
+
+    <g id="warehouse-actions" data-role="panel" aria-label="固定开矿操作区">
+      <rect x="48" y="1420" width="984" height="128" rx="34" fill="#E9F3DC" opacity="0.8"/>
+      <g id="warehouse-open-selected" data-role="button" data-action="open-selected" data-state="ready"
+         role="button" tabindex="0" aria-label="开启选中的 1 件青晶矿石">
+        <rect x="56" y="1430" width="394" height="112" rx="30" fill="#26344A" opacity="0.2"/>
+        <rect x="48" y="1420" width="402" height="112" rx="30" fill="#2AB7A9" class="warehouse-outline"/>
+        <path d="M87 1473L120 1444L153 1473L137 1510H103Z" fill="#FFF4D6" class="warehouse-thin"/>
+        <path d="M120 1444V1481M87 1473H153" fill="none" class="warehouse-detail"/>
+        <text x="292" y="1477" class="warehouse-button-text">单个开矿</text>
+        <text x="292" y="1509" class="warehouse-small" text-anchor="middle">消耗选中的 1 件</text>
+      </g>
+      <g id="warehouse-open-batch" data-role="button" data-action="open-batch" data-state="ready"
+         role="button" tabindex="0" aria-label="批量开启本次选中的全部矿石">
+        <rect x="486" y="1430" width="546" height="112" rx="30" fill="#26344A" opacity="0.22"/>
+        <rect x="478" y="1420" width="554" height="112" rx="30" fill="url(#warehouse-gold-gradient)" class="warehouse-outline"/>
+        <use href="#warehouse-jade-chip" x="510" y="1452" width="54" height="54" color="#F25F5C"/>
+        <use href="#warehouse-jade-chip" x="534" y="1440" width="54" height="54" color="#2AB7A9"/>
+        <text x="792" y="1477" class="warehouse-button-text">批量开矿</text>
+        <text x="792" y="1509" class="warehouse-small" text-anchor="middle">确认数量 · 汇总入库</text>
+        <path d="M974 1457L995 1476L974 1495" fill="none" class="warehouse-thin"/>
+      </g>
+    </g>
+    <g data-role="label" aria-label="开矿规则提示">
+      <rect x="200" y="1594" width="680" height="58" rx="29" fill="#FFF4D6" class="warehouse-thin"/>
+      <circle cx="237" cy="1623" r="13" fill="#4D77A8"/>
+      <text x="237" y="1630" font-size="20" font-weight="900" fill="#FFFDF4" text-anchor="middle">i</text>
+      <text x="556" y="1632" class="warehouse-label" text-anchor="middle">仅仓库矿石可开启，结果自动进入玉石收藏</text>
+    </g>
+  </g>
+
+  <g id="warehouse-overlay" data-role="overlay" data-layer="遮罩层" aria-label="仓库页脚装饰" pointer-events="none">
+    <g data-role="decoration" aria-label="四类玉石收藏预览">
+      <text x="540" y="1730" class="warehouse-small" text-anchor="middle">青髓 · 金晖 · 珊霞 · 蓝晶</text>
+      <use href="#warehouse-jade-chip" x="406" y="1754" width="54" height="54" color="#2AB7A9"/>
+      <use href="#warehouse-jade-chip" x="482" y="1754" width="54" height="54" color="#FFC94D"/>
+      <use href="#warehouse-jade-chip" x="558" y="1754" width="54" height="54" color="#F25F5C"/>
+      <use href="#warehouse-jade-chip" x="634" y="1754" width="54" height="54" color="#4D77A8"/>
+      <path d="M348 1781H390M704 1781H746" stroke="#26344A" stroke-width="4" stroke-linecap="round" opacity="0.35"/>
+      <text x="540" y="1850" class="warehouse-small" text-anchor="middle">种类与品质分别收藏，不进行打造</text>
+    </g>
+  </g>
+</svg>

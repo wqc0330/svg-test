@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920"
+     data-category="screens" data-tags="基地,主界面,矿场,1080x1920" data-version="0.1.0" data-scene-id="SC-001">
+  <title>矿脉行者 · 基地主界面</title>
+  <desc>明亮卡通手绘矿场基地，展示体力与仓库资源摘要，并提供开始下矿和进入仓库两项操作。</desc>
+  <style>
+    text { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; }
+    .base-outline { stroke: #26344A; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+    .base-thin { stroke: #26344A; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .base-detail { stroke: #26344A; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .base-title { fill: #26344A; font-size: 44px; font-weight: 900; letter-spacing: 2px; }
+    .base-heading { fill: #26344A; font-size: 30px; font-weight: 800; }
+    .base-label { fill: #26344A; font-size: 24px; font-weight: 700; }
+    .base-small { fill: #52647A; font-size: 20px; font-weight: 600; }
+    .base-number { fill: #26344A; font-size: 30px; font-weight: 900; }
+    .base-button-text { fill: #26344A; font-size: 34px; font-weight: 900; text-anchor: middle; }
+    .base-white { fill: #FFFDF4; }
+  </style>
+  <defs>
+    <linearGradient id="base-sky-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#BDEFE4"/>
+      <stop offset="1" stop-color="#F9F1C9"/>
+    </linearGradient>
+    <linearGradient id="base-rock-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6E9AC3"/>
+      <stop offset="1" stop-color="#4D77A8"/>
+    </linearGradient>
+    <linearGradient id="base-gold-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE38A"/>
+      <stop offset="1" stop-color="#FFC94D"/>
+    </linearGradient>
+    <clipPath id="base-scene-clip">
+      <rect x="48" y="244" width="984" height="760" rx="42"/>
+    </clipPath>
+    <symbol id="base-bolt" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="8" fill="#FFF3C4" stroke="#26344A" stroke-width="3"/>
+      <path d="M6 10H14" fill="none" stroke="#26344A" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="base-crystal" viewBox="0 0 90 110">
+      <path d="M45 5L72 29L82 72L57 103L24 97L8 64L18 25Z" fill="#2AB7A9" stroke="#26344A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M45 5L48 68L18 25Z" fill="#8CF1D9"/>
+      <path d="M48 68L82 72L57 103Z" fill="#168E8B"/>
+      <path d="M18 25L48 68L8 64Z" fill="#55D7C1"/>
+      <path d="M48 68L72 29" fill="none" stroke="#26344A" stroke-width="3"/>
+      <path d="M28 31L37 23" fill="none" stroke="#FFFDF4" stroke-width="6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="base-ore-icon" viewBox="0 0 70 70">
+      <path d="M12 46L8 31L21 14L42 9L60 23L63 43L48 60L25 61Z" fill="#4D77A8" stroke="#26344A" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M20 35L29 21L43 24L49 39L36 49Z" fill="#8CF1D9" stroke="#26344A" stroke-width="3"/>
+      <path d="M29 21L36 49M20 35L49 39" fill="none" stroke="#2AB7A9" stroke-width="3"/>
+    </symbol>
+    <symbol id="base-jade-icon" viewBox="0 0 70 70">
+      <path d="M35 6L58 23L54 49L34 64L11 48L13 21Z" fill="#2AB7A9" stroke="#26344A" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M35 6L36 42L13 21Z" fill="#9AF2D9"/>
+      <path d="M36 42L58 23L54 49L34 64Z" fill="#168E8B"/>
+    </symbol>
+    <symbol id="base-grass" viewBox="0 0 80 50">
+      <path d="M8 44Q18 17 25 40Q31 7 39 39Q50 12 53 40Q64 20 72 44Z" fill="#68C976" stroke="#26344A" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="base-spark" viewBox="0 0 40 40">
+      <path d="M20 3L25 15L37 20L25 25L20 37L15 25L3 20L15 15Z" fill="#FFF7B2" stroke="#26344A" stroke-width="2.5" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+
+  <g id="base-background" data-role="background" data-layer="背景层" aria-label="明亮矿场背景">
+    <rect width="1080" height="1920" fill="url(#base-sky-gradient)"/>
+    <circle cx="900" cy="300" r="112" fill="#FFE38A" opacity="0.9"/>
+    <path d="M0 492L128 363L235 441L376 278L518 425L662 315L792 438L930 340L1080 478V894H0Z" fill="#8DC9C0"/>
+    <path d="M0 628L155 499L274 572L429 432L572 589L752 455L902 583L1080 470V972H0Z" fill="#72AEA6"/>
+    <path d="M0 916Q159 817 328 898T666 874T1080 884V1920H0Z" fill="#9AD67E"/>
+    <path d="M0 1508Q217 1414 400 1512T760 1494T1080 1472V1920H0Z" fill="#79BE6C"/>
+    <g fill="#FFFDF4" opacity="0.72">
+      <path d="M85 311Q97 275 137 290Q157 250 201 278Q237 274 247 311Z"/>
+      <path d="M707 202Q723 169 758 185Q784 145 823 179Q859 174 875 207H707Z"/>
+    </g>
+    <g opacity="0.45" fill="#FFFDF4">
+      <circle cx="93" cy="1160" r="7"/><circle cx="1000" cy="1090" r="8"/>
+      <circle cx="101" cy="1280" r="5"/><circle cx="968" cy="1580" r="6"/>
+    </g>
+  </g>
+
+  <g id="base-content" data-role="layer" data-layer="内容层" aria-label="基地场景与资源摘要">
+    <g id="base-scene" data-role="panel" aria-label="卡通矿场主画面">
+      <rect x="56" y="254" width="984" height="760" rx="42" fill="#26344A" opacity="0.16"/>
+      <rect x="48" y="244" width="984" height="760" rx="42" fill="#BDEFE4" class="base-outline"/>
+      <g clip-path="url(#base-scene-clip)">
+        <rect x="48" y="244" width="984" height="760" fill="#BDEFE4"/>
+        <circle cx="859" cy="391" r="82" fill="#FFE38A"/>
+        <path d="M48 540L168 408L284 491L403 340L541 478L685 366L825 479L950 379L1032 456V768H48Z" fill="#8CC8BD"/>
+        <path d="M48 627L177 519L285 583L421 466L573 600L724 481L880 594L1032 508V805H48Z" fill="#6CA99E"/>
+        <path d="M48 727Q234 633 389 710T706 696T1032 677V1004H48Z" fill="#8FD17B"/>
+        <path d="M48 845Q241 763 429 837T751 822T1032 801V1004H48Z" fill="#6DBA67"/>
+
+        <path d="M77 722L96 491L180 406L310 432L365 546L345 780Z" fill="url(#base-rock-gradient)" class="base-outline"/>
+        <path d="M101 508L177 446L200 526L149 574Z" fill="#86ACCD"/>
+        <path d="M259 452L311 480L337 552L284 529Z" fill="#3E668F"/>
+        <path d="M92 655L149 594L192 625L163 710Z" fill="#416B96"/>
+        <path d="M761 701L782 491L869 424L980 470L1032 591V792Z" fill="url(#base-rock-gradient)" class="base-outline"/>
+        <path d="M816 490L870 451L923 480L882 541Z" fill="#86ACCD"/>
+        <path d="M957 514L1006 578L1001 668L941 603Z" fill="#3E668F"/>
+
+        <path d="M258 785V527Q258 457 330 457H640Q713 457 713 527V785Z" fill="#9B653F" class="base-outline"/>
+        <path d="M309 785V548Q309 507 350 507H620Q662 507 662 548V785Z" fill="#26344A" class="base-outline"/>
+        <path d="M342 772V565Q342 542 367 542H601Q628 542 628 565V772Z" fill="#34465F"/>
+        <path d="M380 755V586Q380 570 397 570H575Q592 570 592 586V755Z" fill="#1E2C40"/>
+        <path d="M271 531H700M284 603H313M655 603H697M283 689H312M655 689H699" fill="none" class="base-thin"/>
+        <path d="M334 457V515M631 457V515M261 739H313M659 739H711" fill="none" class="base-thin"/>
+        <use href="#base-bolt" x="277" y="477" width="20" height="20"/>
+        <use href="#base-bolt" x="672" y="477" width="20" height="20"/>
+        <use href="#base-bolt" x="277" y="654" width="20" height="20"/>
+        <use href="#base-bolt" x="674" y="654" width="20" height="20"/>
+
+        <g id="base-scene-lamp" data-role="prop" aria-label="矿洞吊灯">
+          <path d="M485 457V506" fill="none" class="base-thin"/>
+          <path d="M450 534L460 504H510L522 534Z" fill="#FFC94D" class="base-thin"/>
+          <rect x="457" y="532" width="58" height="53" rx="17" fill="#FFE88C" class="base-thin"/>
+          <path d="M468 541V574M486 538V578M504 541V574" fill="none" class="base-detail"/>
+          <path d="M435 591Q485 622 537 591" fill="#FFE38A" opacity="0.35"/>
+        </g>
+
+        <path d="M115 846Q469 793 928 837L1005 1004H48Z" fill="#D7B47A" class="base-outline"/>
+        <path d="M108 893Q488 838 960 884M85 957Q505 899 990 944" fill="none" stroke="#A77B51" stroke-width="5" stroke-linecap="round"/>
+        <path d="M288 1004L430 797M610 1004L558 797" fill="none" stroke="#26344A" stroke-width="15"/>
+        <path d="M288 1004L430 797M610 1004L558 797" fill="none" stroke="#B8C4C8" stroke-width="8"/>
+        <g stroke="#26344A" stroke-width="7" stroke-linecap="round">
+          <path d="M359 920L637 920"/><path d="M383 876L614 876"/><path d="M408 837L590 837"/>
+          <path d="M324 975L657 975"/>
+        </g>
+
+        <g id="base-minecart" data-role="prop" aria-label="满载晶矿的轨道矿车">
+          <path d="M573 752L590 671L763 671L797 752Z" fill="#2AB7A9" class="base-outline"/>
+          <use href="#base-crystal" x="592" y="588" width="90" height="110"/>
+          <use href="#base-crystal" x="659" y="572" width="100" height="122"/>
+          <path d="M560 733H806L774 849H596Z" fill="#2AB7A9" class="base-outline"/>
+          <path d="M581 756H782L767 803H596Z" fill="#65D8C5"/>
+          <path d="M552 724H814V760H552Z" fill="#FFC94D" class="base-outline"/>
+          <path d="M612 850H759" fill="none" class="base-outline"/>
+          <circle cx="619" cy="862" r="35" fill="#26344A"/>
+          <circle cx="619" cy="862" r="17" fill="#B8C4C8" stroke="#FFF3C4" stroke-width="4"/>
+          <circle cx="756" cy="862" r="35" fill="#26344A"/>
+          <circle cx="756" cy="862" r="17" fill="#B8C4C8" stroke="#FFF3C4" stroke-width="4"/>
+          <use href="#base-bolt" x="573" y="728" width="20" height="20"/>
+          <use href="#base-bolt" x="773" y="728" width="20" height="20"/>
+        </g>
+
+        <g id="base-miner" data-role="character" aria-label="基地矿脉行者">
+          <path d="M205 865Q189 908 190 951H249L267 867Z" fill="#4D77A8" class="base-outline"/>
+          <path d="M271 866L284 951H343Q340 903 323 859Z" fill="#4D77A8" class="base-outline"/>
+          <path d="M180 950H253V977H172Q164 961 180 950Z" fill="#26344A" class="base-thin"/>
+          <path d="M281 950H350Q365 964 352 977H282Z" fill="#26344A" class="base-thin"/>
+          <path d="M192 697Q260 656 330 700L341 864Q265 905 188 862Z" fill="#F25F5C" class="base-outline"/>
+          <path d="M220 697V850M307 697V850" fill="none" stroke="#FFC94D" stroke-width="13"/>
+          <rect x="207" y="779" width="116" height="62" rx="16" fill="#2AB7A9" class="base-thin"/>
+          <path d="M189 725Q147 759 143 822" fill="none" stroke="#26344A" stroke-width="34" stroke-linecap="round"/>
+          <path d="M189 725Q153 758 151 816" fill="none" stroke="#F25F5C" stroke-width="22" stroke-linecap="round"/>
+          <circle cx="148" cy="831" r="22" fill="#F4B183" class="base-thin"/>
+          <path d="M328 722Q372 751 389 796" fill="none" stroke="#26344A" stroke-width="34" stroke-linecap="round"/>
+          <path d="M328 722Q366 751 380 792" fill="none" stroke="#F25F5C" stroke-width="22" stroke-linecap="round"/>
+          <circle cx="387" cy="807" r="22" fill="#F4B183" class="base-thin"/>
+          <path d="M218 584Q259 552 305 583V680Q262 717 218 678Z" fill="#F4B183" class="base-outline"/>
+          <path d="M215 623Q260 643 307 619V652Q262 680 216 653Z" fill="#D98B62"/>
+          <circle cx="240" cy="622" r="5" fill="#26344A"/><circle cx="283" cy="622" r="5" fill="#26344A"/>
+          <path d="M249 653Q263 662 277 651" fill="none" class="base-detail"/>
+          <path d="M194 593Q199 514 263 509Q328 515 333 593Z" fill="#FFC94D" class="base-outline"/>
+          <path d="M182 590H344V621H182Z" fill="#FFE38A" class="base-outline"/>
+          <path d="M243 511V544H285V512" fill="#F25F5C" class="base-thin"/>
+          <circle cx="264" cy="561" r="23" fill="#FFF6B0" class="base-thin"/>
+          <path d="M386 787L423 675" fill="none" stroke="#26344A" stroke-width="12" stroke-linecap="round"/>
+          <path d="M380 689Q428 647 467 684Q426 678 403 716" fill="#B8C4C8" class="base-thin"/>
+        </g>
+
+        <use href="#base-grass" x="75" y="796" width="80" height="50"/>
+        <use href="#base-grass" x="885" y="753" width="80" height="50"/>
+        <use href="#base-grass" x="816" y="921" width="80" height="50"/>
+        <use href="#base-crystal" x="872" y="672" width="66" height="81"/>
+        <use href="#base-spark" x="787" y="559" width="40" height="40"/>
+        <use href="#base-spark" x="390" y="403" width="30" height="30"/>
+        <g id="base-scene-sign" data-role="label" aria-label="矿场编号标牌">
+          <path d="M772 330L958 321L966 406L779 414Z" fill="#FFF4D6" class="base-thin"/>
+          <text x="870" y="365" class="base-label" text-anchor="middle">曜石矿场</text>
+          <text x="870" y="393" class="base-small" text-anchor="middle">01 号矿井</text>
+        </g>
+      </g>
+      <rect x="70" y="266" width="214" height="48" rx="24" fill="#FFF4D6" class="base-thin"/>
+      <circle cx="98" cy="290" r="9" fill="#2AB7A9"/>
+      <text x="120" y="299" class="base-label">今日矿况良好</text>
+    </g>
+
+    <g id="base-summary" data-role="panel" aria-label="仓库矿石与玉石摘要">
+      <rect x="56" y="1046" width="984" height="224" rx="32" fill="#26344A" opacity="0.14"/>
+      <rect x="48" y="1036" width="984" height="224" rx="32" fill="#FFF4D6" class="base-outline"/>
+      <text x="82" y="1084" class="base-heading">仓库收藏</text>
+      <text x="997" y="1082" class="base-small" text-anchor="end">每次归来，都有新发现</text>
+      <path d="M82 1104H998" fill="none" stroke="#D9CAA8" stroke-width="3" stroke-linecap="round"/>
+      <g data-role="label" aria-label="矿石库存 24 件">
+        <rect x="80" y="1122" width="434" height="106" rx="24" fill="#E4F1F5" class="base-thin"/>
+        <rect x="94" y="1135" width="80" height="80" rx="20" fill="#B7D6E6"/>
+        <use href="#base-ore-icon" x="101" y="1141" width="68" height="68"/>
+        <text x="198" y="1164" class="base-label">待开矿石</text>
+        <text x="198" y="1207" class="base-number">24 <tspan class="base-small">件</tspan></text>
+        <path d="M434 1152L458 1175L434 1198" fill="none" class="base-thin"/>
+      </g>
+      <g data-role="label" aria-label="玉石收藏 17 件">
+        <rect x="548" y="1122" width="452" height="106" rx="24" fill="#DDF5E9" class="base-thin"/>
+        <rect x="562" y="1135" width="80" height="80" rx="20" fill="#B9E7D8"/>
+        <use href="#base-jade-icon" x="569" y="1141" width="68" height="68"/>
+        <text x="666" y="1164" class="base-label">玉石收藏</text>
+        <text x="666" y="1207" class="base-number">17 <tspan class="base-small">件</tspan></text>
+        <path d="M922 1152L946 1175L922 1198" fill="none" class="base-thin"/>
+      </g>
+    </g>
+  </g>
+
+  <g id="base-hud" data-role="hud" data-layer="HUD 层" aria-label="基地信息与操作">
+    <g id="base-topbar" data-role="panel" aria-label="体力倒计时与资源摘要">
+      <rect x="56" y="82" width="984" height="140" rx="32" fill="#26344A" opacity="0.15"/>
+      <rect x="48" y="72" width="984" height="140" rx="32" fill="#FFF4D6" class="base-outline"/>
+      <rect x="68" y="91" width="102" height="102" rx="26" fill="#2AB7A9" class="base-thin"/>
+      <path d="M89 166V132Q89 111 119 111Q149 111 149 132V166Z" fill="#26344A" class="base-thin"/>
+      <path d="M83 169H155M100 166L92 183M139 166L147 183" fill="none" class="base-thin"/>
+      <circle cx="119" cy="132" r="11" fill="#FFC94D"/>
+      <text x="190" y="128" class="base-title">矿脉行者</text>
+      <text x="192" y="169" class="base-small">基地 · 整装再出发</text>
+      <path d="M468 94V190M789 94V190" fill="none" stroke="#D9CAA8" stroke-width="3"/>
+      <g id="base-stamina" data-role="label" aria-label="当前体力与恢复倒计时">
+        <path d="M502 101L522 101L512 124H531L498 159L506 132H490Z" fill="#FFC94D" class="base-detail"/>
+        <text x="542" y="119" class="base-label">体力</text>
+        <text x="757" y="119" class="base-small" text-anchor="end">14:32 后恢复</text>
+        <g id="base-stamina-bar" data-role="bar" data-value="8" data-max="10" aria-label="体力 8 / 10">
+          <rect x="500" y="139" width="257" height="30" rx="15" fill="#D8D5C4" class="base-detail"/>
+          <rect x="504" y="143" width="199" height="22" rx="11" fill="#2AB7A9"/>
+          <path d="M515 148H682" stroke="#8CF1D9" stroke-width="5" stroke-linecap="round"/>
+          <text x="628" y="163" font-size="20" font-weight="900" fill="#26344A" text-anchor="middle">8 / 10</text>
+        </g>
+        <text x="500" y="192" class="base-small">下矿消耗 2 点</text>
+      </g>
+      <g data-role="label" aria-label="基地资源数量">
+        <use href="#base-ore-icon" x="809" y="94" width="54" height="54"/>
+        <text x="870" y="132" class="base-number">24</text>
+        <use href="#base-jade-icon" x="929" y="94" width="54" height="54"/>
+        <text x="987" y="132" class="base-number" text-anchor="middle">17</text>
+        <text x="898" y="180" class="base-small" text-anchor="middle">矿石 · 玉石</text>
+      </g>
+    </g>
+
+    <g id="base-actions" data-role="panel" aria-label="基地操作区">
+      <rect x="48" y="1320" width="984" height="128" rx="34" fill="#E9F3DC" opacity="0.72"/>
+      <g id="base-open-warehouse" data-role="button" data-action="open-warehouse" data-state="default"
+         role="button" tabindex="0" aria-label="进入仓库">
+        <rect x="56" y="1330" width="326" height="112" rx="30" fill="#26344A" opacity="0.2"/>
+        <rect x="48" y="1320" width="326" height="112" rx="30" fill="#2AB7A9" class="base-outline"/>
+        <path d="M88 1365L130 1342L172 1365V1404H88Z" fill="#FFF4D6" class="base-thin"/>
+        <path d="M80 1365H180M111 1404V1378H147V1404" fill="none" class="base-thin"/>
+        <text x="260" y="1389" class="base-button-text">仓库</text>
+      </g>
+      <g id="base-start-run" data-role="button" data-action="start-run" data-state="ready"
+         role="button" tabindex="0" aria-label="消耗 2 点体力开始下矿">
+        <rect x="410" y="1330" width="622" height="112" rx="30" fill="#26344A" opacity="0.22"/>
+        <rect x="402" y="1320" width="630" height="112" rx="30" fill="url(#base-gold-gradient)" class="base-outline"/>
+        <path d="M443 1398L470 1350M436 1358Q472 1333 499 1358Q469 1353 451 1375" fill="none" class="base-thin"/>
+        <text x="712" y="1380" class="base-button-text" font-size="38">开始下矿</text>
+        <text x="712" y="1412" class="base-small" text-anchor="middle">消耗 2 点体力 · 生成 8 层新矿局</text>
+        <path d="M951 1359L978 1376L951 1393" fill="none" class="base-thin"/>
+      </g>
+    </g>
+    <g data-role="label" aria-label="基地当前状态">
+      <rect x="264" y="1500" width="552" height="54" rx="27" fill="#FFF4D6" class="base-thin"/>
+      <circle cx="299" cy="1527" r="10" fill="#2AB7A9"/>
+      <text x="540" y="1536" class="base-label" text-anchor="middle">体力充足，可以开始新的矿脉探索</text>
+    </g>
+  </g>
+
+  <g id="base-overlay" data-role="overlay" data-layer="遮罩层" aria-label="安全区装饰层" pointer-events="none">
+    <path d="M48 1742V1790Q48 1824 82 1824H126M1032 1742V1790Q1032 1824 998 1824H954" fill="none" stroke="#26344A" stroke-width="4" stroke-linecap="round" opacity="0.18"/>
+    <g data-role="decoration" aria-label="基地页脚装饰">
+      <path d="M454 1776H502M578 1776H626" stroke="#26344A" stroke-width="4" stroke-linecap="round" opacity="0.35"/>
+      <path d="M540 1759L557 1776L540 1793L523 1776Z" fill="#FFC94D" class="base-thin"/>
+      <text x="540" y="1847" class="base-small" text-anchor="middle">向深处走，把光带回来</text>
+    </g>
+  </g>
+</svg>

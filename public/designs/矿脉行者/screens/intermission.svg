@@ -1,0 +1,345 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920"
+     data-category="screens" data-tags="矿区,层间,敌人预告,储物摘要,1080x1920" data-version="0.1.0" data-scene-id="SC-003">
+  <title>矿脉行者 · 矿区层间页</title>
+  <desc>矿区第三层的整备决策画面，展示普通战敌人预告、逐层成长、当前生命、四件初始装备、背包与安全箱摘要，并提供继续深入和主动撤离。</desc>
+  <style>
+    text { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; }
+    .intermission-outline { stroke: #26344A; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+    .intermission-thin { stroke: #26344A; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .intermission-detail { stroke: #26344A; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .intermission-title { fill: #26344A; font-size: 42px; font-weight: 900; letter-spacing: 1px; }
+    .intermission-heading { fill: #26344A; font-size: 30px; font-weight: 800; }
+    .intermission-label { fill: #26344A; font-size: 24px; font-weight: 700; }
+    .intermission-small { fill: #52647A; font-size: 20px; font-weight: 600; }
+    .intermission-number { fill: #26344A; font-size: 32px; font-weight: 900; }
+    .intermission-button-text { fill: #26344A; font-size: 34px; font-weight: 900; text-anchor: middle; }
+  </style>
+  <defs>
+    <linearGradient id="intermission-sky-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#A9E3DA"/>
+      <stop offset="1" stop-color="#E9E7BD"/>
+    </linearGradient>
+    <linearGradient id="intermission-cave-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6F98BE"/>
+      <stop offset="1" stop-color="#4D77A8"/>
+    </linearGradient>
+    <linearGradient id="intermission-gold-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE38A"/>
+      <stop offset="1" stop-color="#FFC94D"/>
+    </linearGradient>
+    <clipPath id="intermission-enemy-clip">
+      <rect x="48" y="244" width="984" height="600" rx="38"/>
+    </clipPath>
+    <symbol id="intermission-bolt" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="8" fill="#FFF3C4" stroke="#26344A" stroke-width="3"/>
+      <path d="M6 10H14" fill="none" stroke="#26344A" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="intermission-spark" viewBox="0 0 40 40">
+      <path d="M20 3L25 15L37 20L25 25L20 37L15 25L3 20L15 15Z" fill="#FFF7B2" stroke="#26344A" stroke-width="2.5" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="intermission-crystal" viewBox="0 0 90 110">
+      <path d="M45 5L72 29L82 72L57 103L24 97L8 64L18 25Z" fill="currentColor" stroke="#26344A" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M45 5L48 68L18 25Z" fill="#FFFFFF" opacity="0.36"/>
+      <path d="M48 68L82 72L57 103Z" fill="#26344A" opacity="0.2"/>
+      <path d="M18 25L48 68L8 64Z" fill="#FFFFFF" opacity="0.12"/>
+      <path d="M48 68L72 29" fill="none" stroke="#26344A" stroke-width="3"/>
+      <path d="M28 31L37 23" fill="none" stroke="#FFFDF4" stroke-width="6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="intermission-depth-node" viewBox="0 0 34 34">
+      <circle cx="17" cy="17" r="14" fill="currentColor" stroke="#26344A" stroke-width="3"/>
+      <circle cx="17" cy="17" r="5" fill="#FFFDF4" opacity="0.85"/>
+    </symbol>
+    <symbol id="intermission-storage-cell" viewBox="0 0 24 24">
+      <rect x="1" y="1" width="22" height="22" rx="5" fill="#E6DDC5" stroke="#26344A" stroke-width="2"/>
+      <path d="M6 7H17" stroke="#FFFDF4" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    </symbol>
+    <symbol id="intermission-safe-cell" viewBox="0 0 104 104">
+      <rect x="4" y="7" width="96" height="94" rx="20" fill="#26344A" opacity="0.14"/>
+      <rect x="0" y="0" width="96" height="94" rx="20" fill="#FFFDF4" stroke="#26344A" stroke-width="4"/>
+      <path d="M18 74V44Q18 18 48 18Q78 18 78 44V74Z" fill="#DDF5E9" stroke="#26344A" stroke-width="3"/>
+      <circle cx="48" cy="47" r="8" fill="#FFC94D" stroke="#26344A" stroke-width="3"/>
+      <path d="M48 55V65" stroke="#26344A" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="intermission-ore-mini" viewBox="0 0 50 50">
+      <path d="M8 33L5 20L16 7L31 5L44 17L45 32L33 45L17 43Z" fill="#4D77A8" stroke="#26344A" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M15 26L22 13L34 18L36 31L25 38Z" fill="#8CF1D9" stroke="#26344A" stroke-width="2"/>
+    </symbol>
+    <symbol id="intermission-jade-mini" viewBox="0 0 50 50">
+      <path d="M25 3L43 14L47 32L32 47L13 43L4 25L12 9Z" fill="#2AB7A9" stroke="#26344A" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M25 3L26 29L12 9Z" fill="#A8F3DE"/>
+    </symbol>
+    <symbol id="intermission-pick-icon" viewBox="0 0 74 74">
+      <path d="M20 63L48 20" fill="none" stroke="#9B653F" stroke-width="8" stroke-linecap="round"/>
+      <path d="M20 27Q45 4 67 24Q43 17 29 40Z" fill="#B8C4C8" stroke="#26344A" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="intermission-armor-icon" viewBox="0 0 74 74">
+      <path d="M23 12L37 20L51 12L65 25L57 62L37 69L17 62L9 25Z" fill="#4D77A8" stroke="#26344A" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M37 20V58M22 36H52" fill="none" stroke="#8FC5DF" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="intermission-glove-icon" viewBox="0 0 74 74">
+      <path d="M20 38V20Q20 13 26 15Q31 15 30 23V12Q30 6 36 8Q41 8 40 16V10Q41 5 46 8Q50 10 48 18V15Q51 10 55 14Q58 17 55 27L60 23Q66 21 67 27Q67 32 59 43L53 62L25 62L15 47Q10 38 20 38Z" fill="#C68A58" stroke="#26344A" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M24 49H54" stroke="#FFC94D" stroke-width="5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="intermission-lamp-icon" viewBox="0 0 74 74">
+      <path d="M23 27Q23 7 37 7Q51 7 51 27" fill="none" stroke="#26344A" stroke-width="5"/>
+      <path d="M15 35L22 23H52L59 35Z" fill="#FFC94D" stroke="#26344A" stroke-width="4"/>
+      <rect x="18" y="34" width="38" height="32" rx="10" fill="#FFF0A6" stroke="#26344A" stroke-width="4"/>
+      <path d="M29 40V60M45 40V60" stroke="#26344A" stroke-width="3"/>
+    </symbol>
+  </defs>
+
+  <g id="intermission-background" data-role="background" data-layer="背景层" aria-label="矿区层间背景">
+    <rect width="1080" height="1920" fill="url(#intermission-sky-gradient)"/>
+    <path d="M0 0H1080V1920H0Z" fill="#4D77A8" opacity="0.08"/>
+    <path d="M0 382L136 254L256 351L395 206L540 352L682 233L831 361L966 249L1080 348V824H0Z" fill="#79B3AA"/>
+    <path d="M0 564L173 419L304 535L463 390L624 543L799 402L952 527L1080 444V914H0Z" fill="#5E968F"/>
+    <path d="M0 942Q184 850 365 928T723 908T1080 889V1920H0Z" fill="#79BE6C"/>
+    <path d="M0 1656Q247 1571 463 1654T830 1633T1080 1612V1920H0Z" fill="#C6A875"/>
+    <g fill="#FFFDF4" opacity="0.55">
+      <path d="M61 184Q77 148 115 165Q143 126 182 159Q220 153 237 190H61Z"/>
+      <path d="M816 120Q831 89 864 103Q889 69 925 99Q958 94 974 126H816Z"/>
+    </g>
+    <g opacity="0.45" stroke="#26344A" stroke-width="5" stroke-linecap="round">
+      <path d="M26 1050V1520M1054 1050V1520"/>
+      <path d="M0 1090H62M1018 1090H1080"/>
+    </g>
+  </g>
+
+  <g id="intermission-content" data-role="layer" data-layer="内容层" aria-label="敌人预告与局内状态">
+    <g id="intermission-enemy-preview" data-role="panel" aria-label="第三层普通战敌人预告">
+      <rect x="56" y="254" width="984" height="600" rx="38" fill="#26344A" opacity="0.16"/>
+      <rect x="48" y="244" width="984" height="600" rx="38" fill="#BDEFE4" class="intermission-outline"/>
+      <g clip-path="url(#intermission-enemy-clip)">
+        <rect x="48" y="244" width="984" height="600" fill="#BDEFE4"/>
+        <circle cx="848" cy="371" r="75" fill="#FFE38A"/>
+        <path d="M48 537L162 412L280 492L402 353L535 496L681 373L821 502L955 390L1032 458V731H48Z" fill="#83BDB3"/>
+        <path d="M48 638L179 526L311 609L455 482L603 627L771 490L913 612L1032 548V768H48Z" fill="#619B94"/>
+        <path d="M48 703Q253 625 443 699T772 684T1032 674V844H48Z" fill="#8ACB75"/>
+        <path d="M63 674L78 433L170 355L278 402L312 526L282 722Z" fill="url(#intermission-cave-gradient)" class="intermission-outline"/>
+        <path d="M88 450L163 389L190 465L129 513Z" fill="#8FB2D0"/>
+        <path d="M829 692L846 447L925 388L1011 429L1032 524V716Z" fill="url(#intermission-cave-gradient)" class="intermission-outline"/>
+        <path d="M875 459L925 418L973 446L939 504Z" fill="#8FB2D0"/>
+
+        <g id="intermission-preview-lamps" data-role="prop" aria-label="层间矿灯与轨道">
+          <path d="M187 244V324M884 244V324" stroke="#26344A" stroke-width="5"/>
+          <path d="M151 349L162 319H212L224 349Z" fill="#FFC94D" class="intermission-thin"/>
+          <rect x="159" y="347" width="57" height="55" rx="16" fill="#FFF0A6" class="intermission-thin"/>
+          <path d="M848 349L859 319H909L921 349Z" fill="#FFC94D" class="intermission-thin"/>
+          <rect x="856" y="347" width="57" height="55" rx="16" fill="#FFF0A6" class="intermission-thin"/>
+          <path d="M48 759Q340 698 600 735T1032 729V844H48Z" fill="#C8A574" class="intermission-thin"/>
+          <path d="M100 844L337 712M746 844L664 712" fill="none" stroke="#26344A" stroke-width="13"/>
+          <path d="M100 844L337 712M746 844L664 712" fill="none" stroke="#B8C4C8" stroke-width="7"/>
+          <path d="M174 804H779M230 767H733M293 735H694" stroke="#26344A" stroke-width="7" stroke-linecap="round"/>
+        </g>
+
+        <g id="intermission-enemy" data-role="character" aria-label="岩壳掘兽剪影预告">
+          <ellipse cx="554" cy="700" rx="208" ry="32" fill="#26344A" opacity="0.2"/>
+          <path d="M407 669Q359 616 375 537Q389 464 463 428Q546 382 631 425Q706 461 729 541Q749 617 694 680L636 710H459Z" fill="#26344A" class="intermission-outline"/>
+          <path d="M419 527L393 464L450 473L478 423L517 454L564 402L601 454L656 428L665 485L718 488L695 548Z" fill="#4D77A8" class="intermission-thin"/>
+          <path d="M431 552Q454 477 547 470Q648 470 683 557L660 650Q611 696 526 683Q447 673 413 618Z" fill="#34465F"/>
+          <path d="M420 579L365 553L338 593L384 624L422 619M686 574L742 544L773 581L731 619L689 614" fill="#4D77A8" class="intermission-outline"/>
+          <path d="M372 557L348 523M382 552L374 510M737 548L752 510M747 555L775 530" fill="none" class="intermission-thin"/>
+          <path d="M451 661L414 715H484L509 674M615 674L640 715H710L672 655" fill="#4D77A8" class="intermission-outline"/>
+          <path d="M477 545L512 535L525 561L492 574Z" fill="#FFC94D" class="intermission-thin"/>
+          <path d="M591 535L627 545L611 574L578 561Z" fill="#FFC94D" class="intermission-thin"/>
+          <circle cx="504" cy="552" r="5" fill="#26344A"/><circle cx="601" cy="552" r="5" fill="#26344A"/>
+          <path d="M523 611Q553 628 583 609" fill="none" stroke="#8CF1D9" stroke-width="6" stroke-linecap="round"/>
+          <path d="M527 583L553 566L580 584L567 606H539Z" fill="#F25F5C" class="intermission-thin"/>
+          <use href="#intermission-crystal" x="432" y="396" width="66" height="81" color="#2AB7A9"/>
+          <use href="#intermission-crystal" x="603" y="401" width="58" height="71" color="#F25F5C"/>
+          <path d="M472 643L496 623M627 637L648 615" stroke="#6E89A5" stroke-width="6" stroke-linecap="round"/>
+        </g>
+        <use href="#intermission-spark" x="752" y="457" width="40" height="40"/>
+        <use href="#intermission-spark" x="325" y="468" width="32" height="32"/>
+        <use href="#intermission-crystal" x="891" y="611" width="66" height="81" color="#2AB7A9"/>
+      </g>
+      <rect x="72" y="266" width="188" height="50" rx="25" fill="#FFF4D6" class="intermission-thin"/>
+      <text x="166" y="300" class="intermission-label" text-anchor="middle">敌人预告</text>
+      <rect x="817" y="266" width="187" height="50" rx="25" fill="#F25F5C" class="intermission-thin"/>
+      <text x="910" y="300" font-size="24" font-weight="800" fill="#FFFDF4" text-anchor="middle">普通战</text>
+      <g data-role="label" aria-label="敌人名称与成长信息">
+        <rect x="76" y="730" width="928" height="88" rx="26" fill="#FFF4D6" class="intermission-thin"/>
+        <text x="106" y="769" class="intermission-heading">岩壳掘兽</text>
+        <text x="106" y="799" class="intermission-small">晶背闪烁，正在轨道尽头巡视</text>
+        <path d="M570 750V798" stroke="#D9CAA8" stroke-width="3"/>
+        <path d="M612 787V752M612 752L599 766M612 752L625 766" fill="none" class="intermission-thin"/>
+        <text x="646" y="772" class="intermission-label">深入成长</text>
+        <text x="974" y="772" class="intermission-number" text-anchor="end">每层 +15%</text>
+        <text x="646" y="801" class="intermission-small">生命与攻击同步增强</text>
+      </g>
+    </g>
+
+    <g id="intermission-run-status" data-role="panel" aria-label="当前生命与初始装备摘要">
+      <rect x="56" y="886" width="984" height="260" rx="32" fill="#26344A" opacity="0.14"/>
+      <rect x="48" y="876" width="984" height="260" rx="32" fill="#FFF4D6" class="intermission-outline"/>
+      <text x="80" y="925" class="intermission-heading">行者状态</text>
+      <text x="300" y="923" class="intermission-label">生命</text>
+      <g id="intermission-health-bar" data-role="bar" data-value="82" data-max="100" aria-label="当前生命 82 / 100">
+        <rect x="374" y="898" width="426" height="36" rx="18" fill="#D8D5C4" class="intermission-detail"/>
+        <rect x="379" y="903" width="341" height="26" rx="13" fill="#F25F5C"/>
+        <path d="M391 910H689" stroke="#FFADA0" stroke-width="6" stroke-linecap="round"/>
+        <text x="587" y="924" font-size="21" font-weight="900" fill="#FFFDF4" text-anchor="middle">82 / 100</text>
+      </g>
+      <rect x="830" y="894" width="170" height="44" rx="22" fill="#DDF5E9"/>
+      <text x="915" y="924" class="intermission-small" text-anchor="middle">跨战斗保留</text>
+      <path d="M80 956H1000" stroke="#D9CAA8" stroke-width="3" stroke-linecap="round"/>
+      <text x="80" y="989" class="intermission-small">初始装备</text>
+      <text x="1000" y="989" class="intermission-small" text-anchor="end">4 件装备属性生效</text>
+
+      <g id="intermission-equipment-pick" data-role="label" aria-label="训练矿镐">
+        <rect x="80" y="1004" width="208" height="104" rx="22" fill="#E4F1F5" class="intermission-detail"/>
+        <use href="#intermission-pick-icon" x="92" y="1019" width="74" height="74"/>
+        <text x="174" y="1048" class="intermission-label">训练</text>
+        <text x="174" y="1080" class="intermission-label">矿镐</text>
+      </g>
+      <g id="intermission-equipment-armor" data-role="label" aria-label="轻型护甲">
+        <rect x="304" y="1004" width="208" height="104" rx="22" fill="#E4F1F5" class="intermission-detail"/>
+        <use href="#intermission-armor-icon" x="316" y="1019" width="74" height="74"/>
+        <text x="398" y="1048" class="intermission-label">轻型</text>
+        <text x="398" y="1080" class="intermission-label">护甲</text>
+      </g>
+      <g id="intermission-equipment-glove" data-role="label" aria-label="旧手套">
+        <rect x="528" y="1004" width="208" height="104" rx="22" fill="#F4E5CC" class="intermission-detail"/>
+        <use href="#intermission-glove-icon" x="540" y="1019" width="74" height="74"/>
+        <text x="622" y="1065" class="intermission-label">旧手套</text>
+      </g>
+      <g id="intermission-equipment-lamp" data-role="label" aria-label="旧矿灯">
+        <rect x="752" y="1004" width="208" height="104" rx="22" fill="#FFF0B9" class="intermission-detail"/>
+        <use href="#intermission-lamp-icon" x="764" y="1019" width="74" height="74"/>
+        <text x="846" y="1065" class="intermission-label">旧矿灯</text>
+      </g>
+    </g>
+
+    <g id="intermission-storage-summary" data-role="panel" aria-label="背包六乘六与安全箱两格摘要">
+      <rect x="56" y="1182" width="984" height="240" rx="32" fill="#26344A" opacity="0.14"/>
+      <rect x="48" y="1172" width="984" height="240" rx="32" fill="#FFF4D6" class="intermission-outline"/>
+      <text x="80" y="1217" class="intermission-heading">背包 6×6</text>
+      <text x="474" y="1217" class="intermission-small" text-anchor="end">已用 5 / 36</text>
+
+      <use href="#intermission-storage-cell" x="80" y="1236" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="108" y="1236" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="136" y="1236" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="164" y="1236" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="192" y="1236" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="220" y="1236" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="80" y="1264" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="108" y="1264" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="136" y="1264" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="164" y="1264" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="192" y="1264" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="220" y="1264" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="80" y="1292" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="108" y="1292" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="136" y="1292" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="164" y="1292" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="192" y="1292" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="220" y="1292" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="80" y="1320" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="108" y="1320" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="136" y="1320" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="164" y="1320" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="192" y="1320" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="220" y="1320" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="80" y="1348" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="108" y="1348" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="136" y="1348" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="164" y="1348" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="192" y="1348" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="220" y="1348" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="80" y="1376" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="108" y="1376" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="136" y="1376" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="164" y="1376" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="192" y="1376" width="24" height="24"/>
+      <use href="#intermission-storage-cell" x="220" y="1376" width="24" height="24"/>
+      <use href="#intermission-ore-mini" x="81" y="1237" width="22" height="22"/>
+      <use href="#intermission-jade-mini" x="137" y="1237" width="22" height="22"/>
+      <use href="#intermission-ore-mini" x="109" y="1265" width="22" height="22"/>
+      <use href="#intermission-ore-mini" x="193" y="1293" width="22" height="22"/>
+      <use href="#intermission-ore-mini" x="81" y="1377" width="22" height="22"/>
+
+      <g data-role="label" aria-label="背包储物规则">
+        <text x="282" y="1260" class="intermission-label">资源独立占格</text>
+        <text x="282" y="1293" class="intermission-small">矿石与玉石各 1×1</text>
+        <text x="282" y="1323" class="intermission-small">装备可整理但不生效</text>
+        <rect x="280" y="1346" width="224" height="43" rx="21" fill="#E4F1F5"/>
+        <text x="392" y="1375" class="intermission-small" text-anchor="middle">非战斗状态可调整</text>
+      </g>
+      <path d="M542 1200V1384" stroke="#D9CAA8" stroke-width="3"/>
+      <text x="580" y="1217" class="intermission-heading">安全箱</text>
+      <text x="1000" y="1217" class="intermission-small" text-anchor="end">1 / 2</text>
+      <use href="#intermission-safe-cell" x="624" y="1242" width="104" height="104"/>
+      <use href="#intermission-safe-cell" x="764" y="1242" width="104" height="104"/>
+      <use href="#intermission-jade-mini" x="648" y="1260" width="58" height="58"/>
+      <text x="908" y="1282" class="intermission-label">保底</text>
+      <text x="908" y="1314" class="intermission-small">必定带出</text>
+      <text x="580" y="1383" class="intermission-small">固定 2 格 · 仅矿石与玉石</text>
+    </g>
+  </g>
+
+  <g id="intermission-hud" data-role="hud" data-layer="HUD 层" aria-label="深度信息与决策操作">
+    <g id="intermission-depth-header" data-role="panel" aria-label="当前深度与战斗类型">
+      <rect x="56" y="82" width="984" height="140" rx="32" fill="#26344A" opacity="0.15"/>
+      <rect x="48" y="72" width="984" height="140" rx="32" fill="#FFF4D6" class="intermission-outline"/>
+      <rect x="68" y="92" width="116" height="100" rx="25" fill="#4D77A8" class="intermission-thin"/>
+      <path d="M84 162L126 112L168 162Z" fill="#8FC5DF" class="intermission-thin"/>
+      <path d="M113 162V143Q113 129 127 129Q141 129 141 143V162" fill="#26344A"/>
+      <use href="#intermission-crystal" x="135" y="101" width="36" height="44" color="#2AB7A9"/>
+      <text x="208" y="128" class="intermission-title">第 3 / 8 层</text>
+      <text x="211" y="171" class="intermission-small">青晶矿段 · 层间整备</text>
+      <path d="M481 95V189" stroke="#D9CAA8" stroke-width="3"/>
+      <text x="520" y="115" class="intermission-small">矿局深度</text>
+      <g id="intermission-depth-track" data-role="label" aria-label="八层路径，当前第三层">
+        <path d="M531 151H931" stroke="#C5BB9F" stroke-width="6" stroke-linecap="round"/>
+        <use href="#intermission-depth-node" x="514" y="134" width="34" height="34" color="#2AB7A9"/>
+        <use href="#intermission-depth-node" x="572" y="134" width="34" height="34" color="#2AB7A9"/>
+        <use href="#intermission-depth-node" x="630" y="131" width="40" height="40" color="#FFC94D"/>
+        <use href="#intermission-depth-node" x="688" y="134" width="34" height="34" color="#FFFDF4"/>
+        <use href="#intermission-depth-node" x="746" y="134" width="34" height="34" color="#FFFDF4"/>
+        <use href="#intermission-depth-node" x="804" y="134" width="34" height="34" color="#FFFDF4"/>
+        <use href="#intermission-depth-node" x="862" y="134" width="34" height="34" color="#F25F5C"/>
+        <use href="#intermission-depth-node" x="920" y="134" width="34" height="34" color="#4D77A8"/>
+      </g>
+      <text x="973" y="116" class="intermission-label" text-anchor="middle">普通战</text>
+      <text x="974" y="186" class="intermission-small" text-anchor="middle">精英 · Boss</text>
+    </g>
+
+    <g id="intermission-depth-actions" data-role="panel" aria-label="继续深入与主动撤离操作区">
+      <rect x="48" y="1472" width="984" height="160" rx="34" fill="#E9F3DC" opacity="0.82"/>
+      <g id="intermission-retreat-run" data-role="button" data-action="retreat-run" data-state="default"
+         role="button" tabindex="0" aria-label="主动撤离并打开收益确认">
+        <rect x="56" y="1484" width="340" height="140" rx="30" fill="#26344A" opacity="0.2"/>
+        <rect x="48" y="1472" width="348" height="144" rx="30" fill="#F25F5C" class="intermission-outline"/>
+        <path d="M93 1524H139M93 1524L113 1504M93 1524L113 1544" fill="none" class="intermission-thin"/>
+        <path d="M136 1499H165V1551H136" fill="none" class="intermission-thin"/>
+        <text x="254" y="1535" class="intermission-button-text" fill="#FFFDF4">主动撤离</text>
+        <text x="222" y="1582" font-size="20" font-weight="700" fill="#FFFDF4" text-anchor="middle">查看收益并二次确认</text>
+      </g>
+      <g id="intermission-continue-deeper" data-role="button" data-action="continue-deeper" data-state="ready"
+         role="button" tabindex="0" aria-label="继续深入，进入第三层普通战">
+        <rect x="420" y="1484" width="612" height="140" rx="30" fill="#26344A" opacity="0.22"/>
+        <rect x="412" y="1472" width="620" height="144" rx="30" fill="url(#intermission-gold-gradient)" class="intermission-outline"/>
+        <path d="M454 1555L482 1498M447 1508Q482 1481 512 1508Q481 1502 462 1526" fill="none" class="intermission-thin"/>
+        <text x="721" y="1538" class="intermission-button-text" font-size="38">继续深入</text>
+        <text x="721" y="1582" class="intermission-small" text-anchor="middle">信息已确认 · 进入第 3 层普通战</text>
+        <path d="M960 1517L990 1544L960 1571" fill="none" class="intermission-outline"/>
+      </g>
+    </g>
+    <g data-role="label" aria-label="撤离风险提醒">
+      <rect x="188" y="1672" width="704" height="58" rx="29" fill="#FFF4D6" class="intermission-thin"/>
+      <path d="M224 1685L239 1714H209Z" fill="#F25F5C" class="intermission-detail"/>
+      <path d="M224 1694V1702M224 1708V1710" stroke="#FFFDF4" stroke-width="3" stroke-linecap="round"/>
+      <text x="556" y="1710" class="intermission-label" text-anchor="middle">撤离可带出资源，但所有装备都会清空</text>
+    </g>
+  </g>
+
+  <g id="intermission-overlay" data-role="overlay" data-layer="遮罩层" aria-label="层间页脚装饰" pointer-events="none">
+    <g data-role="decoration" aria-label="矿脉路线装饰">
+      <path d="M288 1804H424L454 1778H626L656 1804H792" fill="none" stroke="#26344A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+      <circle cx="288" cy="1804" r="10" fill="#2AB7A9" class="intermission-detail"/>
+      <circle cx="540" cy="1778" r="15" fill="#FFC94D" class="intermission-thin"/>
+      <circle cx="792" cy="1804" r="10" fill="#4D77A8" class="intermission-detail"/>
+      <text x="540" y="1854" class="intermission-small" text-anchor="middle">看清下一层，再决定把多少光带回去</text>
+    </g>
+  </g>
+</svg>
